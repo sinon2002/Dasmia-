@@ -6,60 +6,43 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n";
 
-/* ── DASMIA SVG Wordmark (Footer) ── */
+/* ── DASMIA Wordmark (Footer) — bold italic sans-serif ── */
 function DasmiaLogo() {
   return (
-    <svg
-      viewBox="0 0 260 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-label="DASMIA"
-      role="img"
-      style={{ height: "36px", width: "auto" }}
-    >
-      <defs>
-        <linearGradient id="goldGradFt" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#B9965A" />
-          <stop offset="60%" stopColor="#C8A96B" />
-          <stop offset="100%" stopColor="#B9965A" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M4 6 L4 42 L16 42 Q32 42 32 24 Q32 6 16 6 Z M10 12 L15 12 Q24 12 24 24 Q24 36 15 36 L10 36 Z"
-        fill="url(#goldGradFt)"
-      />
-      <path
-        d="M44 42 L52 6 L60 6 L68 42 L62 42 L60 34 L52 34 L50 42 Z M53.5 28 L58.5 28 L56 16 Z"
-        fill="url(#goldGradFt)"
-      />
-      <path
-        d="M78 34 Q78 42 90 42 Q102 42 102 34 Q102 26 90 24 Q82 22 82 18 Q82 12 90 12 Q98 12 98 18"
-        stroke="url(#goldGradFt)"
-        strokeWidth="6"
-        fill="none"
-        strokeLinecap="square"
-      />
-      <path
-        d="M112 42 L112 6 L120 6 L128 26 L136 6 L144 6 L144 42 L138 42 L138 18 L128 38 L118 18 L118 42 Z"
-        fill="url(#goldGradFt)"
-      />
-      <rect x="154" y="6" width="6" height="36" fill="url(#goldGradFt)" />
-      <rect x="150" y="6" width="14" height="6" fill="url(#goldGradFt)" />
-      <rect x="150" y="36" width="14" height="6" fill="url(#goldGradFt)" />
-      <path
-        d="M176 42 L184 6 L192 6 L200 42 L194 42 L192 34 L184 34 L182 42 Z M185.5 28 L190.5 28 L188 16 Z"
-        fill="url(#goldGradFt)"
-      />
-      <line
-        x1="4"
-        y1="45"
-        x2="200"
-        y2="45"
-        stroke="url(#goldGradFt)"
-        strokeWidth="0.75"
-        opacity="0.4"
-      />
-    </svg>
+    <div className="flex flex-col leading-none select-none">
+      <span
+        style={{
+          fontFamily:
+            "var(--font-sans), 'Helvetica Neue', Arial, sans-serif",
+          fontWeight: 800,
+          fontStyle: "italic",
+          fontSize: "24px",
+          letterSpacing: "-0.01em",
+          transform: "skewX(-6deg)",
+          display: "inline-block",
+          background:
+            "linear-gradient(115deg, #B9965A 0%, #E8D5A3 45%, #B9965A 100%)",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          color: "transparent",
+        }}
+      >
+        D&apos;asmia
+      </span>
+      <span
+        className="text-label"
+        style={{
+          fontSize: "7px",
+          letterSpacing: "0.3em",
+          color: "var(--gold)",
+          opacity: 0.7,
+          marginTop: "2px",
+          marginLeft: "2px",
+        }}
+      >
+        PREMIUM COMPLEX
+      </span>
+    </div>
   );
 }
 
