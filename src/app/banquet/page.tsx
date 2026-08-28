@@ -3,59 +3,60 @@
 import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import DirectionHero from "@/components/sections/DirectionHero";
+import DirectionShowcaseHero from "@/components/sections/DirectionShowcaseHero";
 import DirectionIntro from "@/components/sections/DirectionIntro";
-import DirectionFeatures from "@/components/sections/DirectionFeatures";
+import DirectionShowcaseGrid from "@/components/sections/DirectionShowcaseGrid";
 import DirectionGallery from "@/components/sections/DirectionGallery";
 import DirectionCTA from "@/components/sections/DirectionCTA";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
 
+const stripImages = [
+  { url: "/assets/images/IMG_9009.webp", alt: "Главный банкетный зал DASMIA", arch: true },
+  { url: "/assets/images/IMG_8995.webp", alt: "Сервировка праздничного стола DASMIA" },
+  { url: "/assets/images/IMG_9027.webp", alt: "Свадебная сцена DASMIA", arch: true },
+  { url: "/assets/images/IMG_9049.webp", alt: "Атмосфера торжества DASMIA" },
+  { url: "/assets/images/IMG_9018.webp", alt: "Художественные рельефы DASMIA", arch: true },
+  { url: "/assets/images/IMG_9031.webp", alt: "Праздничный вечер DASMIA" },
+];
+
 const galleryImages = [
-  {
-    url: "/assets/images/IMG_9009.webp",
-    alt: "Главный банкетный зал Айкөл Ордо с мозаичным куполом",
-    span: "wide" as const,
-  },
-  {
-    url: "/assets/images/IMG_8995.webp",
-    alt: "Сервировка праздничного стола в банкетном зале DASMIA",
-    span: "tall" as const,
-  },
-  {
-    url: "/assets/images/IMG_9027.webp",
-    alt: "Свадебная сцена и национальные декорации DASMIA",
-  },
-  {
-    url: "/assets/images/IMG_9049.webp",
-    alt: "Атмосфера торжества и балкон банкетного зала",
-  },
-  {
-    url: "/assets/images/IMG_9018.webp",
-    alt: "Художественные рельефы и лаунж-зона комплекса",
-  },
-  {
-    url: "/assets/images/IMG_9031.webp",
-    alt: "Праздничный вечер в банкетном зале DASMIA",
-  },
+  { url: "/assets/images/IMG_9009.webp", alt: "Главный банкетный зал Айкөл Ордо с мозаичным куполом", span: "wide" as const },
+  { url: "/assets/images/IMG_8995.webp", alt: "Сервировка праздничного стола в банкетном зале DASMIA", span: "tall" as const },
+  { url: "/assets/images/IMG_9027.webp", alt: "Свадебная сцена и национальные декорации DASMIA" },
+  { url: "/assets/images/IMG_9049.webp", alt: "Атмосфера торжества и балкон банкетного зала" },
+  { url: "/assets/images/IMG_9018.webp", alt: "Художественные рельефы и лаунж-зона комплекса" },
+  { url: "/assets/images/IMG_9031.webp", alt: "Праздничный вечер в банкетном зале DASMIA" },
+];
+
+const hallImages = [
+  "/assets/images/IMG_9009.webp",
+  "/assets/images/IMG_9027.webp",
+  "/assets/images/IMG_9049.webp",
 ];
 
 export default function BanquetPage() {
   const { language } = useLanguage();
   const data = directionsContent.banquet[language] || directionsContent.banquet.ru;
 
+  const showcaseItems = data.featuresSection.features.map((f, i) => ({
+    image: hallImages[i] || hallImages[0],
+    imageAlt: f.title,
+    title: f.title,
+    description: f.description,
+    linkLabel: data.cta.primaryLabel,
+  }));
+
   return (
     <>
       <div className="noise-overlay" aria-hidden="true" />
       <Header />
       <main id="main-content">
-        <DirectionHero
+        <DirectionShowcaseHero
           category={data.hero.category}
-          title={data.hero.title}
-          subtitle={data.hero.subtitle}
+          title={`${data.hero.title} ${data.hero.subtitle || ""}`.trim()}
           description={data.hero.description}
-          imageUrl="/assets/images/IMG_2161.webp"
-          imageAlt={data.hero.imageAlt}
+          images={stripImages}
           dataDirection="banquet"
         />
 
@@ -68,13 +69,9 @@ export default function BanquetPage() {
           dataDirection="banquet"
         />
 
-        <DirectionFeatures
-          label={data.featuresSection.label}
+        <DirectionShowcaseGrid
           heading={data.featuresSection.heading}
-          features={data.featuresSection.features}
-          imageUrl="/assets/images/IMG_9009.webp"
-          imageAlt="Интерьер банкетного зала DASMIA"
-          imageRight={true}
+          items={showcaseItems}
           dataDirection="banquet"
         />
 
