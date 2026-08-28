@@ -11,6 +11,7 @@ import FeaturedSection from "@/components/sections/FeaturedSection";
 import HistorySection from "@/components/sections/HistorySection";
 import CorporateSection from "@/components/sections/CorporateSection";
 import EventCTASection from "@/components/sections/EventCTASection";
+import ContactMapSection from "@/components/sections/ContactMapSection";
 import ContactSection from "@/components/sections/ContactSection";
 
 export const metadata: Metadata = {
@@ -64,6 +65,9 @@ export default function HomePage() {
 
         {/* 08 Event CTA */}
         <EventCTASection />
+
+        {/* 08b Contact Map */}
+        <ContactMapSection />
 
         {/* 09 Contact Form */}
         <ContactSection />
