@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="100%" height="100%">
+  <defs>
+    <!-- Premium Gold Gradient -->
+    <linearGradient id="gold-grad" x1="0" y1="100" x2="520" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A8854A" />
+      <stop offset="20%" stop-color="#C8A96B" />
+      <stop offset="45%" stop-color="#B9965A" />
+      <stop offset="60%" stop-color="#F2E3B6" />
+      <stop offset="75%" stop-color="#B9965A" />
+      <stop offset="100%" stop-color="#9A7B46" />
+    </linearGradient>
+
+    <!-- Rim Light Highlight Gradient -->
+    <linearGradient id="highlight-grad" x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8" />
+      <stop offset="40%" stop-color="#FFFFFF" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Animated Shine Overlay Gradient -->
+    <linearGradient id="shine-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Premium Drop Shadow -->
+    <filter id="premium-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="4" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.25" />
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+
+    <!-- Diagonal Slash Mask for Letter D -->
+    <mask id="slash-mask">
+      <rect x="-50" y="-50" width="200" height="200" fill="white" />
+      <polygon points="-10,95 95,-10 120,-10 15,95" fill="black" />
+    </mask>
+
+    <!-- Letter Paths (Upright, mathematically symmetric before skew) -->
+    <path id="letter-D" d="M 10,0 L 45,0 L 75,30 L 75,70 L 45,100 L 10,100 L 0,90 L 0,10 Z M 25,25 L 40,25 L 50,35 L 50,65 L 40,75 L 25,75 Z" fill-rule="evenodd" />
+    
+    <path id="letter-A" d="M 30,10 L 35,0 L 45,0 L 50,10 L 80,100 L 55,100 L 48,75 L 32,75 L 25,100 L 0,100 Z M 40,30 L 46,55 L 34,55 Z" fill-rule="evenodd" />
+    
+    <path id="letter-S" d="M 0,25 L 0,10 L 10,0 L 70,0 L 70,25 L 25,25 L 25,35 L 65,45 L 70,50 L 70,90 L 60,100 L 0,100 L 0,75 L 45,75 L 45,65 L 5,55 L 0,50 Z" />
+    
+    <path id="letter-M" d="M 0,100 L 0,10 L 10,0 L 35,0 L 45,45 L 55,0 L 80,0 L 90,10 L 90,100 L 65,100 L 65,45 L 45,85 L 25,45 L 25,100 Z" />
+    
+    <path id="letter-I" d="M 0,10 L 10,0 L 15,0 L 25,10 L 25,90 L 15,100 L 10,100 L 0,90 Z" />
+
+    <!-- Full Wordmark Composition -->
+    <g id="full-wordmark">
+      <g mask="url(#slash-mask)">
+        <use href="#letter-D" x="0" />
+      </g>
+      <use href="#letter-A" x="95" />
+      <use href="#letter-S" x="195" />
+      <use href="#letter-M" x="285" />
+      <use href="#letter-I" x="395" />
+      <use href="#letter-A" x="440" />
+    </g>
+
+    <!-- Mask for the Animated Shine -->
+    <mask id="wordmark-mask">
+      <use href="#full-wordmark" fill="white" />
+    </mask>
+  </defs>
+
+  <!-- Background (Transparent as requested, but establishing coordinate space) -->
+  <rect width="100%" height="100%" fill="transparent" />
+
+  <!-- Centered and Italicized Wordmark Group -->
+  <!-- Center of 800x400 is 400,200. Wordmark is 520x100. Offset by half width/height (-260, -50) -->
+  <g transform="translate(400, 200) skewX(-15) translate(-260, -50)">
+    
+    <!-- Base Wordmark with Gold Gradient and Premium Shadow -->
+    <use href="#full-wordmark" fill="url(#gold-grad)" filter="url(#premium-shadow)" />
+    
+    <!-- Inner Rim Light (Slightly offset stroke for 3D faceted edge) -->
+    <use href="#full-wordmark" fill="none" stroke="url(#highlight-grad)" stroke-width="1.5" transform="translate(-1, -1)" />
+    
+    <!-- Animated Shine Overlay -->
+    <g mask="url(#wordmark-mask)">
+      <rect x="-300" y="-50" width="250" height="200" fill="url(#shine-grad)" transform="skewX(20)">
+        <animate 
+          attributeName="x" 
+          values="-400; 800; 800" 
+          dur="6s" 
+          keyTimes="0; 0.5; 1" 
+          repeatCount="indefinite" 
+        />
+      </rect>
+    </g>
+    
+  </g>
+</svg>
