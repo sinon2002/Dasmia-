@@ -1,0 +1,335 @@
+/* DASMIA Django Admin Image Editor Styling */
+
+:root {
+  --admin-gold: #B9965A;
+  --admin-gold-hover: #cfab6c;
+  --admin-bg-dark: #1e1e24;
+  --admin-card-bg: #2a2a32;
+  --admin-border: rgba(185, 150, 90, 0.3);
+}
+
+/* Image Widget Container */
+.dasmia-image-widget {
+  background: rgba(30, 30, 36, 0.6);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 14px;
+  max-width: 480px;
+  margin-bottom: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: inherit;
+}
+
+.dasmia-image-preview-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.dasmia-image-thumb-wrap {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dasmia-image-thumb {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.dasmia-image-thumb-wrap:hover .dasmia-image-thumb {
+  transform: scale(1.05);
+}
+
+.dasmia-image-placeholder {
+  color: #888;
+  font-size: 28px;
+}
+
+.dasmia-image-meta {
+  flex: 1;
+  font-size: 12px;
+  color: #bbb;
+  line-height: 1.4;
+}
+
+.dasmia-image-meta .dasmia-filename {
+  font-weight: 600;
+  color: #fff;
+  word-break: break-all;
+  margin-bottom: 4px;
+}
+
+.dasmia-image-meta .dasmia-badge {
+  display: inline-block;
+  background: rgba(185, 150, 90, 0.2);
+  color: var(--admin-gold);
+  border: 1px solid rgba(185, 150, 90, 0.4);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+/* Action Buttons */
+.dasmia-image-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.dasmia-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+}
+
+.dasmia-btn-edit {
+  background: var(--admin-gold);
+  color: #111 !important;
+  border-color: var(--admin-gold);
+}
+
+.dasmia-btn-edit:hover {
+  background: var(--admin-gold-hover);
+  color: #000 !important;
+}
+
+.dasmia-btn-upload {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e0e0e0 !important;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dasmia-btn-upload:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.dasmia-btn-clear {
+  background: transparent;
+  color: #ff6b6b !important;
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.dasmia-btn-clear:hover {
+  background: rgba(255, 107, 107, 0.1);
+  border-color: rgba(255, 107, 107, 0.6);
+}
+
+.dasmia-real-file-input {
+  display: none;
+}
+
+/* Modal Backdrop & Container */
+.dasmia-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(4px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.dasmia-modal-dialog {
+  background: #1e1e24;
+  border: 1px solid var(--admin-gold);
+  border-radius: 10px;
+  width: 100%;
+  max-width: 960px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  color: #e0e0e0;
+  overflow: hidden;
+}
+
+.dasmia-modal-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #18181c;
+}
+
+.dasmia-modal-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--admin-gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dasmia-modal-close {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.dasmia-modal-close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dasmia-modal-body {
+  padding: 16px 20px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Cropper Canvas Area */
+.dasmia-crop-viewport {
+  width: 100%;
+  height: 380px;
+  background: #111;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dasmia-crop-viewport img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Toolbar Sections */
+.dasmia-toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #25252d;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+.dasmia-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.dasmia-toolbar-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--admin-gold);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* Ratio Pills */
+.dasmia-ratio-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ccc;
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dasmia-ratio-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.dasmia-ratio-pill.active {
+  background: var(--admin-gold);
+  color: #111;
+  border-color: var(--admin-gold);
+  font-weight: 600;
+}
+
+/* Sliders */
+.dasmia-filter-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.dasmia-filter-slider-wrap input[type="range"] {
+  accent-color: var(--admin-gold);
+  width: 100px;
+}
+
+/* Modal Footer */
+.dasmia-modal-footer {
+  padding: 12px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: #18181c;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dasmia-crop-dimensions {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.dasmia-crop-dimensions strong {
+  color: var(--admin-gold);
+}
+
+/* List display table thumbnail preview */
+.dasmia-admin-list-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid rgba(185, 150, 90, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  vertical-align: middle;
+  transition: transform 0.15s ease;
+}
+
+.dasmia-admin-list-thumb:hover {
+  transform: scale(1.4);
+  z-index: 100;
+  position: relative;
+}
