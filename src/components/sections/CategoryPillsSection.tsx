@@ -113,21 +113,37 @@ export default function CategoryPillsSection() {
         {/* Heading text — scroll-linked fill animation, line-group.kz style */}
         <ScrollFillText text={heading} />
 
-        {/* 3 pill photos — centered, whole-capsule hover scale, opens in new tab */}
-        <div className="flex flex-wrap items-start justify-center gap-5 md:gap-8 w-full">
+        {/* 3 pill photos — flex-basis grows on hover, pushing neighbors, like line-group.kz */}
+        <div className="flex items-start justify-center gap-4 md:gap-6 w-full max-w-5xl mx-auto">
           {PILLS.map((pill, i) => (
             <Link
               key={pill.label}
               href={pill.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative overflow-hidden shrink-0 transition-transform duration-500 ease-out hover:scale-110 hover:z-10"
+              className="group relative overflow-hidden"
               style={{
-                width: "clamp(140px, 22vw, 220px)",
-                height: "clamp(220px, 34vw, 340px)",
+                flex: "1 1 0%",
+                minWidth: 0,
+                height: "clamp(320px, 46vw, 460px)",
                 borderRadius: "999px",
                 animation: `fadeInScale 0.8s ease-out ${0.15 + i * 0.1}s both`,
-                willChange: "transform",
+                transition: "flex-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
+              onMouseEnter={(e) => {
+                const row = e.currentTarget.parentElement;
+                if (!row) return;
+                Array.from(row.children).forEach((child) => {
+                  (child as HTMLElement).style.flexGrow =
+                    child === e.currentTarget ? "1.6" : "0.75";
+                });
+              }}
+              onMouseLeave={(e) => {
+                const row = e.currentTarget.parentElement;
+                if (!row) return;
+                Array.from(row.children).forEach((child) => {
+                  (child as HTMLElement).style.flexGrow = "1";
+                });
               }}
             >
               <div className="absolute inset-0">
@@ -136,7 +152,7 @@ export default function CategoryPillsSection() {
                   alt={pill.alt}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 45vw, 220px"
+                  sizes="(max-width: 768px) 45vw, 320px"
                 />
               </div>
 
