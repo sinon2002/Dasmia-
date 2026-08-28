@@ -50,7 +50,7 @@ export default function EventCTASection() {
     >
       <div className="absolute inset-0 z-0">
         <AppImage
-          src="/assets/images/IMG_9009.webp"
+          src="https://i.pinimg.com/736x/a1/35/8e/a1358e9e452fb335129082142256fcc7.jpg"
           alt="Грандиозный зал торжеств и конференций DASMIA"
           fill
           className="object-cover"
