@@ -5,8 +5,6 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/sections/HeroSection";
 import CategoryPillsSection from "@/components/sections/CategoryPillsSection";
 import MetricsSection from "@/components/sections/MetricsSection";
-import DirectionsSection from "@/components/sections/DirectionsSection";
-import FeaturedSection from "@/components/sections/FeaturedSection";
 import HistorySection from "@/components/sections/HistorySection";
 import CorporateSection from "@/components/sections/CorporateSection";
 import EventCTASection from "@/components/sections/EventCTASection";
@@ -46,12 +44,6 @@ export default function HomePage() {
 
         {/* 03 Key Metrics */}
         <MetricsSection />
-
-        {/* 04 Directions */}
-        <DirectionsSection />
-
-        {/* 05 Featured Editorial */}
-        <FeaturedSection />
 
         {/* 06 History */}
         <HistorySection />
