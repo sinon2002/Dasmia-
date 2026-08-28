@@ -198,6 +198,8 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.title": "Оставьте заявку",
     "contact.title.em": "мы свяжемся с вами",
     "contact.address.label": "АДРЕС",
+    "contactmap.title.l1": "Свяжитесь",
+    "contactmap.title.l2": "с нами",
     "contact.address.value": "Бишкек, ул. Анкара 2Б, Кыргызстан",
     "contact.phone.label": "ТЕЛЕФОН",
     "contact.email.label": "EMAIL",
