@@ -8,7 +8,6 @@ import MetricsSection from "@/components/sections/MetricsSection";
 import HistorySection from "@/components/sections/HistorySection";
 import EventCTASection from "@/components/sections/EventCTASection";
 import ContactMapSection from "@/components/sections/ContactMapSection";
-import ContactSection from "@/components/sections/ContactSection";
 
 export const metadata: Metadata = {
   title: "DASMIA — Один комплекс. Множество возможностей.",
@@ -52,9 +51,6 @@ export default function HomePage() {
 
         {/* 08b Contact Map */}
         <ContactMapSection />
-
-        {/* 09 Contact Form */}
-        <ContactSection />
       </main>
 
       <Footer />
