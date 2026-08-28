@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/sections/HeroSection";
 import CategoryPillsSection from "@/components/sections/CategoryPillsSection";
-import IntroSection from "@/components/sections/IntroSection";
 import MetricsSection from "@/components/sections/MetricsSection";
 import DirectionsSection from "@/components/sections/DirectionsSection";
 import FeaturedSection from "@/components/sections/FeaturedSection";
@@ -44,9 +43,6 @@ export default function HomePage() {
 
         {/* 01b Category Pills */}
         <CategoryPillsSection />
-
-        {/* 02 Intro */}
-        <IntroSection />
 
         {/* 03 Key Metrics */}
         <MetricsSection />
