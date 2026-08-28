@@ -1,11 +1,11 @@
 "use client";
- 
+
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import AppImage from "@/components/ui/AppImage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n";
- 
+
 const PILLS = [
   {
     label: "РЕСТОРАН",
@@ -26,7 +26,7 @@ const PILLS = [
     alt: "Этно-Село DASMIA",
   },
 ];
- 
+
 /**
  * Scroll-linked word fill: as the paragraph scrolls up through the
  * viewport, each word transitions from dim (transparent) to bright
@@ -37,7 +37,7 @@ function ScrollFillText({ text }: { text: string }) {
   const wrapperRef = useRef<HTMLParagraphElement>(null);
   const [progress, setProgress] = useState(0);
   const words = text.split(" ");
- 
+
   useEffect(() => {
     const handleScroll = () => {
       const el = wrapperRef.current;
@@ -51,7 +51,7 @@ function ScrollFillText({ text }: { text: string }) {
       const raw = (start - rect.top) / (start - end);
       setProgress(Math.min(1, Math.max(0, raw)));
     };
- 
+
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
@@ -60,7 +60,7 @@ function ScrollFillText({ text }: { text: string }) {
       window.removeEventListener("resize", handleScroll);
     };
   }, []);
- 
+
   return (
     <p
       ref={wrapperRef}
@@ -81,7 +81,7 @@ function ScrollFillText({ text }: { text: string }) {
         const wordEnd = wordStart + span * 1.5;
         const local = (progress - wordStart) / (wordEnd - wordStart);
         const opacity = Math.min(1, Math.max(0.16, local));
- 
+
         return (
           <React.Fragment key={i}>
             <span style={{ opacity, transition: "opacity 0.05s linear" }}>
@@ -94,11 +94,11 @@ function ScrollFillText({ text }: { text: string }) {
     </p>
   );
 }
- 
+
 export default function CategoryPillsSection() {
   const { language } = useLanguage();
   const heading = `${t(language, "hero.subtitle")}, ${t(language, "directions.desc")}`;
- 
+
   return (
     <section
       className="relative"
@@ -112,25 +112,25 @@ export default function CategoryPillsSection() {
       <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center">
         {/* Heading text — scroll-linked fill animation, line-group.kz style */}
         <ScrollFillText text={heading} />
- 
-        {/* 3 pill photos — centered, hover scale animation */}
+
+        {/* 3 pill photos — centered, whole-capsule hover scale, opens in new tab */}
         <div className="flex flex-wrap items-start justify-center gap-5 md:gap-8 w-full">
           {PILLS.map((pill, i) => (
             <Link
               key={pill.label}
               href={pill.href}
-              className="group relative overflow-hidden shrink-0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative overflow-hidden shrink-0 transition-transform duration-500 ease-out hover:scale-110 hover:z-10"
               style={{
                 width: "clamp(140px, 22vw, 220px)",
                 height: "clamp(220px, 34vw, 340px)",
                 borderRadius: "999px",
                 animation: `fadeInScale 0.8s ease-out ${0.15 + i * 0.1}s both`,
+                willChange: "transform",
               }}
             >
-              <div
-                className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110"
-                style={{ willChange: "transform" }}
-              >
+              <div className="absolute inset-0">
                 <AppImage
                   src={pill.image}
                   alt={pill.alt}
@@ -139,7 +139,7 @@ export default function CategoryPillsSection() {
                   sizes="(max-width: 768px) 45vw, 220px"
                 />
               </div>
- 
+
               {/* Dark overlay for label legibility */}
               <div
                 className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-70"
@@ -149,7 +149,7 @@ export default function CategoryPillsSection() {
                 }}
                 aria-hidden="true"
               />
- 
+
               {/* Vertical rotated label — bottom, like line-group.kz */}
               <span
                 className="absolute bottom-8 left-1/2 text-label text-foreground"
