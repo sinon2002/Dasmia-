@@ -239,6 +239,15 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.social": "СОЦИАЛЬНЫЕ СЕТИ",
     "footer.privacy": "Политика конфиденциальности",
     "footer.rights": "© 2025 ОсОО «Фирма «Дасмия». Все права защищены.",
+    "footer.form.intro":
+      "Оставьте заявку — мы свяжемся с вами и подберём идеальный формат для вашего события.",
+    "footer.form.name": "Ваше имя",
+    "footer.form.contactMethod": "Как с вами связаться?",
+    "footer.form.submit": "Оставить заявку",
+    "footer.form.sending": "Отправляем...",
+    "footer.form.consent": "Нажимая на кнопку, я соглашаюсь с",
+    "footer.form.success": "Заявка отправлена, мы скоро свяжемся с вами.",
+    "footer.form.error": "Заполните все поля и подтвердите согласие.",
     "footer.location": "Бишкек, Кыргызстан",
 
     // Subpages Common
@@ -466,6 +475,15 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.social": "СОЦИАЛДЫК ТАРМАКТАР",
     "footer.privacy": "Купуялык саясаты",
     "footer.rights": "© 2025 «Дасмия» фирмасы ЖЧК. Бардык укуктар корголгон.",
+    "footer.form.intro":
+      "Өтүнмө калтырыңыз — биз сиз менен байланышып, иш-чарага эң ылайыктуу форматты тандап беребиз.",
+    "footer.form.name": "Атыңыз",
+    "footer.form.contactMethod": "Сиз менен кантип байланышалы?",
+    "footer.form.submit": "Өтүнмө калтыруу",
+    "footer.form.sending": "Жөнөтүлүүдө...",
+    "footer.form.consent": "Баскычты басуу менен мен",
+    "footer.form.success": "Өтүнмө жөнөтүлдү, биз жакында сиз менен байланышабыз.",
+    "footer.form.error": "Бардык талааларды толтуруп, макулдугуңузду ырастаңыз.",
     "footer.location": "Бишкек, Кыргызстан",
 
     // Subpages Common
@@ -693,6 +711,15 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.social": "SOCIAL NETWORKS",
     "footer.privacy": "Privacy Policy",
     "footer.rights": "© 2025 DASMIA Firm LLC. All rights reserved.",
+    "footer.form.intro":
+      "Leave a request — we'll get in touch and help find the perfect format for your event.",
+    "footer.form.name": "Your name",
+    "footer.form.contactMethod": "How should we contact you?",
+    "footer.form.submit": "Send request",
+    "footer.form.sending": "Sending...",
+    "footer.form.consent": "By clicking the button, I agree with the",
+    "footer.form.success": "Request sent, we'll be in touch soon.",
+    "footer.form.error": "Please fill in all fields and confirm your consent.",
     "footer.location": "Bishkek, Kyrgyzstan",
 
     // Subpages Common
