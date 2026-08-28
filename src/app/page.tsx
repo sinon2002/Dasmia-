@@ -6,7 +6,6 @@ import HeroSection from "@/components/sections/HeroSection";
 import CategoryPillsSection from "@/components/sections/CategoryPillsSection";
 import MetricsSection from "@/components/sections/MetricsSection";
 import HistorySection from "@/components/sections/HistorySection";
-import CorporateSection from "@/components/sections/CorporateSection";
 import EventCTASection from "@/components/sections/EventCTASection";
 import ContactMapSection from "@/components/sections/ContactMapSection";
 import ContactSection from "@/components/sections/ContactSection";
@@ -47,9 +46,6 @@ export default function HomePage() {
 
         {/* 06 History */}
         <HistorySection />
-
-        {/* 07 Corporate */}
-        <CorporateSection />
 
         {/* 08 Event CTA */}
         <EventCTASection />
