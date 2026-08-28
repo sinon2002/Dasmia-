@@ -7,106 +7,43 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SUPPORTED_LANGUAGES, LANGUAGE_LABELS, t, Language } from "@/lib/i18n";
 
-/* ── DASMIA Refined SVG Wordmark ── */
+/* ── DASMIA Wordmark — bold italic sans-serif, styled after the brand mark ── */
 function DasmiaLogo({ className = "" }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 280 56"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-label="DASMIA"
-      role="img"
-    >
-      <defs>
-        <linearGradient id="goldGradH" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#C9A96E" />
-          <stop offset="45%" stopColor="#E8D5A3" />
-          <stop offset="100%" stopColor="#B8924A" />
-        </linearGradient>
-        <linearGradient id="goldGradH2" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#B8924A" />
-          <stop offset="50%" stopColor="#E8D5A3" />
-          <stop offset="100%" stopColor="#B8924A" />
-        </linearGradient>
-      </defs>
-
-      {/* Decorative diamond ornament left */}
-      <path
-        d="M6 28 L10 24 L14 28 L10 32 Z"
-        fill="url(#goldGradH)"
-        opacity="0.7"
-      />
-      <line
-        x1="14"
-        y1="28"
-        x2="22"
-        y2="28"
-        stroke="url(#goldGradH2)"
-        strokeWidth="0.6"
-        opacity="0.5"
-      />
-
-      {/* D */}
-      <path
-        d="M26 12 L26 44 L38 44 Q54 44 54 28 Q54 12 38 12 Z M32 18 L37 18 Q46 18 46 28 Q46 38 37 38 L32 38 Z"
-        fill="url(#goldGradH)"
-      />
-      {/* A */}
-      <path
-        d="M66 44 L74 12 L82 12 L90 44 L84 44 L82.5 37 L73.5 37 L72 44 Z M75 31 L81 31 L78 19 Z"
-        fill="url(#goldGradH)"
-      />
-      {/* S */}
-      <path
-        d="M100 36 Q100 44 112 44 Q124 44 124 36 Q124 28 112 26 Q104 24 104 20 Q104 14 112 14 Q120 14 120 20"
-        stroke="url(#goldGradH)"
-        strokeWidth="5.5"
-        fill="none"
-        strokeLinecap="round"
-      />
-      {/* M */}
-      <path
-        d="M134 44 L134 12 L142 12 L150 30 L158 12 L166 12 L166 44 L160 44 L160 22 L150 40 L140 22 L140 44 Z"
-        fill="url(#goldGradH)"
-      />
-      {/* I */}
-      <rect x="176" y="12" width="6" height="32" fill="url(#goldGradH)" />
-      <rect x="172" y="12" width="14" height="5" fill="url(#goldGradH)" />
-      <rect x="172" y="39" width="14" height="5" fill="url(#goldGradH)" />
-      {/* A (final) */}
-      <path
-        d="M198 44 L206 12 L214 12 L222 44 L216 44 L214.5 37 L205.5 37 L204 44 Z M207 31 L213 31 L210 19 Z"
-        fill="url(#goldGradH)"
-      />
-
-      {/* Decorative diamond ornament right */}
-      <line
-        x1="222"
-        y1="28"
-        x2="230"
-        y2="28"
-        stroke="url(#goldGradH2)"
-        strokeWidth="0.6"
-        opacity="0.5"
-      />
-      <path
-        d="M230 28 L234 24 L238 28 L234 32 Z"
-        fill="url(#goldGradH)"
-        opacity="0.7"
-      />
-
-      {/* Ultra-thin baseline rule */}
-      <line
-        x1="26"
-        y1="47.5"
-        x2="222"
-        y2="47.5"
-        stroke="url(#goldGradH2)"
-        strokeWidth="0.5"
-        opacity="0.35"
-      />
-    </svg>
+    <div className={`flex flex-col leading-none select-none ${className}`}>
+      <span
+        style={{
+          fontFamily:
+            "var(--font-sans), 'Helvetica Neue', Arial, sans-serif",
+          fontWeight: 800,
+          fontStyle: "italic",
+          fontSize: "26px",
+          letterSpacing: "-0.01em",
+          transform: "skewX(-6deg)",
+          display: "inline-block",
+          background:
+            "linear-gradient(115deg, #B8924A 0%, #E8D5A3 45%, #C9A96E 100%)",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          color: "transparent",
+        }}
+      >
+        D&apos;asmia
+      </span>
+      <span
+        className="text-label"
+        style={{
+          fontSize: "8px",
+          letterSpacing: "0.32em",
+          color: "var(--gold)",
+          opacity: 0.75,
+          marginTop: "2px",
+          marginLeft: "2px",
+        }}
+      >
+        PREMIUM COMPLEX
+      </span>
+    </div>
   );
 }
 
@@ -367,7 +304,7 @@ export default function Header() {
               className="flex items-center group"
               aria-label="DASMIA — Главная"
             >
-              <DasmiaLogo className="h-10 w-auto transition-opacity duration-300 group-hover:opacity-80" />
+              <DasmiaLogo className="transition-opacity duration-300 group-hover:opacity-80" />
             </Link>
 
             {/* Desktop Nav */}
