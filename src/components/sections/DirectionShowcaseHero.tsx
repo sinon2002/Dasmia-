@@ -86,30 +86,47 @@ export default function DirectionShowcaseHero({
         </p>
       </div>
 
-      {/* Horizontal photo strip — alternating arched tiles, line-group.kz style */}
+      {/* Horizontal photo strip — continuous auto-sliding marquee, line-group.kz style */}
       <div
-        className="flex w-full overflow-x-auto"
-        style={{ scrollbarWidth: "none" }}
+        className="relative w-full overflow-hidden"
+        style={{ height: "min(340px, 52vw)" }}
       >
-        {images.map((img, i) => (
-          <div
-            key={img.url + i}
-            className="relative shrink-0"
-            style={{
-              width: "min(260px, 40vw)",
-              height: "min(340px, 52vw)",
-              borderRadius: img.arch ? "0 9999px 0 0" : "0",
-            }}
-          >
-            <AppImage
-              src={img.url}
-              alt={img.alt}
-              fill
-              className="object-cover"
-              sizes="260px"
-            />
-          </div>
-        ))}
+        <div
+          className="flex absolute top-0 left-0 h-full"
+          style={{
+            width: "max-content",
+            animation: `showcaseStrip ${images.length * 6}s linear infinite`,
+          }}
+        >
+          {[...images, ...images, ...images].map((img, i) => (
+            <div
+              key={img.url + i}
+              className="relative shrink-0 h-full"
+              style={{
+                width: "min(260px, 40vw)",
+                borderRadius: img.arch ? "0 9999px 0 0" : "0",
+              }}
+            >
+              <AppImage
+                src={img.url}
+                alt={img.alt}
+                fill
+                className="object-cover"
+                sizes="260px"
+              />
+            </div>
+          ))}
+        </div>
+        <style jsx>{`
+          @keyframes showcaseStrip {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(-33.3333%);
+            }
+          }
+        `}</style>
       </div>
     </section>
   );
