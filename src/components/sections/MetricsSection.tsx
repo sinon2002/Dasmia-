@@ -224,8 +224,11 @@ export default function MetricsSection() {
             <ScrollFillText
               text={t(language, "intro.p1")}
               style={{
-                fontSize: "clamp(14px, 1.3vw, 16px)",
-                lineHeight: 1.7,
+                fontFamily: "var(--font-cormorant)",
+                fontSize: "clamp(20px, 2.1vw, 28px)",
+                lineHeight: 1.55,
+                fontWeight: 400,
+                letterSpacing: "0.01em",
                 color: "var(--foreground)",
               }}
             />
