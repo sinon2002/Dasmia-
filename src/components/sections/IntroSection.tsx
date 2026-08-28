@@ -45,36 +45,108 @@ export default function IntroSection() {
       data-content="intro"
     >
       <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left — Image */}
-          <div className="lg:col-span-5 reveal-left">
-            <div className="img-zoom relative" style={{ aspectRatio: "4/5" }}>
-              <AppImage
-                src="/assets/images/IMG_9009.webp"
-                alt="Архитектурный интерьер DASMIA — грандиозный купол Айкөл Ордо с мозаикой и тёплым освещением"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 42vw"
-              />
-
-              {/* Gold corner accent */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-center">
+          {/* Left — Image collage */}
+          <div className="lg:col-span-6 reveal-left">
+            <div className="mx-auto" style={{ maxWidth: "480px" }}>
+              {/* Image A — arched top, main shot */}
               <div
-                className="absolute top-0 left-0 w-12 h-12 pointer-events-none"
+                className="img-zoom relative overflow-hidden reveal-scale"
                 style={{
-                  borderTop: "2px solid var(--gold)",
-                  borderLeft: "2px solid var(--gold)",
+                  width: "64%",
+                  aspectRatio: "0.9/1",
+                  borderRadius: "50% 50% 14px 14px",
                 }}
-                aria-hidden="true"
-              />
+              >
+                <AppImage
+                  src="/assets/images/IMG_9009.webp"
+                  alt="Архитектурный интерьер DASMIA — грандиозный купол Айкөл Ордо с мозаикой и тёплым освещением"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 64vw, 32vw"
+                />
 
+                {/* Gold corner accent */}
+                <div
+                  className="absolute pointer-events-none"
+                  style={{
+                    top: "14px",
+                    left: "14px",
+                    width: "28px",
+                    height: "28px",
+                    borderTop: "2px solid var(--gold)",
+                    borderLeft: "2px solid var(--gold)",
+                  }}
+                  aria-hidden="true"
+                />
+              </div>
+
+              {/* Number accent + Image B row */}
+              <div className="flex items-end justify-between gap-4 mt-6">
+                <div className="reveal delay-200 pb-2">
+                  <span
+                    className="block font-serif italic text-gold"
+                    style={{
+                      fontFamily: "var(--font-cormorant)",
+                      fontSize: "clamp(40px, 4.2vw, 60px)",
+                      lineHeight: 1,
+                      fontWeight: 300,
+                    }}
+                  >
+                    8
+                  </span>
+                  <span
+                    className="block text-label text-foreground mt-2"
+                    style={{ fontSize: "10px", letterSpacing: "0.18em" }}
+                  >
+                    {t(language, "metrics.directions.label")}
+                  </span>
+                  <span
+                    className="block text-muted-foreground mt-1"
+                    style={{ fontSize: "12px" }}
+                  >
+                    {t(language, "metrics.directions.sublabel")}
+                  </span>
+                </div>
+
+                <div
+                  className="img-zoom relative overflow-hidden reveal-scale delay-200 shrink-0"
+                  style={{
+                    width: "46%",
+                    aspectRatio: "1/1",
+                    borderRadius: "16px",
+                    boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
+                  }}
+                >
+                  <AppImage
+                    src="/assets/images/IMG_8995.webp"
+                    alt="Праздничная сервировка стола DASMIA — гастрономия и банкетное обслуживание"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 46vw, 24vw"
+                  />
+                </div>
+              </div>
+
+              {/* Image C — circle */}
               <div
-                className="absolute bottom-0 right-0 w-12 h-12 pointer-events-none"
+                className="img-zoom relative overflow-hidden reveal-scale delay-300 ml-auto mr-0"
                 style={{
-                  borderBottom: "2px solid var(--gold)",
-                  borderRight: "2px solid var(--gold)",
+                  width: "60%",
+                  aspectRatio: "1/1",
+                  borderRadius: "50%",
+                  marginTop: "-8%",
+                  boxShadow: "0 20px 50px rgba(0,0,0,0.45)",
                 }}
-                aria-hidden="true"
-              />
+              >
+                <AppImage
+                  src="/assets/images/IMG_9031.webp"
+                  alt="Декоративное золотое панно с национальным орнаментом в интерьере DASMIA"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 60vw, 30vw"
+                />
+              </div>
             </div>
           </div>
 
