@@ -5,6 +5,65 @@ import AppImage from "@/components/ui/AppImage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n";
 
+/**
+ * Scroll-linked word fill: as the paragraph scrolls up through the
+ * viewport, each word transitions from dim (transparent) to bright
+ * (white/gold). Scrolling back down reverses it — fully driven by
+ * scroll position, not direction.
+ */
+function ScrollFillText({
+  text,
+  style,
+}: {
+  text: string;
+  style?: React.CSSProperties;
+}) {
+  const wrapperRef = useRef<HTMLParagraphElement>(null);
+  const [progress, setProgress] = useState(0);
+  const words = text.split(" ");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh * 0.95;
+      const end = vh * 0.4;
+      const raw = (start - rect.top) / (start - end);
+      setProgress(Math.min(1, Math.max(0, raw)));
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  return (
+    <p ref={wrapperRef} style={style}>
+      {words.map((word, i) => {
+        const span = 1 / words.length;
+        const wordStart = i * span * 0.75;
+        const wordEnd = wordStart + span * 1.5;
+        const local = (progress - wordStart) / (wordEnd - wordStart);
+        const opacity = Math.min(1, Math.max(0.16, local));
+        return (
+          <React.Fragment key={i}>
+            <span style={{ opacity, transition: "opacity 0.05s linear" }}>
+              {word}
+            </span>
+            {i < words.length - 1 ? " " : ""}
+          </React.Fragment>
+        );
+      })}
+    </p>
+  );
+}
+
 interface MetricConfig {
   target: number;
   suffix: string;
@@ -162,12 +221,14 @@ export default function MetricsSection() {
 
           {/* Text block — aligned with photo top, offset right */}
           <div className="lg:col-span-4 lg:col-start-6 reveal delay-150 flex flex-col justify-start pt-2 lg:pt-8">
-            <p
-              className="text-foreground"
-              style={{ fontSize: "clamp(14px, 1.3vw, 16px)", lineHeight: 1.7 }}
-            >
-              {t(language, "intro.p1")}
-            </p>
+            <ScrollFillText
+              text={t(language, "intro.p1")}
+              style={{
+                fontSize: "clamp(14px, 1.3vw, 16px)",
+                lineHeight: 1.7,
+                color: "var(--foreground)",
+              }}
+            />
           </div>
 
           {/* Big number 1 — offset lower, right column */}
