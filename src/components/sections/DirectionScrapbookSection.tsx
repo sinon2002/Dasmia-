@@ -81,16 +81,16 @@ export default function DirectionScrapbookSection({
           </div>
 
           {/* Spinning ornaments — top right */}
-          <div className="hidden lg:flex lg:col-span-2 lg:col-start-11 flex-col items-center gap-6 reveal delay-100">
+          <div className="flex lg:col-span-2 lg:col-start-11 flex-row lg:flex-col items-center gap-5 lg:gap-6 reveal delay-100 col-span-1">
             <div
-              className="relative"
-              style={{ width: "70px", height: "54px", animation: "spinSlow 20s linear infinite" }}
+              className="relative shrink-0"
+              style={{ width: "50px", height: "40px", animation: "spinSlow 20s linear infinite" }}
             >
               <AppImage src="/assets/images/ornament-yurt.png" alt="Орнамент юрты" fill className="object-contain" sizes="70px" />
             </div>
             <div
-              className="relative"
-              style={{ width: "64px", height: "58px", animation: "spinSlow 14s linear infinite reverse" }}
+              className="relative shrink-0"
+              style={{ width: "44px", height: "40px", animation: "spinSlow 14s linear infinite reverse" }}
             >
               <AppImage src="/assets/images/ornament-sun.png" alt="Солнечный орнамент" fill className="object-contain" sizes="64px" />
             </div>
