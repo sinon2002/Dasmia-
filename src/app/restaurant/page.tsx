@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DirectionCenteredHero from "@/components/sections/DirectionCenteredHero";
 import DirectionAtmosphereSection from "@/components/sections/DirectionAtmosphereSection";
-import DirectionScrapbookSection from "@/components/sections/DirectionScrapbookSection";
+import DirectionScrapbookSection from "@/components/sections/DirectionTriFeatureSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
 
@@ -24,6 +24,12 @@ const stripImages = [
   { url: "/assets/images/IMG_9009.webp", alt: "Панорамный вид на обеденную зону комплекса" },
 ];
 
+const featureImages = [
+  "/assets/images/IMG_8995.webp",
+  "/assets/images/IMG_8997.webp",
+  "/assets/images/IMG_9000.webp",
+];
+
 export default function RestaurantPage() {
   const { language } = useLanguage();
   const data = directionsContent.restaurant[language] || directionsContent.restaurant.ru;
@@ -32,7 +38,33 @@ export default function RestaurantPage() {
     data.intro.details.map((d) => [d.label, d.value]),
   );
 
-  const f = data.featuresSection.features;
+  const scrapbookFeatures: [
+    { number: string; title: string; description: string; image: string; imageAlt: string },
+    { number: string; title: string; description: string; image: string; imageAlt: string },
+    { number: string; title: string; description: string; image: string; imageAlt: string },
+  ] = [
+    {
+      number: data.featuresSection.features[0].number,
+      title: data.featuresSection.features[0].title,
+      description: data.featuresSection.features[0].description,
+      image: featureImages[0],
+      imageAlt: data.featuresSection.features[0].title,
+    },
+    {
+      number: data.featuresSection.features[1].number,
+      title: data.featuresSection.features[1].title,
+      description: data.featuresSection.features[1].description,
+      image: featureImages[1],
+      imageAlt: data.featuresSection.features[1].title,
+    },
+    {
+      number: data.featuresSection.features[2].number,
+      title: data.featuresSection.features[2].title,
+      description: data.featuresSection.features[2].description,
+      image: featureImages[2],
+      imageAlt: data.featuresSection.features[2].title,
+    },
+  ];
 
   return (
     <>
@@ -62,13 +94,8 @@ export default function RestaurantPage() {
         />
 
         <DirectionScrapbookSection
-          bigText={data.cta.description}
-          smallText1={f[0].description}
-          smallText2={f[2].description}
-          photoTopLeft={{ image: "/assets/images/IMG_9018.webp", imageAlt: f[0].title }}
-          photoTopRight={{ image: "/assets/images/IMG_8997.webp", imageAlt: f[1].title }}
-          photoBottomLeft={{ image: "/assets/images/IMG_8995.webp", imageAlt: "Сервировка ресторана DASMIA" }}
-          photoBottomRight={{ image: "/assets/images/IMG_9000.webp", imageAlt: f[2].title }}
+          heading={data.featuresSection.heading}
+          features={scrapbookFeatures}
           dataDirection="restaurant"
         />
       </main>
