@@ -1,7 +1,64 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AppImage from "@/components/ui/AppImage";
+
+/**
+ * Scroll-linked word fill: each word transitions from dim to bright
+ * as the paragraph scrolls through the viewport, reversible both ways.
+ */
+function ScrollFillText({
+  text,
+  style,
+}: {
+  text: string;
+  style?: React.CSSProperties;
+}) {
+  const wrapperRef = useRef<HTMLParagraphElement>(null);
+  const [progress, setProgress] = useState(0);
+  const words = text.split(" ");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh * 0.95;
+      const end = vh * 0.55;
+      const raw = (start - rect.top) / (start - end);
+      setProgress(Math.min(1, Math.max(0, raw)));
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  return (
+    <p ref={wrapperRef} style={style}>
+      {words.map((word, i) => {
+        const span = 1 / words.length;
+        const wordStart = i * span * 0.75;
+        const wordEnd = wordStart + span * 1.5;
+        const local = (progress - wordStart) / (wordEnd - wordStart);
+        const opacity = Math.min(1, Math.max(0.2, local));
+        return (
+          <React.Fragment key={i}>
+            <span style={{ opacity, transition: "opacity 0.05s linear" }}>
+              {word}
+            </span>
+            {i < words.length - 1 ? " " : ""}
+          </React.Fragment>
+        );
+      })}
+    </p>
+  );
+}
 
 interface ShowcaseItem {
   image: string;
@@ -81,7 +138,7 @@ export default function DirectionShowcaseGrid({
                 className="relative w-full overflow-hidden group"
                 style={{
                   aspectRatio: "4 / 5",
-                  borderRadius: i % 2 === 0 ? "0 9999px 0 0" : "9999px 0 0 0",
+                  borderRadius: "50% 50% 0 0",
                 }}
               >
                 <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105">
@@ -113,12 +170,16 @@ export default function DirectionShowcaseGrid({
                 </span>
               </div>
 
-              <p
-                className="text-muted-foreground mt-5"
-                style={{ fontSize: "13px", lineHeight: 1.7, maxWidth: "340px" }}
-              >
-                {item.description}
-              </p>
+              <ScrollFillText
+                text={item.description}
+                style={{
+                  fontSize: "13px",
+                  lineHeight: 1.7,
+                  maxWidth: "340px",
+                  marginTop: "20px",
+                  color: "var(--foreground)",
+                }}
+              />
 
               <a
                 href="#contact-cta"
