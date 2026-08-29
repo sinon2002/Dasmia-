@@ -131,16 +131,21 @@ export default function Footer() {
   return (
     <footer
       className="relative"
-      style={{
-        backgroundColor: "#F2EEE4",
-        color: "#1a1a1a",
-        backgroundImage:
-          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%23B9965A' stroke-width='1' stroke-opacity='0.12'%3E%3Ccircle cx='90' cy='90' r='26'/%3E%3Cpath d='M90 42 L90 58 M90 122 L90 138 M42 90 L58 90 M122 90 L138 90'/%3E%3Cpath d='M64 64 Q90 50 116 64 Q130 90 116 116 Q90 130 64 116 Q50 90 64 64 Z'/%3E%3Ccircle cx='90' cy='90' r='4'/%3E%3C/g%3E%3C/svg%3E\")",
-        backgroundRepeat: "repeat",
-        backgroundSize: "180px 180px",
-      }}
+      style={{ backgroundColor: "#F2EEE4", color: "#1a1a1a" }}
       data-content="footer"
-    ><style jsx>{`
+    >
+      {/* Kyrgyz ornament pattern — tiled full width, subtle */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url('/assets/images/ornament-tile.png')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "170px 170px",
+          opacity: 0.07,
+        }}
+        aria-hidden="true"
+      />
+      <style jsx>{`
         .footer-nav-link {
           position: relative;
         }
