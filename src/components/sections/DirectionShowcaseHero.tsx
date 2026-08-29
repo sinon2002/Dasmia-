@@ -95,6 +95,7 @@ export default function DirectionShowcaseHero({
           className="flex absolute top-0 left-0 h-full"
           style={{
             width: "max-content",
+            gap: "10px",
             animation: `showcaseStrip ${images.length * 6}s linear infinite`,
           }}
         >
