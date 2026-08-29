@@ -86,7 +86,7 @@ html.theme-light ::-webkit-scrollbar-thumb {
 }
 
 /* Light theme mobile menu */
-html.theme-light .mobile-menu-overlay {
+html.theme-light .mobile-menu-panel {
   background: var(--cream);
 }
 
@@ -537,7 +537,7 @@ html.theme-light .form-input:focus {
   .mobile-menu-overlay {
     position: fixed;
     inset: 0;
-    background: var(--black);
+    background: rgba(0, 0, 0, 0.55);
     z-index: 100;
     opacity: 0;
     visibility: hidden;
@@ -549,6 +549,22 @@ html.theme-light .form-input:focus {
   .mobile-menu-overlay.open {
     opacity: 1;
     visibility: visible;
+  }
+
+  .mobile-menu-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(86vw, 400px);
+    background: var(--black);
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+  }
+
+  .mobile-menu-overlay.open .mobile-menu-panel {
+    transform: translateX(0);
   }
 
   /* Featured section editorial */
