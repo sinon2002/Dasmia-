@@ -114,16 +114,16 @@ export default function DirectionTriFeatureSection({
           </div>
 
           {/* Decorative rotating Kyrgyz ornaments */}
-          <div className="hidden lg:flex lg:col-span-2 lg:col-start-6 lg:mt-24 flex-col items-center gap-6 reveal delay-250">
+          <div className="flex lg:col-span-2 lg:col-start-6 lg:mt-24 flex-row lg:flex-col items-center gap-5 lg:gap-6 reveal delay-250 col-span-1">
             <div
-              className="relative"
-              style={{ width: "58px", height: "58px", animation: "spinSlow 18s linear infinite" }}
+              className="relative shrink-0"
+              style={{ width: "44px", height: "44px", animation: "spinSlow 18s linear infinite" }}
             >
               <AppImage src="/assets/images/ornament-1.png" alt="Кыргызский орнамент" fill className="object-contain" sizes="58px" />
             </div>
             <div
-              className="relative"
-              style={{ width: "42px", height: "42px", animation: "spinSlow 12s linear infinite reverse" }}
+              className="relative shrink-0"
+              style={{ width: "32px", height: "32px", animation: "spinSlow 12s linear infinite reverse" }}
             >
               <AppImage src="/assets/images/ornament-2.png" alt="Кыргызский орнамент" fill className="object-contain" sizes="42px" />
             </div>
