@@ -508,8 +508,12 @@ export default function Header() {
         role="dialog"
         aria-modal="true"
         aria-label="Mobile Navigation Menu"
+        onClick={() => setMenuOpen(false)}
       >
-        <div className="flex flex-col h-full px-6 pt-20 pb-8">
+        <div
+          className="mobile-menu-panel flex flex-col h-full px-6 pt-20 pb-8"
+          onClick={(e) => e.stopPropagation()}
+        >
           {/* Close */}
           <button
             className="absolute top-6 right-6 p-2 text-muted-foreground hover:text-foreground transition-colors"
