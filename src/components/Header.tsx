@@ -191,6 +191,7 @@ const DIRECTIONS_SUBMENU = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileDirectionsOpen, setMobileDirectionsOpen] = useState(false);
   const [directionsOpen, setDirectionsOpen] = useState(false);
   const closeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const { theme } = useTheme();
@@ -254,6 +255,7 @@ export default function Header() {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
+    if (!menuOpen) setMobileDirectionsOpen(false);
     return () => {
       document.body.style.overflow = "";
     };
@@ -507,7 +509,7 @@ export default function Header() {
         aria-modal="true"
         aria-label="Mobile Navigation Menu"
       >
-        <div className="flex flex-col h-full px-6 pt-24 pb-12">
+        <div className="flex flex-col h-full px-6 pt-20 pb-8">
           {/* Close */}
           <button
             className="absolute top-6 right-6 p-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -531,28 +533,124 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Nav Links */}
-          <nav className="flex-1 flex flex-col justify-center gap-6">
-            {navLinks.map((link, i) => (
-              <a
-                key={link.label}
-                href={getHref(link.href)}
-                onClick={(e) => handleAnchorClick(e, link.href)}
-                className="text-display font-serif italic text-foreground hover:text-gold transition-colors duration-300"
-                style={{
-                  fontFamily: "var(--font-cormorant)",
-                  fontSize: "clamp(32px, 6vw, 52px)",
-                  transitionDelay: `${i * 60}ms`,
-                }}
-              >
-                {link.label}
-              </a>
-            ))}
+          {/* Nav Links — top-aligned, uppercase, with inline accordion submenu */}
+          <nav className="flex flex-col gap-1 mt-4 overflow-y-auto">
+            {navLinks.map((link, i) =>
+              link.hasSubmenu ? (
+                <div key={link.label} className="flex flex-col">
+                  <button
+                    onClick={() => setMobileDirectionsOpen((v) => !v)}
+                    className="flex items-center justify-between gap-2 py-3 text-foreground hover:text-gold transition-colors duration-300 w-full text-left"
+                    style={{
+                      fontSize: "clamp(15px, 4vw, 17px)",
+                      letterSpacing: "0.04em",
+                      fontWeight: 500,
+                      transitionDelay: `${i * 40}ms`,
+                    }}
+                    aria-expanded={mobileDirectionsOpen}
+                  >
+                    {link.label.toUpperCase()}
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      className="transition-transform duration-300 shrink-0"
+                      style={{ transform: mobileDirectionsOpen ? "rotate(180deg)" : "none" }}
+                      aria-hidden="true"
+                    >
+                      <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                  <div
+                    className="overflow-hidden transition-all duration-400 ease-out"
+                    style={{
+                      maxHeight: mobileDirectionsOpen ? `${DIRECTIONS_SUBMENU.length * 44 + 44}px` : "0px",
+                    }}
+                  >
+                    <div className="flex flex-col pl-4 pb-2">
+                      <a
+                        href={getHref("#directions")}
+                        onClick={(e) => {
+                          setMenuOpen(false);
+                          handleAnchorClick(e, "#directions");
+                        }}
+                        className="py-2 text-muted-foreground hover:text-gold transition-colors duration-200"
+                        style={{ fontSize: "13px", letterSpacing: "0.06em" }}
+                      >
+                        {t(language, "nav.directions.all")}
+                      </a>
+                      {DIRECTIONS_SUBMENU.map((item) => (
+                        <a
+                          key={item.label}
+                          href={getHref(item.href)}
+                          onClick={(e) => {
+                            setMenuOpen(false);
+                            handleAnchorClick(e, item.href);
+                          }}
+                          className="py-2 text-muted-foreground hover:text-gold transition-colors duration-200"
+                          style={{ fontSize: "13px", letterSpacing: "0.06em" }}
+                        >
+                          {item.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <a
+                  key={link.label}
+                  href={getHref(link.href)}
+                  onClick={(e) => handleAnchorClick(e, link.href)}
+                  className="py-3 text-foreground hover:text-gold transition-colors duration-300"
+                  style={{
+                    fontSize: "clamp(15px, 4vw, 17px)",
+                    letterSpacing: "0.04em",
+                    fontWeight: 500,
+                    transitionDelay: `${i * 40}ms`,
+                  }}
+                >
+                  {link.label.toUpperCase()}
+                </a>
+              ),
+            )}
           </nav>
+
+          <div className="flex-1" />
+
+          {/* Contact icons */}
+          <div className="flex items-center gap-3 mb-6">
+            <a
+              href="tel:[CLIENT PHONE]"
+              aria-label="Позвонить"
+              className="flex items-center justify-center rounded-full border transition-colors duration-300 hover:border-gold hover:text-gold"
+              style={{ width: "40px", height: "40px", borderColor: "rgba(255,255,255,0.2)" }}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path
+                  d="M3 2h2.5l1 3-1.5 1.2a8 8 0 0 0 4.8 4.8L11 9.5l3 1V13c0 .8-.7 1.4-1.5 1.3C6 13.6 2.4 10 1.7 4.5 1.6 3.7 2.2 3 3 3V2Z"
+                  stroke="currentColor"
+                  strokeWidth="1.1"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+            <a
+              href="mailto:[CLIENT EMAIL]"
+              aria-label="Написать на почту"
+              className="flex items-center justify-center rounded-full border transition-colors duration-300 hover:border-gold hover:text-gold"
+              style={{ width: "40px", height: "40px", borderColor: "rgba(255,255,255,0.2)" }}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="2" y="3.5" width="12" height="9" rx="1" stroke="currentColor" strokeWidth="1.1" />
+                <path d="M2.5 4L8 8.5L13.5 4" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
 
           {/* Mobile CTA */}
           <div
-            className="border-t pt-8 flex flex-col gap-4"
+            className="border-t pt-6 flex flex-col gap-4"
             style={{ borderColor: "rgba(185,150,90,0.15)" }}
           >
             <a
