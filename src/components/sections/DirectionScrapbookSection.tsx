@@ -113,27 +113,51 @@ export default function DirectionScrapbookSection({
             </p>
           </div>
 
-          {/* Decorative orbs */}
-          <div className="hidden lg:flex lg:col-span-2 lg:col-start-6 lg:mt-24 flex-col items-center gap-4 reveal delay-250">
+          {/* Decorative rotating Kyrgyz ornaments */}
+          <div className="hidden lg:flex lg:col-span-2 lg:col-start-6 lg:mt-24 flex-col items-center gap-6 reveal delay-250">
             <div
-              className="rounded-full"
+              className="relative"
               style={{
-                width: "56px",
-                height: "56px",
-                background: "radial-gradient(circle at 35% 30%, #8a8a86, #4a4a46 75%)",
+                width: "58px",
+                height: "58px",
+                animation: "spinSlow 18s linear infinite",
               }}
-              aria-hidden="true"
-            />
+            >
+              <AppImage
+                src="/assets/images/ornament-1.png"
+                alt="Кыргызский орнамент"
+                fill
+                className="object-contain"
+                sizes="58px"
+              />
+            </div>
             <div
-              className="rounded-full"
+              className="relative"
               style={{
-                width: "40px",
-                height: "40px",
-                background: "radial-gradient(circle at 35% 30%, var(--gold), #6b5530 75%)",
+                width: "42px",
+                height: "42px",
+                animation: "spinSlow 12s linear infinite reverse",
               }}
-              aria-hidden="true"
-            />
+            >
+              <AppImage
+                src="/assets/images/ornament-2.png"
+                alt="Кыргызский орнамент"
+                fill
+                className="object-contain"
+                sizes="42px"
+              />
+            </div>
           </div>
+          <style jsx>{`
+            @keyframes spinSlow {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+          `}</style>
 
           {/* Photo B — bottom left, tall, rounded on the right edge */}
           <div className="lg:col-span-4 lg:mt-8 reveal delay-300">
@@ -165,7 +189,7 @@ export default function DirectionScrapbookSection({
           <div className="lg:col-span-3 lg:col-start-10 reveal delay-400">
             <div
               className="relative w-full overflow-hidden"
-              style={{ aspectRatio: "3 / 4.2", borderRadius: "9999px 0 0 0" }}
+              style={{ aspectRatio: "3 / 4.2", borderRadius: "0 9999px 0 0" }}
             >
               <AppImage src={f3.image} alt={f3.imageAlt} fill className="object-cover" sizes="(max-width: 1024px) 90vw, 300px" />
             </div>
