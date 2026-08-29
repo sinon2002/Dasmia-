@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DirectionCenteredHero from "@/components/sections/DirectionCenteredHero";
 import DirectionAtmosphereSection from "@/components/sections/DirectionAtmosphereSection";
-import DirectionShowcaseGrid from "@/components/sections/DirectionShowcaseGrid";
+import DirectionScrapbookSection from "@/components/sections/DirectionScrapbookSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
 
@@ -38,13 +38,33 @@ export default function RestaurantPage() {
     data.intro.details.map((d) => [d.label, d.value]),
   );
 
-  const showcaseItems = data.featuresSection.features.map((f, i) => ({
-    image: featureImages[i] || featureImages[0],
-    imageAlt: f.title,
-    title: f.title,
-    description: f.description,
-    linkLabel: data.cta.primaryLabel,
-  }));
+  const scrapbookFeatures: [
+    { number: string; title: string; description: string; image: string; imageAlt: string },
+    { number: string; title: string; description: string; image: string; imageAlt: string },
+    { number: string; title: string; description: string; image: string; imageAlt: string },
+  ] = [
+    {
+      number: data.featuresSection.features[0].number,
+      title: data.featuresSection.features[0].title,
+      description: data.featuresSection.features[0].description,
+      image: featureImages[0],
+      imageAlt: data.featuresSection.features[0].title,
+    },
+    {
+      number: data.featuresSection.features[1].number,
+      title: data.featuresSection.features[1].title,
+      description: data.featuresSection.features[1].description,
+      image: featureImages[1],
+      imageAlt: data.featuresSection.features[1].title,
+    },
+    {
+      number: data.featuresSection.features[2].number,
+      title: data.featuresSection.features[2].title,
+      description: data.featuresSection.features[2].description,
+      image: featureImages[2],
+      imageAlt: data.featuresSection.features[2].title,
+    },
+  ];
 
   return (
     <>
@@ -73,9 +93,9 @@ export default function RestaurantPage() {
           dataDirection="restaurant"
         />
 
-        <DirectionShowcaseGrid
+        <DirectionScrapbookSection
           heading={data.featuresSection.heading}
-          items={showcaseItems}
+          features={scrapbookFeatures}
           dataDirection="restaurant"
         />
       </main>
