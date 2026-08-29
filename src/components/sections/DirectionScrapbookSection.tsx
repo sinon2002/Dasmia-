@@ -3,27 +3,33 @@
 import React, { useEffect, useRef } from "react";
 import AppImage from "@/components/ui/AppImage";
 
-interface ScrapbookFeature {
-  number: string;
-  title: string;
-  description: string;
+interface PhotoItem {
   image: string;
   imageAlt: string;
 }
 
 interface DirectionScrapbookSectionProps {
-  heading: string;
-  features: [ScrapbookFeature, ScrapbookFeature, ScrapbookFeature];
+  bigText: string;
+  smallText1: string;
+  smallText2: string;
+  photoTopLeft: PhotoItem;
+  photoTopRight: PhotoItem;
+  photoBottomLeft: PhotoItem;
+  photoBottomRight: PhotoItem;
   dataDirection: string;
 }
 
 export default function DirectionScrapbookSection({
-  heading,
-  features,
+  bigText,
+  smallText1,
+  smallText2,
+  photoTopLeft,
+  photoTopRight,
+  photoBottomLeft,
+  photoBottomRight,
   dataDirection,
 }: DirectionScrapbookSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const [f1, f2, f3] = features;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -31,7 +37,7 @@ export default function DirectionScrapbookSection({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.querySelectorAll(".reveal").forEach((el, i) => {
-              setTimeout(() => el.classList.add("revealed"), i * 100);
+              setTimeout(() => el.classList.add("revealed"), i * 90);
             });
             observer.unobserve(entry.target);
           }
@@ -50,102 +56,43 @@ export default function DirectionScrapbookSection({
       style={{
         backgroundColor: "var(--charcoal)",
         borderColor: "rgba(255,255,255,0.06)",
-        paddingTop: "80px",
+        paddingTop: "90px",
         paddingBottom: "100px",
       }}
       data-direction={dataDirection}
       data-content="scrapbook"
     >
       <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16">
-        <div className="flex items-center gap-3 mb-10 reveal">
-          <div className="w-8 h-px" style={{ background: "var(--gold)" }} />
-          <span className="text-label text-gold" style={{ fontSize: "10px", letterSpacing: "0.24em" }}>
-            {heading}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-14 lg:gap-y-0">
-          {/* Big text — feature 1 */}
-          <div className="lg:col-span-6 reveal delay-100">
-            <p
-              className="text-label text-gold mb-4"
-              style={{ fontSize: "9px", letterSpacing: "0.2em" }}
-            >
-              {f1.number} — {f1.title}
-            </p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-12 lg:gap-y-0">
+          {/* Big intro text — top left */}
+          <div className="lg:col-span-6 reveal">
             <p
               className="font-serif text-foreground"
               style={{
                 fontFamily: "var(--font-cormorant)",
-                fontSize: "clamp(20px, 2.2vw, 27px)",
-                lineHeight: 1.5,
+                fontSize: "clamp(22px, 2.6vw, 32px)",
+                lineHeight: 1.4,
                 fontWeight: 400,
-                maxWidth: "480px",
+                maxWidth: "540px",
               }}
             >
-              {f1.description}
+              {bigText}
             </p>
           </div>
 
-          {/* Photo A — top right, landscape arch */}
-          <div className="lg:col-span-5 lg:col-start-8 reveal delay-150">
-            <div
-              className="relative w-full overflow-hidden"
-              style={{ aspectRatio: "5 / 6", borderRadius: "0 9999px 0 0" }}
-            >
-              <AppImage src={f1.image} alt={f1.imageAlt} fill className="object-cover" sizes="(max-width: 1024px) 90vw, 420px" />
-            </div>
-          </div>
-
-          {/* Small dim text — feature 2, mid-left */}
-          <div className="lg:col-span-4 lg:mt-24 reveal delay-200">
-            <p
-              className="text-label mb-3"
-              style={{ fontSize: "8.5px", letterSpacing: "0.18em", color: "var(--muted-foreground)" }}
-            >
-              {f2.number} — {f2.title}
-            </p>
-            <p
-              className="text-muted-foreground"
-              style={{ fontSize: "12.5px", lineHeight: 1.8, maxWidth: "300px" }}
-            >
-              {f2.description}
-            </p>
-          </div>
-
-          {/* Decorative rotating Kyrgyz ornaments */}
-          <div className="hidden lg:flex lg:col-span-2 lg:col-start-6 lg:mt-24 flex-col items-center gap-6 reveal delay-250">
+          {/* Spinning ornaments — top right */}
+          <div className="hidden lg:flex lg:col-span-2 lg:col-start-11 flex-col items-center gap-6 reveal delay-100">
             <div
               className="relative"
-              style={{
-                width: "58px",
-                height: "58px",
-                animation: "spinSlow 18s linear infinite",
-              }}
+              style={{ width: "70px", height: "54px", animation: "spinSlow 20s linear infinite" }}
             >
-              <AppImage
-                src="/assets/images/ornament-1.png"
-                alt="Кыргызский орнамент"
-                fill
-                className="object-contain"
-                sizes="58px"
-              />
+              <AppImage src="/assets/images/ornament-yurt.png" alt="Орнамент юрты" fill className="object-contain" sizes="70px" />
             </div>
             <div
               className="relative"
-              style={{
-                width: "42px",
-                height: "42px",
-                animation: "spinSlow 12s linear infinite reverse",
-              }}
+              style={{ width: "64px", height: "58px", animation: "spinSlow 14s linear infinite reverse" }}
             >
-              <AppImage
-                src="/assets/images/ornament-2.png"
-                alt="Кыргызский орнамент"
-                fill
-                className="object-contain"
-                sizes="42px"
-              />
+              <AppImage src="/assets/images/ornament-sun.png" alt="Солнечный орнамент" fill className="object-contain" sizes="64px" />
             </div>
           </div>
           <style jsx>{`
@@ -159,39 +106,63 @@ export default function DirectionScrapbookSection({
             }
           `}</style>
 
-          {/* Photo B — bottom left, tall, rounded on the right edge */}
-          <div className="lg:col-span-4 lg:mt-8 reveal delay-300">
+          {/* Photo top-left — portrait, top-left corner arched */}
+          <div className="lg:col-span-3 lg:mt-10 reveal delay-150">
             <div
               className="relative w-full overflow-hidden"
-              style={{ aspectRatio: "3 / 4.6", borderRadius: "0 9999px 9999px 0" }}
+              style={{ aspectRatio: "3 / 3.8", borderRadius: "9999px 0 0 0" }}
             >
-              <AppImage src={f2.image} alt={f2.imageAlt} fill className="object-cover" sizes="(max-width: 1024px) 90vw, 340px" />
+              <AppImage src={photoTopLeft.image} alt={photoTopLeft.imageAlt} fill className="object-cover" sizes="(max-width: 1024px) 90vw, 300px" />
             </div>
           </div>
 
-          {/* Caption text — feature 3, bottom middle */}
-          <div className="lg:col-span-3 lg:col-start-6 lg:mt-auto lg:self-end reveal delay-350">
-            <p
-              className="text-label text-gold mb-3"
-              style={{ fontSize: "8.5px", letterSpacing: "0.18em" }}
+          {/* Photo top-right — landscape, top-right corner arched */}
+          <div className="lg:col-span-5 lg:col-start-5 lg:mt-24 reveal delay-200">
+            <div
+              className="relative w-full overflow-hidden"
+              style={{ aspectRatio: "16 / 9", borderRadius: "0 9999px 0 0" }}
             >
-              {f3.number} — {f3.title}
-            </p>
+              <AppImage src={photoTopRight.image} alt={photoTopRight.imageAlt} fill className="object-cover" sizes="(max-width: 1024px) 90vw, 480px" />
+            </div>
+          </div>
+
+          {/* Small text 1 — below top-left photo */}
+          <div className="lg:col-span-3 reveal delay-250">
             <p
               className="text-muted-foreground"
               style={{ fontSize: "12px", lineHeight: 1.8, maxWidth: "260px" }}
             >
-              {f3.description}
+              {smallText1}
             </p>
           </div>
 
-          {/* Photo C — bottom right, portrait, top-left rounded */}
+          {/* Photo bottom-left — mostly rectangular */}
+          <div className="lg:col-span-4 lg:col-start-1 lg:mt-16 reveal delay-300">
+            <div
+              className="relative w-full overflow-hidden"
+              style={{ aspectRatio: "4 / 3", borderRadius: "12px" }}
+            >
+              <AppImage src={photoBottomLeft.image} alt={photoBottomLeft.imageAlt} fill className="object-cover" sizes="(max-width: 1024px) 90vw, 400px" />
+            </div>
+          </div>
+
+          {/* Small text 2 — middle */}
+          <div className="lg:col-span-3 lg:col-start-6 lg:mt-16 reveal delay-350">
+            <p
+              className="text-muted-foreground"
+              style={{ fontSize: "12px", lineHeight: 1.8, maxWidth: "260px" }}
+            >
+              {smallText2}
+            </p>
+          </div>
+
+          {/* Photo bottom-right — portrait, bottom-right corner arched */}
           <div className="lg:col-span-3 lg:col-start-10 reveal delay-400">
             <div
               className="relative w-full overflow-hidden"
-              style={{ aspectRatio: "3 / 4.2", borderRadius: "0 9999px 0 0" }}
+              style={{ aspectRatio: "3 / 4", borderRadius: "0 0 9999px 0" }}
             >
-              <AppImage src={f3.image} alt={f3.imageAlt} fill className="object-cover" sizes="(max-width: 1024px) 90vw, 300px" />
+              <AppImage src={photoBottomRight.image} alt={photoBottomRight.imageAlt} fill className="object-cover" sizes="(max-width: 1024px) 90vw, 300px" />
             </div>
           </div>
         </div>
