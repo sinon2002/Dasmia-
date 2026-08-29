@@ -111,46 +111,41 @@ export default function DirectionAtmosphereSection({
           </span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-          {/* Preview arched photo trio */}
-          <div className="lg:col-span-5 flex gap-3 items-end reveal delay-100">
-            {previewImages.map((img, idx) => (
-              <div
-                key={img.url}
-                className="relative flex-1"
-                style={{
-                  aspectRatio: "3 / 4.4",
-                  marginBottom: idx === 1 ? "24px" : "0",
-                }}
-              >
-                <div
-                  className="relative w-full h-full overflow-hidden"
-                  style={{ borderRadius: "999px" }}
-                >
-                  <AppImage src={img.url} alt={img.alt} fill className="object-cover" sizes="180px" />
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 35%)" }}
-                    aria-hidden="true"
-                  />
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start mb-16">
+          {/* Preview arched photo trio — full-width row above the text */}
+          <div className="lg:col-span-12 flex gap-5 md:gap-8 reveal delay-100">
+            {previewImages.map((img) => (
+              <div key={img.url} className="relative flex-1 flex flex-col items-center gap-4">
                 <span
-                  className="absolute top-6 left-1/2 text-center text-foreground"
+                  className="text-center text-foreground"
                   style={{
-                    fontSize: "9px",
-                    letterSpacing: "0.1em",
-                    transform: "translateX(-50%)",
+                    fontSize: "11px",
+                    letterSpacing: "0.12em",
                     whiteSpace: "nowrap",
                   }}
                 >
                   {img.caption}
                 </span>
+                <div
+                  className="relative w-full overflow-hidden"
+                  style={{ aspectRatio: "3 / 4.2", borderRadius: "999px" }}
+                >
+                  <AppImage
+                    src={img.url}
+                    alt={img.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 30vw, 320px"
+                  />
+                </div>
               </div>
             ))}
           </div>
+        </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Body text */}
-          <div className="lg:col-span-6 lg:col-start-7 reveal delay-200">
+          <div className="lg:col-span-8 reveal delay-200">
             <ScrollFillText
               text={bodyText}
               style={{
