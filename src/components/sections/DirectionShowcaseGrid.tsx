@@ -138,7 +138,8 @@ export default function DirectionShowcaseGrid({
                 className="relative w-full overflow-hidden group"
                 style={{
                   aspectRatio: "4 / 5",
-                  borderRadius: "50% 50% 0 0",
+                  borderRadius:
+                    i % 2 === 0 ? "0 9999px 0 0" : "0 0 0 9999px",
                 }}
               >
                 <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105">
