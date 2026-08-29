@@ -31,6 +31,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Navigation & Header
     "nav.about": "О КОМПЛЕКСЕ",
     "nav.directions": "НАПРАВЛЕНИЯ",
+    "nav.directions.all": "ВСЕ НАПРАВЛЕНИЯ",
     "nav.corporate": "КОРПОРАТИВНЫМ",
     "nav.history": "ИСТОРИЯ",
     "nav.contact": "КОНТАКТЫ",
@@ -269,6 +270,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Navigation & Header
     "nav.about": "КОМПЛЕКС ЖӨНҮНДӨ",
     "nav.directions": "БАГЫТТАР",
+    "nav.directions.all": "БААРЫ БАГЫТТАР",
     "nav.corporate": "КОРПОРАТИВДИК",
     "nav.history": "ТАРЫХ",
     "nav.contact": "БАЙЛАНЫШ",
@@ -505,6 +507,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Navigation & Header
     "nav.about": "ABOUT",
     "nav.directions": "DIRECTIONS",
+    "nav.directions.all": "ALL DIRECTIONS",
     "nav.corporate": "CORPORATE",
     "nav.history": "HISTORY",
     "nav.contact": "CONTACT",
