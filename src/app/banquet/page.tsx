@@ -65,7 +65,6 @@ export default function BanquetPage() {
           heading={data.intro.heading}
           headingItalic={data.intro.headingItalic}
           body={data.intro.body}
-          details={data.intro.details}
           dataDirection="banquet"
         />
 
