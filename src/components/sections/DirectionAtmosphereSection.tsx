@@ -113,22 +113,29 @@ export default function DirectionAtmosphereSection({
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Preview arched photo trio */}
-          <div className="lg:col-span-5 flex gap-3 reveal delay-100">
-            {previewImages.map((img) => (
-              <div key={img.url} className="relative flex-1" style={{ aspectRatio: "3 / 4.4" }}>
+          <div className="lg:col-span-5 flex gap-3 items-end reveal delay-100">
+            {previewImages.map((img, idx) => (
+              <div
+                key={img.url}
+                className="relative flex-1"
+                style={{
+                  aspectRatio: "3 / 4.4",
+                  marginBottom: idx === 1 ? "24px" : "0",
+                }}
+              >
                 <div
                   className="relative w-full h-full overflow-hidden"
-                  style={{ borderRadius: "50% 50% 0 0" }}
+                  style={{ borderRadius: "999px" }}
                 >
                   <AppImage src={img.url} alt={img.alt} fill className="object-cover" sizes="180px" />
                   <div
                     className="absolute inset-0"
-                    style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 45%)" }}
+                    style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 35%)" }}
                     aria-hidden="true"
                   />
                 </div>
                 <span
-                  className="absolute bottom-3 left-1/2 text-center text-foreground"
+                  className="absolute top-6 left-1/2 text-center text-foreground"
                   style={{
                     fontSize: "9px",
                     letterSpacing: "0.1em",
