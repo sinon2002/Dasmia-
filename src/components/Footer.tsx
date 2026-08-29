@@ -3,40 +3,22 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import AppImage from "@/components/ui/AppImage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n";
 import { submitLead } from "@/lib/api";
 
-/* ── DASMIA Wordmark (Footer) — bold italic sans-serif, dark on light bg ── */
+/* ── DASMIA Wordmark (Footer) — actual logo file ── */
 function DasmiaLogo() {
   return (
-    <div className="flex flex-col leading-none select-none">
-      <span
-        style={{
-          fontFamily:
-            "var(--font-sans), 'Helvetica Neue', Arial, sans-serif",
-          fontWeight: 800,
-          fontStyle: "italic",
-          fontSize: "26px",
-          letterSpacing: "-0.01em",
-          transform: "skewX(-6deg)",
-          display: "inline-block",
-          color: "#1a1a1a",
-        }}
-      >
-        D&apos;asmia
-      </span>
-      <span
-        style={{
-          fontSize: "7px",
-          letterSpacing: "0.3em",
-          color: "#6b6b6b",
-          marginTop: "3px",
-          marginLeft: "2px",
-        }}
-      >
-        PREMIUM COMPLEX
-      </span>
+    <div className="relative select-none" style={{ width: "150px", height: "33px" }}>
+      <AppImage
+        src="/assets/images/dasmia-logo.png"
+        alt="DASMIA"
+        fill
+        className="object-contain object-left"
+        sizes="150px"
+      />
     </div>
   );
 }
@@ -149,10 +131,36 @@ export default function Footer() {
   return (
     <footer
       className="relative"
-      style={{ backgroundColor: "#F2EEE4", color: "#1a1a1a" }}
+      style={{
+        backgroundColor: "#F2EEE4",
+        color: "#1a1a1a",
+        backgroundImage:
+          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%23B9965A' stroke-width='1' stroke-opacity='0.12'%3E%3Ccircle cx='90' cy='90' r='26'/%3E%3Cpath d='M90 42 L90 58 M90 122 L90 138 M42 90 L58 90 M122 90 L138 90'/%3E%3Cpath d='M64 64 Q90 50 116 64 Q130 90 116 116 Q90 130 64 116 Q50 90 64 64 Z'/%3E%3Ccircle cx='90' cy='90' r='4'/%3E%3C/g%3E%3C/svg%3E\")",
+        backgroundRepeat: "repeat",
+        backgroundSize: "180px 180px",
+      }}
       data-content="footer"
-    >
-      <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16 py-16 md:py-20">
+    ><style jsx>{`
+        .footer-nav-link {
+          position: relative;
+        }
+        .footer-nav-link::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -3px;
+          width: 100%;
+          height: 1px;
+          background-color: #1a1a1a;
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .footer-nav-link:hover::after {
+          transform: scaleX(1);
+        }
+      `}</style>
+      <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16 py-16 md:py-20 relative z-10">
         {/* Top row — logo+nav / request form, line-group.kz layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
           {/* Logo + nav categories */}
@@ -164,7 +172,7 @@ export default function Footer() {
                   key={link.label}
                   href={getHref(link.href)}
                   onClick={(e) => handleAnchorClick(e, link.href)}
-                  className="uppercase transition-opacity duration-300 hover:opacity-60"
+                  className="footer-nav-link uppercase w-fit transition-opacity duration-300 hover:opacity-70"
                   style={{
                     fontSize: "15px",
                     letterSpacing: "0.04em",
