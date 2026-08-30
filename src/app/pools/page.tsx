@@ -3,96 +3,110 @@
 import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import DirectionHero from "@/components/sections/DirectionHero";
-import DirectionIntro from "@/components/sections/DirectionIntro";
-import DirectionFeatures from "@/components/sections/DirectionFeatures";
-import DirectionGallery from "@/components/sections/DirectionGallery";
-import DirectionCTA from "@/components/sections/DirectionCTA";
+import DirectionCenteredHero from "@/components/sections/DirectionCenteredHero";
+import DirectionAtmosphereSection from "@/components/sections/DirectionAtmosphereSection";
+import DirectionScrapbookSection from "@/components/sections/DirectionTriFeatureSection";
+import DirectionStaticGallery from "@/components/sections/DirectionStaticGallery";
+import ContactMapSection from "@/components/sections/ContactMapSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
 
+const previewImages = [
+  { url: "/assets/images/pools-swimmer-goggles.webp", alt: "Пловец в главном бассейне DASMIA", caption: "ГЛАВНЫЙ БАССЕЙН" },
+  { url: "/assets/images/pools-kids-group.webp", alt: "Детская зона бассейна DASMIA", caption: "ДЕТСКАЯ ЗОНА" },
+  { url: "/assets/images/pools-lounge-empty.webp", alt: "Зона релаксации у бассейна DASMIA", caption: "ЗОНА РЕЛАКСАЦИИ" },
+];
+
 const galleryImages = [
-  {
-    url: "/assets/images/IMG_8902.webp",
-    alt: "Территория аквазоны и открытые павильоны комплекса DASMIA",
-    span: "wide" as const,
-  },
-  {
-    url: "/assets/images/IMG_8911.webp",
-    alt: "Парковая зона отдыха у воды комплекса DASMIA",
-    span: "tall" as const,
-  },
-  {
-    url: "/assets/images/IMG_8920.webp",
-    alt: "Беседки и павильоны для отдыха на свежем воздухе",
-  },
-  {
-    url: "/assets/images/IMG_8936.webp",
-    alt: "Благоустроенная территория и зоны релаксации",
-  },
-  {
-    url: "/assets/images/IMG_8929.webp",
-    alt: "Цветочные сады и ландшафт аквакомплекса",
-  },
-  {
-    url: "/assets/images/IMG_2160.webp",
-    alt: "Панорама комплекса DASMIA",
-  },
+  { url: "/assets/images/pools-hero-wide.webp", alt: "Панорама бассейна DASMIA" },
+  { url: "/assets/images/pools-swimmer-goggles.webp", alt: "Пловец в главном бассейне DASMIA" },
+  { url: "/assets/images/pools-kids-group.webp", alt: "Детская зона бассейна DASMIA" },
+  { url: "/assets/images/pools-lounge-empty.webp", alt: "Зона релаксации у бассейна DASMIA" },
+];
+
+const featureImages = [
+  "/assets/images/pools-swimmer-goggles.webp",
+  "/assets/images/pools-kids-group.webp",
+  "/assets/images/pools-lounge-empty.webp",
 ];
 
 export default function PoolsPage() {
   const { language } = useLanguage();
   const data = directionsContent.pools[language] || directionsContent.pools.ru;
 
+  const detailsMap = Object.fromEntries(
+    data.intro.details.map((d) => [d.label, d.value]),
+  );
+
+  const scrapbookFeatures: [
+    { number: string; title: string; description: string; image: string; imageAlt: string },
+    { number: string; title: string; description: string; image: string; imageAlt: string },
+    { number: string; title: string; description: string; image: string; imageAlt: string },
+  ] = [
+    {
+      number: data.featuresSection.features[0].number,
+      title: data.featuresSection.features[0].title,
+      description: data.featuresSection.features[0].description,
+      image: featureImages[0],
+      imageAlt: data.featuresSection.features[0].title,
+    },
+    {
+      number: data.featuresSection.features[1].number,
+      title: data.featuresSection.features[1].title,
+      description: data.featuresSection.features[1].description,
+      image: featureImages[1],
+      imageAlt: data.featuresSection.features[1].title,
+    },
+    {
+      number: data.featuresSection.features[2].number,
+      title: data.featuresSection.features[2].title,
+      description: data.featuresSection.features[2].description,
+      image: featureImages[2],
+      imageAlt: data.featuresSection.features[2].title,
+    },
+  ];
+
   return (
     <>
       <div className="noise-overlay" aria-hidden="true" />
       <Header />
       <main id="main-content">
-        <DirectionHero
+        <DirectionCenteredHero
           category={data.hero.category}
           title={data.hero.title}
-          subtitle={data.hero.subtitle}
           description={data.hero.description}
-          imageUrl="/assets/images/IMG_8902.webp"
-          imageAlt={data.hero.imageAlt}
+          backgroundImage="/assets/images/pools-hero-wide.webp"
+          backgroundAlt={data.hero.imageAlt}
+          ctaLabel={data.cta.primaryLabel}
+          hours={detailsMap["ЧАСЫ РАБОТЫ"] || "07:00 – 23:00"}
+          seatsLabel="ДЛИНА ДОРОЖКИ"
+          seats={detailsMap["ДЛИНА ДОРОЖКИ"] || "25 метров"}
+          phoneLabel="ТЕМПЕРАТУРА"
+          phone={detailsMap["ТЕМПЕРАТУРА"] || "28°C комфорт"}
+          phoneIsLink={false}
           dataDirection="pools"
         />
 
-        <DirectionIntro
-          label={data.intro.label}
-          heading={data.intro.heading}
-          headingItalic={data.intro.headingItalic}
-          body={data.intro.body}
-          details={data.intro.details}
-          dataDirection="pools"
-        />
-
-        <DirectionFeatures
+        <DirectionAtmosphereSection
           label={data.featuresSection.label}
-          heading={data.featuresSection.heading}
-          features={data.featuresSection.features}
-          imageUrl="/assets/images/IMG_8911.webp"
-          imageAlt="Главный бассейн DASMIA с профессиональными дорожками"
-          imageRight={true}
+          bodyText={data.intro.body}
+          previewImages={previewImages}
           dataDirection="pools"
         />
 
-        <DirectionGallery
-          label={data.gallery.label}
-          heading={data.gallery.heading}
+        <DirectionScrapbookSection
+          heading={data.featuresSection.heading}
+          features={scrapbookFeatures}
+          dataDirection="pools"
+        />
+
+        <DirectionStaticGallery
+          tagline="Пространство, где каждый заплыв становится моментом покоя"
           images={galleryImages}
           dataDirection="pools"
         />
 
-        <DirectionCTA
-          heading={data.cta.heading}
-          headingItalic={data.cta.headingItalic}
-          description={data.cta.description}
-          primaryLabel={data.cta.primaryLabel}
-          secondaryLabel={data.cta.secondaryLabel}
-          dataDirection="pools"
-        />
+        <ContactMapSection />
       </main>
       <Footer />
     </>
