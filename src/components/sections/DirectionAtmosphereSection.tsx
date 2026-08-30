@@ -13,8 +13,8 @@ interface DirectionAtmosphereSectionProps {
   label: string;
   bodyText: string;
   previewImages: PreviewImage[];
-  stripImages: { url: string; alt: string }[];
-  tagline: string;
+  stripImages?: { url: string; alt: string }[];
+  tagline?: string;
   dataDirection: string;
 }
 
@@ -160,48 +160,52 @@ export default function DirectionAtmosphereSection({
         </div>
       </div>
 
-      {/* Tagline */}
-      <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16 mt-20 mb-8 reveal delay-300">
-        <p
-          className="text-gold"
-          style={{
-            fontFamily: "var(--font-cormorant)",
-            fontSize: "clamp(16px, 1.8vw, 22px)",
-            fontStyle: "italic",
-            lineHeight: 1.4,
-          }}
-        >
-          {tagline}
-        </p>
-      </div>
+      {tagline && stripImages && stripImages.length > 0 && (
+        <>
+          {/* Tagline */}
+          <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16 mt-20 mb-8 reveal delay-300">
+            <p
+              className="text-gold"
+              style={{
+                fontFamily: "var(--font-cormorant)",
+                fontSize: "clamp(16px, 1.8vw, 22px)",
+                fontStyle: "italic",
+                lineHeight: 1.4,
+              }}
+            >
+              {tagline}
+            </p>
+          </div>
 
-      {/* Continuous auto-sliding photo strip */}
-      <div className="relative w-full overflow-hidden" style={{ height: "min(280px, 42vw)" }}>
-        <div
-          className="flex absolute top-0 left-0 h-full"
-          style={{
-            width: "max-content",
-            gap: "10px",
-            animation: `atmosphereStrip ${stripImages.length * 6}s linear infinite`,
-          }}
-        >
-          {[...stripImages, ...stripImages, ...stripImages].map((img, i) => (
-            <div key={img.url + i} className="relative shrink-0 h-full" style={{ width: "min(240px, 38vw)" }}>
-              <AppImage src={img.url} alt={img.alt} fill className="object-cover" sizes="240px" />
+          {/* Continuous auto-sliding photo strip */}
+          <div className="relative w-full overflow-hidden" style={{ height: "min(280px, 42vw)" }}>
+            <div
+              className="flex absolute top-0 left-0 h-full"
+              style={{
+                width: "max-content",
+                gap: "10px",
+                animation: `atmosphereStrip ${stripImages.length * 6}s linear infinite`,
+              }}
+            >
+              {[...stripImages, ...stripImages, ...stripImages].map((img, i) => (
+                <div key={img.url + i} className="relative shrink-0 h-full" style={{ width: "min(240px, 38vw)" }}>
+                  <AppImage src={img.url} alt={img.alt} fill className="object-cover" sizes="240px" />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <style jsx>{`
-          @keyframes atmosphereStrip {
-            from {
-              transform: translateX(0);
-            }
-            to {
-              transform: translateX(-33.3333%);
-            }
-          }
-        `}</style>
-      </div>
+            <style jsx>{`
+              @keyframes atmosphereStrip {
+                from {
+                  transform: translateX(0);
+                }
+                to {
+                  transform: translateX(-33.3333%);
+                }
+              }
+            `}</style>
+          </div>
+        </>
+      )}
     </section>
   );
 }
