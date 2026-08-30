@@ -15,6 +15,10 @@ interface DirectionCenteredHeroProps {
   seats: string;
   phone: string;
   dataDirection: string;
+  hoursLabel?: string;
+  seatsLabel?: string;
+  phoneLabel?: string;
+  phoneIsLink?: boolean;
 }
 
 export default function DirectionCenteredHero({
@@ -28,6 +32,10 @@ export default function DirectionCenteredHero({
   seats,
   phone,
   dataDirection,
+  hoursLabel = "ЧАСЫ РАБОТЫ",
+  seatsLabel = "МЕСТ",
+  phoneLabel = "БРОНИРОВАНИЕ",
+  phoneIsLink = true,
 }: DirectionCenteredHeroProps) {
   return (
     <section
@@ -118,27 +126,31 @@ export default function DirectionCenteredHero({
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 text-right">
           <div>
             <p className="text-label text-gold mb-1" style={{ fontSize: "9px", letterSpacing: "0.2em" }}>
-              ЧАСЫ РАБОТЫ
+              {hoursLabel}
             </p>
             <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.85)" }}>{hours}</p>
           </div>
           <div>
             <p className="text-label text-gold mb-1" style={{ fontSize: "9px", letterSpacing: "0.2em" }}>
-              МЕСТ
+              {seatsLabel}
             </p>
             <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.85)" }}>{seats}</p>
           </div>
           <div>
             <p className="text-label text-gold mb-1" style={{ fontSize: "9px", letterSpacing: "0.2em" }}>
-              БРОНИРОВАНИЕ
+              {phoneLabel}
             </p>
-            <a
-              href={`tel:${phone}`}
-              className="hover:text-gold transition-colors duration-300"
-              style={{ fontSize: "13px", color: "rgba(255,255,255,0.85)" }}
-            >
-              {phone}
-            </a>
+            {phoneIsLink ? (
+              <a
+                href={`tel:${phone}`}
+                className="hover:text-gold transition-colors duration-300"
+                style={{ fontSize: "13px", color: "rgba(255,255,255,0.85)" }}
+              >
+                {phone}
+              </a>
+            ) : (
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.85)" }}>{phone}</p>
+            )}
           </div>
         </div>
       </div>
