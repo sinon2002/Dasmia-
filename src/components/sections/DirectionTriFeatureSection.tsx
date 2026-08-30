@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import AppImage from "@/components/ui/AppImage";
+import ScrollFillText from "@/components/ui/ScrollFillText";
 
 interface ScrapbookFeature {
   number: string;
@@ -11,15 +12,37 @@ interface ScrapbookFeature {
   imageAlt: string;
 }
 
+interface AccentPhoto {
+  image: string;
+  imageAlt: string;
+}
+
+interface Ornament {
+  src: string;
+  alt: string;
+  size: number;
+  duration: number;
+  reverse?: boolean;
+}
+
+const DEFAULT_ORNAMENTS: Ornament[] = [
+  { src: "/assets/images/ornament-kyrgyz-gold.webp", alt: "Кыргызский орнамент", size: 108, duration: 24 },
+  { src: "/assets/images/ornament-kyrgyz-navy.webp", alt: "Кыргызский орнамент", size: 82, duration: 16, reverse: true },
+];
+
 interface DirectionTriFeatureSectionProps {
   heading: string;
   features: [ScrapbookFeature, ScrapbookFeature, ScrapbookFeature];
+  accentPhotos?: [AccentPhoto, AccentPhoto];
+  ornaments?: Ornament[];
   dataDirection: string;
 }
 
 export default function DirectionTriFeatureSection({
   heading,
   features,
+  accentPhotos,
+  ornaments = DEFAULT_ORNAMENTS,
   dataDirection,
 }: DirectionTriFeatureSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -64,7 +87,7 @@ export default function DirectionTriFeatureSection({
           </span>
         </div>
 
-        {/* Big intro paragraph — feature 1, full width, dot indicator */}
+        {/* Big intro paragraph — feature 1, full width, dot indicator, scroll-linked fill */}
         <div className="flex items-start gap-4 mb-16 lg:mb-20 reveal delay-100">
           <span
             className="mt-3 shrink-0 rounded-full"
@@ -78,7 +101,8 @@ export default function DirectionTriFeatureSection({
             >
               {f1.number} — {f1.title}
             </p>
-            <p
+            <ScrollFillText
+              text={f1.description}
               className="font-serif text-foreground"
               style={{
                 fontFamily: "var(--font-cormorant)",
@@ -87,31 +111,13 @@ export default function DirectionTriFeatureSection({
                 fontWeight: 400,
                 maxWidth: "760px",
               }}
-            >
-              {f1.description}
-            </p>
+            />
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-14 lg:gap-y-0">
-          {/* Photo A — feature 1, medium rounded rectangle, arch top-left */}
-          <div className="lg:col-span-5 reveal delay-150">
-            <div
-              className="relative w-full overflow-hidden"
-              style={{ aspectRatio: "4 / 3.3", borderRadius: "110px 20px 20px 20px" }}
-            >
-              <AppImage
-                src={f1.image}
-                alt={f1.imageAlt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 90vw, 480px"
-              />
-            </div>
-          </div>
-
-          {/* Small caption — feature 2, beside Photo A */}
-          <div className="lg:col-span-4 lg:col-start-6 lg:mt-6 reveal delay-200">
+          {/* Small caption — feature 2, upper-left */}
+          <div className="lg:col-span-4 lg:col-start-3 lg:mt-4 reveal delay-150 order-1">
             <p
               className="text-label mb-3"
               style={{ fontSize: "8.5px", letterSpacing: "0.18em", color: "var(--muted-foreground)" }}
@@ -126,46 +132,24 @@ export default function DirectionTriFeatureSection({
             </p>
           </div>
 
-          {/* Rotating Kyrgyz ornaments — vertical duo */}
-          <div className="flex lg:col-span-1 lg:col-start-10 flex-row lg:flex-col items-center justify-center gap-6 lg:gap-8 reveal delay-250 col-span-1 lg:mt-6">
+          {/* Photo TOP — feature 1, large arch rounded on the left edge */}
+          <div className="lg:col-span-5 lg:col-start-8 reveal delay-150 order-2">
             <div
-              className="relative shrink-0"
-              style={{ width: "72px", height: "72px", animation: "spinSlow 22s linear infinite" }}
+              className="relative w-full overflow-hidden"
+              style={{ aspectRatio: "4 / 3.6", borderRadius: "9999px 0 0 9999px" }}
             >
               <AppImage
-                src="/assets/images/ornament-kyrgyz-red.webp"
-                alt="Кыргызский орнамент"
+                src={f1.image}
+                alt={f1.imageAlt}
                 fill
-                className="object-contain"
-                sizes="90px"
-              />
-            </div>
-            <div
-              className="relative shrink-0"
-              style={{ width: "58px", height: "58px", animation: "spinSlow 15s linear infinite reverse" }}
-            >
-              <AppImage
-                src="/assets/images/ornament-kyrgyz-blue.webp"
-                alt="Кыргызский орнамент"
-                fill
-                className="object-contain"
-                sizes="74px"
+                className="object-cover"
+                sizes="(max-width: 1024px) 90vw, 480px"
               />
             </div>
           </div>
-          <style jsx>{`
-            @keyframes spinSlow {
-              from {
-                transform: rotate(0deg);
-              }
-              to {
-                transform: rotate(360deg);
-              }
-            }
-          `}</style>
 
-          {/* Small caption — feature 3, lower-left, under the big paragraph column */}
-          <div className="lg:col-span-4 lg:col-start-1 lg:mt-10 reveal delay-300 order-last lg:order-none">
+          {/* Small caption — feature 3, above the accent photos, flush left */}
+          <div className="lg:col-span-4 lg:col-start-1 lg:mt-24 reveal delay-200 order-3">
             <p
               className="text-label text-gold mb-3"
               style={{ fontSize: "8.5px", letterSpacing: "0.18em" }}
@@ -180,18 +164,72 @@ export default function DirectionTriFeatureSection({
             </p>
           </div>
 
-          {/* Photo B — feature 3, tall, rounded pill on the left edge, sits lower than Photo A */}
-          <div className="lg:col-span-4 lg:col-start-9 lg:mt-20 reveal delay-350">
+          {/* Two small square accent photos — bottom-left */}
+          {accentPhotos && (
+            <div className="flex lg:col-span-3 lg:col-start-1 gap-4 lg:mt-8 reveal delay-250 order-4">
+              {accentPhotos.map((photo) => (
+                <div
+                  key={photo.image}
+                  className="relative flex-1 overflow-hidden"
+                  style={{ aspectRatio: "1 / 1", borderRadius: "16px" }}
+                >
+                  <AppImage
+                    src={photo.image}
+                    alt={photo.imageAlt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 45vw, 200px"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Rotating ornaments — configurable stack (2 default, 3+ supported), enlarged */}
+          <div className="flex lg:col-span-2 lg:col-start-5 flex-row lg:flex-col items-center justify-center gap-6 lg:gap-8 reveal delay-300 col-span-1 lg:mt-8 order-5">
+            {ornaments.map((o) => (
+              <div
+                key={o.src}
+                className="relative shrink-0"
+                style={{
+                  width: `${o.size}px`,
+                  height: `${o.size}px`,
+                  animation: `spinSlow ${o.duration}s linear infinite${o.reverse ? " reverse" : ""}`,
+                }}
+              >
+                <AppImage
+                  src={o.src}
+                  alt={o.alt}
+                  fill
+                  className="object-contain"
+                  sizes={`${o.size + 20}px`}
+                />
+              </div>
+            ))}
+          </div>
+          <style jsx>{`
+            @keyframes spinSlow {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+          `}</style>
+
+          {/* Photo BOTTOM — feature 3, large arch rounded on the left edge, sits lower */}
+          <div className="lg:col-span-5 lg:col-start-8 lg:mt-16 reveal delay-350 order-6">
             <div
               className="relative w-full overflow-hidden"
-              style={{ aspectRatio: "3 / 4.4", borderRadius: "9999px 0 0 9999px" }}
+              style={{ aspectRatio: "4 / 3.6", borderRadius: "9999px 0 0 9999px" }}
             >
               <AppImage
                 src={f3.image}
                 alt={f3.imageAlt}
                 fill
                 className="object-cover"
-                sizes="(max-width: 1024px) 90vw, 380px"
+                sizes="(max-width: 1024px) 90vw, 480px"
               />
             </div>
           </div>
