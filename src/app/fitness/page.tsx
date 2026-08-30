@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import DirectionCenteredHero from "@/components/sections/DirectionCenteredHero";
 import DirectionAtmosphereSection from "@/components/sections/DirectionAtmosphereSection";
 import DirectionScrapbookSection from "@/components/sections/DirectionTriFeatureSection";
+import DirectionStaticGallery from "@/components/sections/DirectionStaticGallery";
 import ContactMapSection from "@/components/sections/ContactMapSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
@@ -16,13 +17,12 @@ const previewImages = [
   { url: "/assets/images/fitness-trainers-team.webp", alt: "Команда тренеров фитнес-клуба DASMIA", caption: "ПЕРСОНАЛЬНЫЙ ТРЕНИНГ" },
 ];
 
-const stripImages = [
+const galleryImages = [
   { url: "/assets/images/fitness-hero-spin.webp", alt: "Сайкл-тренировка в фитнес-клубе DASMIA" },
-  { url: "/assets/images/IMG_8920.webp", alt: "Зона свободных весов фитнес-клуба DASMIA" },
-  { url: "/assets/images/fitness-woman-dumbbells.webp", alt: "Силовая тренировка с гантелями" },
-  { url: "/assets/images/IMG_8936.webp", alt: "Инфраструктура и зоны отдыха фитнес-клуба DASMIA" },
+  { url: "/assets/images/fitness-weights-room.webp", alt: "Тренажёрный зал фитнес-клуба DASMIA" },
   { url: "/assets/images/fitness-trainers-team.webp", alt: "Команда тренеров фитнес-клуба DASMIA" },
-  { url: "/assets/images/IMG_8911.webp", alt: "Территория рядом с фитнес-клубом DASMIA" },
+  { url: "/assets/images/fitness-spin-couple.webp", alt: "Групповое сайкл-занятие в фитнес-клубе DASMIA" },
+  { url: "/assets/images/fitness-woman-dumbbells.webp", alt: "Силовая тренировка с гантелями" },
 ];
 
 const featureImages = [
@@ -92,14 +92,18 @@ export default function FitnessPage() {
           label={data.featuresSection.label}
           bodyText={data.intro.body}
           previewImages={previewImages}
-          stripImages={stripImages}
-          tagline="Пространство, где дисциплина превращается в результат"
           dataDirection="fitness"
         />
 
         <DirectionScrapbookSection
           heading={data.featuresSection.heading}
           features={scrapbookFeatures}
+          dataDirection="fitness"
+        />
+
+        <DirectionStaticGallery
+          tagline="Пространство, где дисциплина превращается в результат"
+          images={galleryImages}
           dataDirection="fitness"
         />
 
