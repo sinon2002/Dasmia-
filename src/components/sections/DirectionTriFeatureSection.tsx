@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import AppImage from "@/components/ui/AppImage";
+import ScrollFillText from "@/components/ui/ScrollFillText";
 
 interface ScrapbookFeature {
   number: string;
@@ -16,10 +17,24 @@ interface AccentPhoto {
   imageAlt: string;
 }
 
+interface Ornament {
+  src: string;
+  alt: string;
+  size: number;
+  duration: number;
+  reverse?: boolean;
+}
+
+const DEFAULT_ORNAMENTS: Ornament[] = [
+  { src: "/assets/images/ornament-kyrgyz-gold.webp", alt: "Кыргызский орнамент", size: 108, duration: 24 },
+  { src: "/assets/images/ornament-kyrgyz-navy.webp", alt: "Кыргызский орнамент", size: 82, duration: 16, reverse: true },
+];
+
 interface DirectionTriFeatureSectionProps {
   heading: string;
   features: [ScrapbookFeature, ScrapbookFeature, ScrapbookFeature];
   accentPhotos?: [AccentPhoto, AccentPhoto];
+  ornaments?: Ornament[];
   dataDirection: string;
 }
 
@@ -27,6 +42,7 @@ export default function DirectionTriFeatureSection({
   heading,
   features,
   accentPhotos,
+  ornaments = DEFAULT_ORNAMENTS,
   dataDirection,
 }: DirectionTriFeatureSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -71,7 +87,7 @@ export default function DirectionTriFeatureSection({
           </span>
         </div>
 
-        {/* Big intro paragraph — feature 1, full width, dot indicator */}
+        {/* Big intro paragraph — feature 1, full width, dot indicator, scroll-linked fill */}
         <div className="flex items-start gap-4 mb-16 lg:mb-20 reveal delay-100">
           <span
             className="mt-3 shrink-0 rounded-full"
@@ -85,7 +101,8 @@ export default function DirectionTriFeatureSection({
             >
               {f1.number} — {f1.title}
             </p>
-            <p
+            <ScrollFillText
+              text={f1.description}
               className="font-serif text-foreground"
               style={{
                 fontFamily: "var(--font-cormorant)",
@@ -94,9 +111,7 @@ export default function DirectionTriFeatureSection({
                 fontWeight: 400,
                 maxWidth: "760px",
               }}
-            >
-              {f1.description}
-            </p>
+            />
           </div>
         </div>
 
@@ -170,32 +185,27 @@ export default function DirectionTriFeatureSection({
             </div>
           )}
 
-          {/* Rotating Kyrgyz ornaments — vertical duo, enlarged */}
+          {/* Rotating ornaments — configurable stack (2 default, 3+ supported), enlarged */}
           <div className="flex lg:col-span-2 lg:col-start-5 flex-row lg:flex-col items-center justify-center gap-6 lg:gap-8 reveal delay-300 col-span-1 lg:mt-8 order-5">
-            <div
-              className="relative shrink-0"
-              style={{ width: "108px", height: "108px", animation: "spinSlow 24s linear infinite" }}
-            >
-              <AppImage
-                src="/assets/images/ornament-kyrgyz-gold.webp"
-                alt="Кыргызский орнамент"
-                fill
-                className="object-contain"
-                sizes="130px"
-              />
-            </div>
-            <div
-              className="relative shrink-0"
-              style={{ width: "82px", height: "82px", animation: "spinSlow 16s linear infinite reverse" }}
-            >
-              <AppImage
-                src="/assets/images/ornament-kyrgyz-navy.webp"
-                alt="Кыргызский орнамент"
-                fill
-                className="object-contain"
-                sizes="100px"
-              />
-            </div>
+            {ornaments.map((o) => (
+              <div
+                key={o.src}
+                className="relative shrink-0"
+                style={{
+                  width: `${o.size}px`,
+                  height: `${o.size}px`,
+                  animation: `spinSlow ${o.duration}s linear infinite${o.reverse ? " reverse" : ""}`,
+                }}
+              >
+                <AppImage
+                  src={o.src}
+                  alt={o.alt}
+                  fill
+                  className="object-contain"
+                  sizes={`${o.size + 20}px`}
+                />
+              </div>
+            ))}
           </div>
           <style jsx>{`
             @keyframes spinSlow {
