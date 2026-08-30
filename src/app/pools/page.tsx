@@ -97,6 +97,10 @@ export default function PoolsPage() {
         <DirectionScrapbookSection
           heading={data.featuresSection.heading}
           features={scrapbookFeatures}
+          accentPhotos={[
+            { image: "/assets/images/pools-kids-group.webp", imageAlt: "Детская зона бассейна DASMIA" },
+            { image: "/assets/images/pools-hero-wide.webp", imageAlt: "Панорама бассейна DASMIA" },
+          ]}
           dataDirection="pools"
         />
 
