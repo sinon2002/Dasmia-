@@ -223,3 +223,46 @@ class DasmiaFullBookingIntegrationTests(TestCase):
         self.assertEqual(self.full_lead.bitrix_id, "98765")
         self.assertEqual(self.full_lead.sync_status, LeadSubmission.StatusChoices.SUCCESS)
 
+
+class AdminAdaptiveAndPermissionsTests(TestCase):
+    def setUp(self):
+        from django.contrib.auth.models import User
+        self.admin_user = User.objects.create_superuser(
+            username="admin_test",
+            password="admin_test_password",
+            email="admin@test.com"
+        )
+        self.client.force_login(self.admin_user)
+
+    def test_user_admin_permissions_label_formatting(self):
+        from core.admin import PermissionModelMultipleChoiceField
+        from django.contrib.auth.models import Permission
+        
+        perm = Permission.objects.select_related('content_type').filter(
+            content_type__app_label='auth',
+            codename='add_user'
+        ).first()
+        if perm:
+            field = PermissionModelMultipleChoiceField(queryset=Permission.objects.all())
+            label = field.label_from_instance(perm)
+            self.assertIn("[auth]", label)
+            self.assertIn("➔", label)
+            self.assertIn("Can add user", label)
+
+    def test_user_change_page_renders_adaptive_assets(self):
+        response = self.client.get(f"/admin/auth/user/{self.admin_user.pk}/change/")
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode("utf-8")
+        self.assertIn("admin_adaptive.css", content)
+        self.assertIn("admin_adaptive.js", content)
+        self.assertIn("➔", content)
+
+    def test_group_add_page_renders_custom_permission_labels(self):
+        response = self.client.get("/admin/auth/group/add/")
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode("utf-8")
+        self.assertIn("admin_adaptive.css", content)
+        self.assertIn("admin_adaptive.js", content)
+        self.assertIn("➔", content)
+
+

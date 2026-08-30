@@ -95,14 +95,19 @@ JAZZMIN_SETTINGS = {
         "cms.News": "fas fa-newspaper",
         "cms.MediaAsset": "fas fa-photo-video",
         "auth.User": "fas fa-user-cog",
+        "auth.Group": "fas fa-users-cog",
     },
+    
+    # Custom CSS & JS for responsive design, mobile navigation, and permissions UI
+    "custom_css": "core/css/admin_adaptive.css",
+    "custom_js": "core/js/admin_adaptive.js",
 }
 
 JAZZMIN_UI_TWEAKS = {
     # Using 'darkly' gives it a premium dark-mode look, 
     # but you can change this to 'litera' or 'flatly' for a clean, light, spacious theme!
     "theme": "darkly", 
-    "dark_mode_theme": "darkly",
+    "default_theme_mode": "dark",
 }
 
 
@@ -123,8 +128,8 @@ TIME_ZONE = 'Asia/Bishkek'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
-MEDIA_URL = 'media/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

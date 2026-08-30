@@ -12,6 +12,14 @@ from cms.models import (
     News,
     MediaAsset,
 )
+from cms.admin import (
+    ContentBlockAdmin,
+    DirectionAdmin,
+    DirectionGalleryImageAdmin,
+    ServiceAdmin,
+    NewsAdmin,
+    MediaAssetAdmin,
+)
 from cms.utils import process_and_optimize_image
 
 
@@ -141,3 +149,214 @@ class ImageOptimizationUtilityTests(TestCase):
         class Dummy:
             file = None
         process_and_optimize_image(Dummy())
+
+
+class AdminMediaOverviewTests(TestCase):
+    def setUp(self):
+        from django.contrib.auth import get_user_model
+        from django.contrib.admin.sites import site as admin_site
+
+        User = get_user_model()
+        self.superuser = User.objects.create_superuser(
+            username="admin_tester",
+            email="admin@dasmia.kg",
+            password="SecureAdminPassword2026!"
+        )
+        self.client.login(username="admin_tester", password="SecureAdminPassword2026!")
+
+        # Create sample test image in memory
+        img_bytes = io.BytesIO()
+        test_img = Image.new("RGB", (800, 600), (185, 150, 90))
+        test_img.save(img_bytes, format="JPEG")
+        img_bytes.seek(0)
+        self.test_uploaded = SimpleUploadedFile("banner_overview.jpg", img_bytes.read(), content_type="image/jpeg")
+
+        # Models with and without images
+        self.media_asset_with_img = MediaAsset.objects.create(
+            title="Главный зал Айкөл Ордо",
+            category="banquet",
+            description="Банкетная рассадка на 500 гостей",
+            image=self.test_uploaded
+        )
+        self.media_asset_no_img = MediaAsset.objects.create(
+            title="Зал без фото",
+            category="restaurant",
+            description="Текстовое описание без фото"
+        )
+        self.direction = Direction.objects.create(
+            slug="banquets",
+            name_ru="Банкетные залы",
+            order=1,
+            is_active=True
+        )
+        self.gallery_img = DirectionGalleryImage.objects.create(
+            direction=self.direction,
+            title="Вид на сцену",
+            span="wide",
+            order=1
+        )
+        self.content_block = ContentBlock.objects.create(
+            key="overview_hero_title",
+            title_ru="Дасмия Комплекс"
+        )
+        self.news_item = News.objects.create(
+            slug="summer-event-2026",
+            title_ru="Летний фестиваль",
+            content_ru="Подробности фестиваля",
+            published_date=timezone.now(),
+            is_active=True
+        )
+
+        self.media_admin = MediaAssetAdmin(MediaAsset, admin_site)
+        self.direction_admin = DirectionAdmin(Direction, admin_site)
+        self.gallery_admin = DirectionGalleryImageAdmin(DirectionGalleryImage, admin_site)
+        self.content_block_admin = ContentBlockAdmin(ContentBlock, admin_site)
+        self.news_admin = NewsAdmin(News, admin_site)
+
+    def test_media_asset_changelist_view_accessible(self):
+        url = "/admin/cms/mediaasset/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Медиабиблиотека")
+        self.assertContains(response, "Главный зал Айкөл Ордо")
+        self.assertContains(response, "Зал без фото")
+        self.assertContains(response, "dasmia-admin-list-thumb")
+
+    def test_media_asset_changelist_unauthenticated_redirects(self):
+        self.client.logout()
+        url = "/admin/cms/mediaasset/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/admin/login/", response.url)
+
+    def test_media_asset_category_filtering(self):
+        url = "/admin/cms/mediaasset/?category=banquet"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Главный зал Айкөл Ордо")
+        self.assertNotContains(response, "Зал без фото")
+
+    def test_media_asset_search(self):
+        url = "/admin/cms/mediaasset/?q=Айкөл"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Главный зал Айкөл Ордо")
+        self.assertNotContains(response, "Зал без фото")
+
+    def test_media_asset_thumb_preview_method(self):
+        # With image
+        html_with_img = self.media_admin.thumb_preview(self.media_asset_with_img)
+        self.assertIn("class=\"dasmia-admin-list-thumb\"", html_with_img)
+        self.assertIn(self.media_asset_with_img.image.url, html_with_img)
+        self.assertIn("Главный зал Айкөл Ордо", html_with_img)
+
+        # Without image
+        html_no_img = self.media_admin.thumb_preview(self.media_asset_no_img)
+        self.assertIn("Нет фото", html_no_img)
+
+    def test_direction_admin_cover_thumb_and_gallery_count(self):
+        # Without cover image
+        html_no_cover = self.direction_admin.cover_thumb(self.direction)
+        self.assertIn("Нет фото", html_no_cover)
+
+        # With cover image
+        img_bytes = io.BytesIO()
+        test_img = Image.new("RGB", (400, 300), (50, 100, 150))
+        test_img.save(img_bytes, format="JPEG")
+        img_bytes.seek(0)
+        self.direction.cover_image = SimpleUploadedFile("direction_cover.jpg", img_bytes.read(), content_type="image/jpeg")
+        self.direction.save()
+
+        html_with_cover = self.direction_admin.cover_thumb(self.direction)
+        self.assertIn("class=\"dasmia-admin-list-thumb\"", html_with_cover)
+        self.assertIn(self.direction.cover_image.url, html_with_cover)
+
+        # Gallery count check
+        count_str = self.direction_admin.gallery_count(self.direction)
+        self.assertEqual(count_str, "1 фото")
+
+    def test_direction_changelist_view_accessible(self):
+        url = "/admin/cms/direction/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Банкетные залы")
+        self.assertContains(response, "1 фото")
+
+    def test_direction_gallery_image_thumb_and_changelist(self):
+        # Without image
+        html_no_img = self.gallery_admin.image_thumb(self.gallery_img)
+        self.assertIn("Нет фото", html_no_img)
+
+        # Changelist view
+        url = "/admin/cms/directiongalleryimage/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Вид на сцену")
+
+    def test_content_block_thumb_preview(self):
+        html_no_img = self.content_block_admin.thumb_preview(self.content_block)
+        self.assertIn("Нет фото", html_no_img)
+
+        url = "/admin/cms/contentblock/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "overview_hero_title")
+
+    def test_news_cover_thumb(self):
+        html_no_img = self.news_admin.cover_thumb(self.news_item)
+        self.assertIn("Нет фото", html_no_img)
+
+        url = "/admin/cms/news/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Летний фестиваль")
+
+
+class AdminImageEditorWidgetTests(TestCase):
+    def test_widget_media_includes_cropper_and_editor_assets(self):
+        from cms.widgets import AdminImageEditorWidget
+        widget = AdminImageEditorWidget()
+        rendered_media = str(widget.media)
+
+        self.assertIn("cropper.min.css", rendered_media)
+        self.assertIn("image_editor.css", rendered_media)
+        self.assertIn("cropper.min.js", rendered_media)
+        self.assertIn("image_editor.js", rendered_media)
+
+    def test_widget_render_without_initial_value(self):
+        from cms.widgets import AdminImageEditorWidget
+        widget = AdminImageEditorWidget()
+        rendered_html = widget.render(name="test_image_field", value=None)
+
+        self.assertIn("dasmia-image-widget", rendered_html)
+        self.assertIn("dasmia-image-preview-box", rendered_html)
+        self.assertIn("Выбрать фото", rendered_html)
+        self.assertIn("Нет файла", rendered_html)
+        self.assertIn("display:none;", rendered_html)  # Crop & edit buttons hidden initially
+
+    def test_widget_render_with_existing_image(self):
+        from cms.widgets import AdminImageEditorWidget
+        from cms.models import ContentBlock
+
+        img_bytes = io.BytesIO()
+        test_img = Image.new("RGB", (400, 300), (100, 200, 100))
+        test_img.save(img_bytes, format="JPEG")
+        img_bytes.seek(0)
+        uploaded = SimpleUploadedFile("widget_test.jpg", img_bytes.read(), content_type="image/jpeg")
+
+        block = ContentBlock.objects.create(
+            key="widget_test_block",
+            title_ru="Блок для теста виджета",
+            image=uploaded
+        )
+
+        widget = AdminImageEditorWidget()
+        rendered_html = widget.render(name="image", value=block.image)
+
+        self.assertIn("dasmia-image-widget", rendered_html)
+        self.assertIn(block.image.url, rendered_html)
+        self.assertIn("Заменить", rendered_html)
+        self.assertIn("Редактировать / Кадрировать", rendered_html)
+        self.assertIn("Удалить", rendered_html)
+        self.assertIn("Загружено", rendered_html)
+

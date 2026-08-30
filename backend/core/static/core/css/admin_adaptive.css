@@ -1,0 +1,48 @@
+/* ============================================================================
+   Minimal & Non-Invasive Django Admin Permission & Selector Display Fixes
+   Preserves original Jazzmin Darkly theme styling completely.
+   ========================================================================== */
+
+/* 1. Permissions Multi-select (filter_horizontal) */
+.selector {
+    width: 100%;
+}
+
+.selector select {
+    width: 100%;
+    min-height: 260px;
+    height: 18rem;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.selector select option {
+    padding: 4px 8px;
+    white-space: nowrap;
+}
+
+/* 2. Responsive selector stacking on smaller screens (< 768px) */
+@media (max-width: 768px) {
+    .selector {
+        flex-direction: column !important;
+    }
+
+    .selector-available,
+    .selector-chosen {
+        width: 100% !important;
+        flex: 1 1 auto !important;
+    }
+
+    .selector select {
+        height: 14rem;
+        min-height: 200px;
+    }
+
+    .selector ul.selector-chooser {
+        flex-direction: row !important;
+        justify-content: center !important;
+        width: 100% !important;
+        padding: 6px 0 !important;
+        gap: 8px !important;
+    }
+}

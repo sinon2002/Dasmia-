@@ -9,7 +9,6 @@ class AdminImageEditorWidget(forms.ClearableFileInput):
     - Interactive Cropper.js modal (Crop, Rotate, Flip, Color adjust, WebP export)
     - Clean replaced file handling
     """
-    template_name = None  # We render HTML directly for maximum compatibility across Django versions
 
     class Media:
         css = {
