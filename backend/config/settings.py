@@ -1,17 +1,12 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Automatically load .env file if present
-_env_path = BASE_DIR / '.env'
-if _env_path.exists():
-    with open(_env_path, 'r', encoding='utf-8') as _f:
-        for _line in _f:
-            _line = _line.strip()
-            if _line and not _line.startswith('#') and '=' in _line:
-                _k, _v = _line.split('=', 1)
-                os.environ.setdefault(_k.strip(), _v.strip())
+# Automatically load .env file from backend/ or root project dir if present
+load_dotenv(BASE_DIR / '.env', override=True)
+load_dotenv(BASE_DIR.parent / '.env', override=True)
 
 from .settings_db import get_db_config
 

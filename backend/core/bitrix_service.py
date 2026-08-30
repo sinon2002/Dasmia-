@@ -20,8 +20,12 @@ class BitrixService:
             f"Форма: {lead.get_form_type_display()}",
         ]
 
-        for key, val in lead.payload.items():
-            comments.append(f"{key}: {val}")
+        if lead.page_url:
+            comments.append(f"Страница: {lead.page_url}")
+
+        if lead.payload and isinstance(lead.payload, dict):
+            for key, val in lead.payload.items():
+                comments.append(f"{key}: {val}")
 
         comments_str = "\n".join(comments)
 
