@@ -26,9 +26,9 @@ const galleryImages = [
 ];
 
 const ornaments = [
-  { src: "/assets/images/ornament-spa-red.webp", alt: "Кыргызский орнамент", size: 110, duration: 26 },
+  { src: "/assets/images/ornament-spa-red.webp", alt: "Кыргызский орнамент", size: 96, duration: 26 },
   { src: "/assets/images/ornament-spa-gold.webp", alt: "Кыргызский орнамент", size: 90, duration: 19, reverse: true },
-  { src: "/assets/images/ornament-spa-navy.webp", alt: "Кыргызский орнамент", size: 72, duration: 14 },
+  { src: "/assets/images/ornament-spa-navy.webp", alt: "Кыргызский орнамент", size: 84, duration: 14 },
 ];
 
 export default function SpaPage() {
@@ -98,10 +98,7 @@ export default function SpaPage() {
         <DirectionScrapbookSection
           heading={data.featuresSection.heading}
           features={scrapbookFeatures}
-          accentPhotos={[
-            { image: "/assets/images/spa-massage-bed-candles.webp", imageAlt: "Массажная кушетка с ароматическими маслами" },
-            { image: "/assets/images/spa-singing-bowls.webp", imageAlt: "Сеанс звуковой терапии поющими чашами" },
-          ]}
+          variant="compact"
           ornaments={ornaments}
           dataDirection="spa"
         />
