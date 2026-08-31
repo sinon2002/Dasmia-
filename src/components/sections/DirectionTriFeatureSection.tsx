@@ -35,6 +35,7 @@ interface DirectionTriFeatureSectionProps {
   features: [ScrapbookFeature, ScrapbookFeature, ScrapbookFeature];
   accentPhotos?: [AccentPhoto, AccentPhoto];
   ornaments?: Ornament[];
+  variant?: "arch" | "compact";
   dataDirection: string;
 }
 
@@ -43,6 +44,7 @@ export default function DirectionTriFeatureSection({
   features,
   accentPhotos,
   ornaments = DEFAULT_ORNAMENTS,
+  variant = "arch",
   dataDirection,
 }: DirectionTriFeatureSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -87,34 +89,142 @@ export default function DirectionTriFeatureSection({
           </span>
         </div>
 
-        {/* Big intro paragraph — feature 1, full width, dot indicator, scroll-linked fill */}
-        <div className="flex items-start gap-4 mb-16 lg:mb-20 reveal delay-100">
-          <span
-            className="mt-3 shrink-0 rounded-full"
-            style={{ width: "6px", height: "6px", background: "var(--gold)" }}
-            aria-hidden="true"
-          />
-          <div>
-            <p
-              className="text-label text-gold mb-4"
-              style={{ fontSize: "9px", letterSpacing: "0.2em" }}
-            >
-              {f1.number} — {f1.title}
-            </p>
-            <ScrollFillText
-              text={f1.description}
-              className="font-serif text-foreground"
-              style={{
-                fontFamily: "var(--font-cormorant)",
-                fontSize: "clamp(22px, 2.6vw, 32px)",
-                lineHeight: 1.5,
-                fontWeight: 400,
-                maxWidth: "760px",
-              }}
+        {/* Big intro paragraph — feature 1, full width, dot indicator, scroll-linked fill (arch variant only) */}
+        {variant === "arch" && (
+          <div className="flex items-start gap-4 mb-16 lg:mb-20 reveal delay-100">
+            <span
+              className="mt-3 shrink-0 rounded-full"
+              style={{ width: "6px", height: "6px", background: "var(--gold)" }}
+              aria-hidden="true"
             />
+            <div>
+              <p
+                className="text-label text-gold mb-4"
+                style={{ fontSize: "9px", letterSpacing: "0.2em" }}
+              >
+                {f1.number} — {f1.title}
+              </p>
+              <ScrollFillText
+                text={f1.description}
+                className="font-serif text-foreground"
+                style={{
+                  fontFamily: "var(--font-cormorant)",
+                  fontSize: "clamp(22px, 2.6vw, 32px)",
+                  lineHeight: 1.5,
+                  fontWeight: 400,
+                  maxWidth: "760px",
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
+        {variant === "compact" && (
+          <div className="lg:flex lg:gap-14 lg:items-start">
+            {/* Left column: small photo + big text, then two captions, then ornament row */}
+            <div className="lg:w-[44%] flex flex-col gap-12 lg:gap-14">
+              <div className="flex gap-6 items-start reveal delay-100">
+                <div
+                  className="relative shrink-0 overflow-hidden"
+                  style={{ width: "34%", aspectRatio: "4 / 3.6", borderRadius: "20px" }}
+                >
+                  <AppImage
+                    src={f1.image}
+                    alt={f1.imageAlt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 40vw, 220px"
+                  />
+                </div>
+                <ScrollFillText
+                  text={f1.description}
+                  className="font-serif text-foreground flex-1"
+                  style={{
+                    fontFamily: "var(--font-cormorant)",
+                    fontSize: "clamp(24px, 2.9vw, 36px)",
+                    lineHeight: 1.45,
+                    fontWeight: 400,
+                  }}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-6 reveal delay-150">
+                <div>
+                  <p
+                    className="text-label mb-3"
+                    style={{ fontSize: "8.5px", letterSpacing: "0.18em", color: "var(--muted-foreground)" }}
+                  >
+                    {f2.number} — {f2.title}
+                  </p>
+                  <p className="text-muted-foreground" style={{ fontSize: "13px", lineHeight: 1.85 }}>
+                    {f2.description}
+                  </p>
+                </div>
+                <div>
+                  <p
+                    className="text-label text-gold mb-3"
+                    style={{ fontSize: "8.5px", letterSpacing: "0.18em" }}
+                  >
+                    {f3.number} — {f3.title}
+                  </p>
+                  <p className="text-muted-foreground" style={{ fontSize: "13px", lineHeight: 1.85 }}>
+                    {f3.description}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-row items-center gap-6 reveal delay-200">
+                {ornaments.map((o) => (
+                  <div
+                    key={o.src}
+                    className="relative shrink-0"
+                    style={{
+                      width: `${o.size}px`,
+                      height: `${o.size}px`,
+                      animation: `spinSlow ${o.duration}s linear infinite${o.reverse ? " reverse" : ""}`,
+                    }}
+                  >
+                    <AppImage
+                      src={o.src}
+                      alt={o.alt}
+                      fill
+                      className="object-contain"
+                      sizes={`${o.size + 20}px`}
+                    />
+                  </div>
+                ))}
+              </div>
+              <style jsx>{`
+                @keyframes spinSlow {
+                  from {
+                    transform: rotate(0deg);
+                  }
+                  to {
+                    transform: rotate(360deg);
+                  }
+                }
+              `}</style>
+            </div>
+
+            {/* Right column: single large photo */}
+            <div className="lg:w-[52%] mt-12 lg:mt-16 reveal delay-250">
+              <div
+                className="relative w-full overflow-hidden"
+                style={{ aspectRatio: "4 / 3.6", borderRadius: "24px" }}
+              >
+                <AppImage
+                  src={f3.image}
+                  alt={f3.imageAlt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 90vw, 560px"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {variant === "arch" && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-14 lg:gap-y-0">
           {/* Small caption — feature 2, upper-left */}
           <div className="lg:col-span-4 lg:col-start-3 lg:mt-4 reveal delay-150 order-1">
@@ -234,6 +344,7 @@ export default function DirectionTriFeatureSection({
             </div>
           </div>
         </div>
+        )}
       </div>
     </section>
   );
