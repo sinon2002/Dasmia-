@@ -1349,4 +1349,178 @@ export const directionsContent: Record<string, Record<Language, DirectionPageDat
       },
     },
   },
+
+  events: {
+    ru: {
+      hero: {
+        category: "МЕРОПРИЯТИЯ",
+        title: "МЕРОПРИЯТИЯ",
+        description:
+          "Пространство для деловых событий любого масштаба. Конференции, форумы, тренинги и корпоративные встречи с профессиональным техническим оснащением.",
+        imageAlt: "Конференц-зал DASMIA — пространство для деловых мероприятий",
+      },
+      intro: {
+        label: "О НАПРАВЛЕНИИ",
+        heading: "Деловая встреча",
+        headingItalic: "на уровне международных стандартов.",
+        body: "DASMIA — это не только банкеты и торжества, но и полноценная площадка для деловых событий. Залы оснащены современным звуковым и световым оборудованием, LED-экранами и системами трансляции. Мы организуем форумы, тренинги, семинары и корпоративные встречи любого масштаба — от камерной сессии до форума на несколько сотен участников.",
+        details: [
+          { label: "ВМЕСТИМОСТЬ", value: "до 500 участников" },
+          { label: "ЗАЛОВ", value: "Несколько залов" },
+          { label: "ОСНАЩЕНИЕ", value: "Свет, звук, экраны" },
+          { label: "ФОРМАТ", value: "Конференции и тренинги" },
+        ],
+      },
+      featuresSection: {
+        label: "ВОЗМОЖНОСТИ",
+        heading: "Формат под любую задачу",
+        features: [
+          {
+            number: "01",
+            title: "КОНФЕРЕНЦИИ И ФОРУМЫ",
+            description:
+              "Просторные залы для деловых конференций и форумов с возможностью трансляции и синхронного перевода.",
+          },
+          {
+            number: "02",
+            title: "ТРЕНИНГИ И СЕМИНАРЫ",
+            description:
+              "Камерные пространства для тренингов, мастер-классов и корпоративного обучения с гибкой рассадкой.",
+          },
+          {
+            number: "03",
+            title: "ТЕХНИЧЕСКОЕ ОСНАЩЕНИЕ",
+            description:
+              "Профессиональный звук, свет, LED-экраны и сцена — всё для яркой подачи вашего мероприятия.",
+          },
+        ],
+      },
+      gallery: {
+        label: "ГАЛЕРЕЯ",
+        heading: "Пространство для деловых событий",
+      },
+      cta: {
+        heading: "Ваше событие.",
+        headingItalic: "Наше пространство.",
+        description:
+          "Оставьте заявку — наш менеджер поможет подобрать формат зала и техническое оснащение под ваше мероприятие.",
+        primaryLabel: "ЗАБРОНИРОВАТЬ ЗАЛ",
+        secondaryLabel: "ИЛИ ПОЗВОНИТЕ НАМ",
+      },
+    },
+    ky: {
+      hero: {
+        category: "ИШ-ЧАРАЛАР",
+        title: "ИШ-ЧАРАЛАР",
+        description:
+          "Ар кандай масштабдагы иш-чаралар үчүн мейкиндик. Конференциялар, форумдар, тренингдер жана корпоративдик жолугушуулар кесипкөй техникалык жабдуулар менен.",
+        imageAlt: "DASMIA конференц-залы — иштиктүү иш-чаралар үчүн мейкиндик",
+      },
+      intro: {
+        label: "БАГЫТ ЖӨНҮНДӨ",
+        heading: "Иштиктүү жолугушуу",
+        headingItalic: "эл аралык стандарттар деңгээлинде.",
+        body: "DASMIA — бул жөн гана банкеттер эмес, ошондой эле иштиктүү иш-чаралар үчүн толук кандуу аянтча. Залдар заманбап үн жана жарык жабдуулары, LED-экрандар жана трансляция системалары менен жабдылган. Биз ар кандай масштабдагы форумдарды, тренингдерди, семинарларды жана корпоративдик жолугушууларды уюштурабыз.",
+        details: [
+          { label: "СЫЙЫМДУУЛУК", value: "500 катышуучуга чейин" },
+          { label: "ЗАЛДАР", value: "Бир нече зал" },
+          { label: "ЖАБДУУ", value: "Жарык, үн, экрандар" },
+          { label: "ФОРМАТ", value: "Конференция жана тренинг" },
+        ],
+      },
+      featuresSection: {
+        label: "МҮМКҮНЧҮЛҮКТӨР",
+        heading: "Ар бир максатка ылайык формат",
+        features: [
+          {
+            number: "01",
+            title: "КОНФЕРЕНЦИЯ ЖАНА ФОРУМДАР",
+            description:
+              "Трансляция жана синхрондук котормо мүмкүнчүлүгү бар иштиктүү конференциялар жана форумдар үчүн кеңири залдар.",
+          },
+          {
+            number: "02",
+            title: "ТРЕНИНГ ЖАНА СЕМИНАРЛАР",
+            description:
+              "Ийкемдүү отургузуу менен тренингдер, мастер-класстар жана корпоративдик окутуу үчүн жайлуу мейкиндиктер.",
+          },
+          {
+            number: "03",
+            title: "ТЕХНИКАЛЫК ЖАБДУУ",
+            description:
+              "Кесипкөй үн, жарык, LED-экрандар жана сахна — иш-чараңызды жаркырата өткөрүү үчүн бардыгы.",
+          },
+        ],
+      },
+      gallery: {
+        label: "ГАЛЕРЕЯ",
+        heading: "Иштиктүү иш-чаралар үчүн мейкиндик",
+      },
+      cta: {
+        heading: "Сиздин иш-чараңыз.",
+        headingItalic: "Биздин мейкиндик.",
+        description:
+          "Арыз калтырыңыз — биздин менеджер залдын форматын жана техникалык жабдууну тандап берет.",
+        primaryLabel: "ЗАЛДЫ ЭЭЛӨӨ",
+        secondaryLabel: "ЖЕ БИЗГЕ ЧАЛЫҢЫЗ",
+      },
+    },
+    en: {
+      hero: {
+        category: "EVENTS",
+        title: "EVENTS",
+        description:
+          "A venue for business events of any scale. Conferences, forums, trainings, and corporate meetings with professional technical equipment.",
+        imageAlt: "DASMIA Conference Hall — space for business events",
+      },
+      intro: {
+        label: "ABOUT DIRECTION",
+        heading: "A business meeting",
+        headingItalic: "on an international standard.",
+        body: "DASMIA is more than banquets and celebrations — it is a full-scale venue for business events. Our halls are equipped with modern sound and lighting systems, LED screens, and broadcast capability. We host forums, trainings, seminars, and corporate meetings of any scale, from an intimate session to a forum for several hundred attendees.",
+        details: [
+          { label: "CAPACITY", value: "Up to 500 attendees" },
+          { label: "HALLS", value: "Multiple halls" },
+          { label: "EQUIPMENT", value: "Light, sound, screens" },
+          { label: "FORMAT", value: "Conferences & trainings" },
+        ],
+      },
+      featuresSection: {
+        label: "CAPABILITIES",
+        heading: "A format for every purpose",
+        features: [
+          {
+            number: "01",
+            title: "CONFERENCES & FORUMS",
+            description:
+              "Spacious halls for business conferences and forums with broadcast and simultaneous interpretation capability.",
+          },
+          {
+            number: "02",
+            title: "TRAININGS & SEMINARS",
+            description:
+              "Intimate spaces for trainings, workshops, and corporate learning with flexible seating layouts.",
+          },
+          {
+            number: "03",
+            title: "TECHNICAL EQUIPMENT",
+            description:
+              "Professional sound, lighting, LED screens, and staging — everything to make your event shine.",
+          },
+        ],
+      },
+      gallery: {
+        label: "GALLERY",
+        heading: "Space for Business Events",
+      },
+      cta: {
+        heading: "Your event.",
+        headingItalic: "Our venue.",
+        description:
+          "Submit your request — our manager will help choose the right hall format and technical equipment for your event.",
+        primaryLabel: "BOOK A HALL",
+        secondaryLabel: "OR CALL US DIRECTLY",
+      },
+    },
+  },
 };
