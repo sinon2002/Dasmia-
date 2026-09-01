@@ -27,9 +27,12 @@ const galleryImages = [
 ];
 
 const ornaments = [
-  { src: "/assets/images/ornament-ethno-blue.webp", alt: "Кыргызский орнамент", size: 108, duration: 24 },
-  { src: "/assets/images/ornament-ethno-red.webp", alt: "Кыргызский орнамент", size: 86, duration: 18, reverse: true },
-  { src: "/assets/images/ornament-ethno-gold.webp", alt: "Кыргызский орнамент", size: 70, duration: 13 },
+  { src: "/assets/images/ornament-ethno-blue.webp", alt: "Кыргызский орнамент", size: 96, duration: 24 },
+];
+
+const galleryOrnaments = [
+  { src: "/assets/images/ornament-ethno-red.webp", alt: "Кыргызский орнамент", size: 60, duration: 18, reverse: true },
+  { src: "/assets/images/ornament-ethno-gold.webp", alt: "Кыргызский орнамент", size: 60, duration: 13 },
 ];
 
 export default function EthnoVillagePage() {
@@ -102,6 +105,7 @@ export default function EthnoVillagePage() {
         <DirectionScrapbookSection
           heading={data.featuresSection.heading}
           features={scrapbookFeatures}
+          variant="heritage"
           ornaments={ornaments}
           dataDirection="ethno-village"
         />
@@ -109,6 +113,7 @@ export default function EthnoVillagePage() {
         <DirectionStaticGallery
           tagline="Пространство, где кочевая культура оживает"
           images={galleryImages}
+          ornaments={galleryOrnaments}
           dataDirection="ethno-village"
         />
 
