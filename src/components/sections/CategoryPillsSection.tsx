@@ -126,7 +126,7 @@ export default function CategoryPillsSection() {
                 flex: "1 1 0%",
                 minWidth: 0,
                 height: "clamp(320px, 46vw, 460px)",
-                borderRadius: "999px",
+                borderRadius: "16px",
                 animation: `fadeInScale 0.8s ease-out ${0.15 + i * 0.1}s both`,
                 transition: "flex-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
