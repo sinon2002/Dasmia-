@@ -100,14 +100,14 @@ export default function ContactMapSection() {
             </div>
           </div>
 
-          {/* Right — map, square */}
+          {/* Right — map inside an elliptical mask, compact size */}
           <div className="lg:col-span-8 reveal-right delay-150">
             <div
               className="relative w-full overflow-hidden mx-auto"
               style={{
-                aspectRatio: "1 / 1",
-                borderRadius: "12px",
-                maxWidth: "760px",
+                aspectRatio: "16 / 10",
+                borderRadius: "50%",
+                maxWidth: "620px",
               }}
             >
               <iframe
@@ -115,8 +115,15 @@ export default function ContactMapSection() {
                 title="DASMIA на карте"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="absolute inset-0 border-0"
-                style={{ width: "100%", height: "100%" }}
+                className="absolute border-0"
+                style={{
+                  // Oversize the iframe so its corners are cropped by the
+                  // elliptical mask instead of leaving empty corners.
+                  top: "-15%",
+                  left: "-15%",
+                  width: "130%",
+                  height: "130%",
+                }}
               />
             </div>
           </div>
