@@ -11,9 +11,9 @@ import { submitLead } from "@/lib/api";
 /* ── DASMIA Wordmark (Footer) — actual logo file ── */
 function DasmiaLogo() {
   return (
-    <div className="relative select-none" style={{ width: "150px", height: "33px" }}>
+    <div className="relative select-none" style={{ width: "150px", height: "45px" }}>
       <AppImage
-        src="/assets/images/dasmia-logo.png"
+        src="/assets/images/dasmia-logo-fitness.webp"
         alt="DASMIA"
         fill
         className="object-contain object-left"
@@ -165,7 +165,7 @@ export default function Footer() {
           transform: scaleX(1);
         }
       `}</style>
-      <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16 py-16 md:py-20 relative z-10">
+      <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16 py-10 md:py-12 relative z-10">
         {/* Top row — logo+nav / request form, line-group.kz layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
           {/* Logo + nav categories */}
@@ -294,7 +294,7 @@ export default function Footer() {
 
         {/* Directions — two-column mini list, line-group.kz style */}
         <div
-          className="mt-16 pt-10 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 border-t"
+          className="mt-8 pt-6 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 border-t"
           style={{ borderColor: "rgba(0,0,0,0.1)" }}
         >
           {directionsColA.map((dir) => (
@@ -327,7 +327,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div
-          className="mt-10 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-t"
+          className="mt-6 pt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-t"
           style={{ borderColor: "rgba(0,0,0,0.1)" }}
         >
           <a
