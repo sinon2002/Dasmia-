@@ -203,12 +203,6 @@ export default function HeroSection() {
               >
                 {current.title}
               </span>
-              <span
-                className="text-label text-muted-foreground"
-                style={{ fontSize: "10px", letterSpacing: "0.14em" }}
-              >
-                {current.address}
-              </span>
             </Link>
 
             <Link
@@ -229,12 +223,6 @@ export default function HeroSection() {
                 }}
               >
                 {next.title}
-              </span>
-              <span
-                className="text-label text-muted-foreground"
-                style={{ fontSize: "10px", letterSpacing: "0.14em" }}
-              >
-                {next.address}
               </span>
             </Link>
           </div>
