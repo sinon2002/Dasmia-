@@ -8,7 +8,7 @@ import DirectionIntro from "@/components/sections/DirectionIntro";
 import DirectionShowcaseGrid from "@/components/sections/DirectionShowcaseGrid";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
-import { fetchDirection, type ApiDirection } from "@/lib/api";
+import { fetchDirection, getApiGalleryImageTitle, type ApiDirection } from "@/lib/api";
 
 const stripImages = [
   { url: "/assets/images/IMG_9009.webp", alt: "Главный банкетный зал DASMIA", arch: true },
@@ -50,7 +50,7 @@ export default function BanquetPage() {
           .sort((a, b) => a.order - b.order)
           .map((img) => ({
             url: img.image,
-            alt: img.title || apiDirection.name,
+            alt: getApiGalleryImageTitle(img, language, apiDirection.name),
             arch: img.span === "wide",
           }))
       : null;
