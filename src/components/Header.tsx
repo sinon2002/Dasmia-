@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import AppImage from "@/components/ui/AppImage";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SUPPORTED_LANGUAGES, LANGUAGE_LABELS, t, Language } from "@/lib/i18n";
@@ -306,7 +307,18 @@ export default function Header() {
               className="flex items-center group"
               aria-label="DASMIA — Главная"
             >
-              <DasmiaLogo className="transition-opacity duration-300 group-hover:opacity-80" />
+              <div
+                className="relative select-none transition-opacity duration-300 group-hover:opacity-80"
+                style={{ width: "150px", height: "45px" }}
+              >
+                <AppImage
+                  src="/assets/images/dasmia-logo-fitness.webp"
+                  alt="DASMIA"
+                  fill
+                  className="object-contain object-left"
+                  sizes="150px"
+                />
+              </div>
             </Link>
 
             {/* Desktop Nav */}
@@ -325,8 +337,13 @@ export default function Header() {
                     <a
                       href={getHref(link.href)}
                       onClick={(e) => handleAnchorClick(e, link.href)}
-                      className="nav-link flex items-center gap-1.5 text-label text-muted-foreground hover:text-foreground transition-colors duration-300"
-                      style={{ fontSize: "10px", letterSpacing: "0.18em" }}
+                      className="nav-link flex items-center gap-1.5 text-label text-muted-foreground hover:text-foreground hover:border-gold/50 transition-colors duration-300 border rounded-sm"
+                      style={{
+                        fontSize: "13px",
+                        letterSpacing: "0.14em",
+                        padding: "8px 14px",
+                        borderColor: "rgba(185,150,90,0.25)",
+                      }}
                       aria-haspopup="true"
                       aria-expanded={directionsOpen}
                     >
@@ -393,8 +410,13 @@ export default function Header() {
                     key={link.label}
                     href={getHref(link.href)}
                     onClick={(e) => handleAnchorClick(e, link.href)}
-                    className="nav-link text-label text-muted-foreground hover:text-foreground transition-colors duration-300"
-                    style={{ fontSize: "10px", letterSpacing: "0.18em" }}
+                    className="nav-link text-label text-muted-foreground hover:text-foreground hover:border-gold/50 transition-colors duration-300 border rounded-sm"
+                    style={{
+                      fontSize: "13px",
+                      letterSpacing: "0.14em",
+                      padding: "8px 14px",
+                      borderColor: "rgba(185,150,90,0.25)",
+                    }}
                   >
                     {link.label}
                   </a>
