@@ -185,7 +185,7 @@ const DIRECTIONS_SUBMENU = [
   { label: "Бассейны", href: "/pools" },
   { label: "SPA", href: "/spa" },
   { label: "Этно-Село", href: "/ethno-village" },
-  { label: "Мероприятия", href: "#contact" },
+  { label: "Мероприятия", href: "/events" },
 ];
 
 export default function Header() {

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DirectionShowcaseHero from "@/components/sections/DirectionShowcaseHero";
@@ -8,6 +8,7 @@ import DirectionIntro from "@/components/sections/DirectionIntro";
 import DirectionShowcaseGrid from "@/components/sections/DirectionShowcaseGrid";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
+import { fetchDirection, type ApiDirection } from "@/lib/api";
 
 const stripImages = [
   { url: "/assets/images/IMG_9009.webp", alt: "Главный банкетный зал DASMIA", arch: true },
@@ -28,8 +29,41 @@ export default function BanquetPage() {
   const { language } = useLanguage();
   const data = directionsContent.banquet[language] || directionsContent.banquet.ru;
 
+  // CMS-backed images from the Django backend, when available. Stays
+  // null (and the page keeps using the static arrays above) if the
+  // backend/admin isn't reachable or hasn't been filled in yet.
+  const [apiDirection, setApiDirection] = useState<ApiDirection | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchDirection("banquet").then((result) => {
+      if (!cancelled) setApiDirection(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const galleryFromApi =
+    apiDirection && apiDirection.gallery_images.length > 0
+      ? [...apiDirection.gallery_images]
+          .sort((a, b) => a.order - b.order)
+          .map((img) => ({
+            url: img.image,
+            alt: img.title || apiDirection.name,
+            arch: img.span === "wide",
+          }))
+      : null;
+
+  const heroImages = galleryFromApi || stripImages;
+
+  const hallImagesResolved =
+    galleryFromApi && galleryFromApi.length > 0
+      ? galleryFromApi.slice(0, 3).map((img) => img.url)
+      : hallImages;
+
   const showcaseItems = data.featuresSection.features.map((f, i) => ({
-    image: hallImages[i] || hallImages[0],
+    image: hallImagesResolved[i] || hallImagesResolved[0],
     imageAlt: f.title,
     title: f.title,
     description: f.description,
@@ -45,7 +79,7 @@ export default function BanquetPage() {
           category={data.hero.category}
           title={`${data.hero.title} ${data.hero.subtitle || ""}`.trim()}
           description={data.hero.description}
-          images={stripImages}
+          images={heroImages}
           dataDirection="banquet"
         />
 

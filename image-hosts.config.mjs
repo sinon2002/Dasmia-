@@ -23,4 +23,18 @@ export const imageHosts = [
         protocol: 'https',
         hostname: 'i.pinimg.com',
     },
+    {
+        // Django backend (local dev) — direction cover images & gallery
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/media/**',
+    },
+    {
+        // Django backend (local dev, alt host) — direction cover images & gallery
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '8000',
+        pathname: '/media/**',
+    },
 ];

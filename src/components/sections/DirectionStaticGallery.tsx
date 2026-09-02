@@ -8,10 +8,19 @@ interface GalleryImage {
   alt: string;
 }
 
+interface GalleryOrnament {
+  src: string;
+  alt: string;
+  size: number;
+  duration: number;
+  reverse?: boolean;
+}
+
 interface DirectionStaticGalleryProps {
   tagline: string;
   images: GalleryImage[];
   moreLabel?: string;
+  ornaments?: GalleryOrnament[];
   dataDirection: string;
 }
 
@@ -19,6 +28,7 @@ export default function DirectionStaticGallery({
   tagline,
   images,
   moreLabel = "ПОКАЗАТЬ БОЛЬШЕ ФОТО",
+  ornaments,
   dataDirection,
 }: DirectionStaticGalleryProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -55,17 +65,52 @@ export default function DirectionStaticGallery({
       data-content="static-gallery"
     >
       <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16">
-        <p
-          className="text-gold mb-10 reveal"
-          style={{
-            fontFamily: "var(--font-cormorant)",
-            fontSize: "clamp(16px, 1.8vw, 22px)",
-            fontStyle: "italic",
-            lineHeight: 1.4,
-          }}
-        >
-          {tagline}
-        </p>
+        <div className="flex items-start justify-between gap-6 mb-10">
+          <p
+            className="text-gold reveal"
+            style={{
+              fontFamily: "var(--font-cormorant)",
+              fontSize: "clamp(16px, 1.8vw, 22px)",
+              fontStyle: "italic",
+              lineHeight: 1.4,
+            }}
+          >
+            {tagline}
+          </p>
+          {ornaments && ornaments.length > 0 && (
+            <div className="hidden sm:flex items-center gap-4 shrink-0 reveal delay-100">
+              {ornaments.map((o) => (
+                <div
+                  key={o.src}
+                  className="relative shrink-0"
+                  style={{
+                    width: `${o.size}px`,
+                    height: `${o.size}px`,
+                    animation: `spinSlowGallery ${o.duration}s linear infinite${o.reverse ? " reverse" : ""}`,
+                  }}
+                >
+                  <AppImage
+                    src={o.src}
+                    alt={o.alt}
+                    fill
+                    className="object-contain"
+                    sizes={`${o.size + 20}px`}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          <style jsx>{`
+            @keyframes spinSlowGallery {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+          `}</style>
+        </div>
 
         <div className="flex gap-2.5 overflow-x-auto lg:overflow-visible lg:flex-wrap pb-2 reveal delay-100">
           {images.map((img, i) => (

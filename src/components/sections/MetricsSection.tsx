@@ -172,8 +172,9 @@ export default function MetricsSection() {
 
   return (
     <section
+      id="about"
       ref={sectionRef}
-      className="relative border-t overflow-hidden"
+      className="relative border-t overflow-hidden scroll-mt-24"
       style={{
         backgroundColor: "var(--charcoal)",
         borderColor: "rgba(255,255,255,0.06)",

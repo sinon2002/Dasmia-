@@ -33,8 +33,9 @@ export default function ContactMapSection() {
 
   return (
     <section
+      id="contact"
       ref={sectionRef}
-      className="relative border-t"
+      className="relative border-t scroll-mt-24"
       style={{
         backgroundColor: "var(--background)",
         borderColor: "rgba(255,255,255,0.06)",
