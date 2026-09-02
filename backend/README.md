@@ -181,3 +181,24 @@ Expected response:
 
 Check `http://localhost:8000/admin/core/leadsubmission/` to verify that the lead was created and synchronized to Bitrix24 (`Status: Synced Successfully`).
 
+---
+
+### 7. Public CMS API Endpoints (GET)
+
+All CMS read endpoints support multilingual output (Russian, Kyrgyz, English) and 15-minute caching.
+
+| Endpoint | Method | Description & Parameters |
+| :--- | :--- | :--- |
+| `/api/v1/directions/` | `GET` | List all active business directions with nested gallery images |
+| `/api/v1/directions/<id>/` or `/<slug>/` | `GET` | Retrieve direction details by ID (e.g. `1`) or Slug (e.g. `banquet`, `restaurant`, `fitness`) |
+| `/api/v1/direction-gallery/` | `GET` | List all active gallery images (Supports `?direction=<id|slug>`, `?direction_slug=<slug>`, `?span=<normal\|wide\|tall>`) |
+| `/api/v1/direction-gallery/<id>/` | `GET` | Retrieve gallery image detail by ID (Alias: `/api/v1/gallery-images/<id>/`) |
+| `/api/v1/media-assets/` | `GET` | List media library assets (Supports `?category=<general\|banquet\|restaurant\|chaikhana\|ethno\|pools\|spa\|fitness>`, `?search=<keyword>`. Alias: `/api/v1/media/`) |
+| `/api/v1/media-assets/<id>/` | `GET` | Retrieve media asset detail by ID (Alias: `/api/v1/media/<id>/`) |
+| `/api/v1/services/` | `GET` | List services (Supports `?direction_id=<id>` or `?direction=<slug>`) |
+| `/api/v1/services/<id>/` | `GET` | Retrieve service detail by ID |
+| `/api/v1/news/` | `GET` | List active news and press releases |
+| `/api/v1/news/<id>/` or `/<slug>/` | `GET` | Retrieve news article detail by ID or Slug |
+| `/api/v1/sitemap.xml` | `GET` | XML Sitemap with dynamic routes |
+
+

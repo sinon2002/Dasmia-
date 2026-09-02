@@ -41,17 +41,20 @@ describe("Direction Sections Components", () => {
     wrap(
       <DirectionCenteredHero
         category="СПА & САУНЫ"
-        title="DASMIA"
-        subtitle="SPA"
+        title="DASMIA SPA"
         description="Гармония тела и духа в премиальном SPA-комплексе"
-        imageUrl="/assets/images/spa.jpg"
-        imageAlt="SPA Complex"
+        backgroundImage="/assets/images/spa.jpg"
+        backgroundAlt="SPA Complex"
+        ctaLabel="ЗАБРОНИРОВАТЬ"
+        hours="10:00 — 23:00"
+        seats="До 50 гостей"
+        phone="+996 (312) 54-88-88"
         dataDirection="spa"
       />
     );
 
     expect(screen.getByText("СПА & САУНЫ")).toBeInTheDocument();
-    expect(screen.getAllByText("DASMIA").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("DASMIA SPA").length).toBeGreaterThan(0);
     expect(screen.getByText("Гармония тела и духа в премиальном SPA-комплексе")).toBeInTheDocument();
   });
 
@@ -66,6 +69,7 @@ describe("Direction Sections Components", () => {
           { label: "ВМЕСТИМОСТЬ", value: "до 1000 гостей" },
           { label: "ПЛОЩАДЬ", value: "2500 м²" },
         ]}
+        dataDirection="banquet"
       />
     );
 
@@ -85,6 +89,9 @@ describe("Direction Sections Components", () => {
           { number: "01", title: "Премиальный сервис", description: "Индивидуальный подход к каждому гостю" },
           { number: "02", title: "Шеф-повара", description: "Авторская кухня высшего уровня" },
         ]}
+        imageUrl="/assets/images/features.jpg"
+        imageAlt="Features"
+        dataDirection="banquet"
       />
     );
 
@@ -104,7 +111,7 @@ describe("Direction Sections Components", () => {
         description="Свяжитесь с нами для индивидуального расчета"
         primaryLabel="ОСТАВИТЬ ЗАЯВКУ"
         secondaryLabel="СКАЧАТЬ ПРЕЗЕНТАЦИЮ"
-        formType="banquet"
+        dataDirection="banquet"
       />
     );
 
@@ -123,6 +130,7 @@ describe("Direction Sections Components", () => {
           { url: "/assets/img1.jpg", alt: "Фото 1", span: "wide" },
           { url: "/assets/img2.jpg", alt: "Фото 2", span: "normal" },
         ]}
+        dataDirection="banquet"
       />
     );
 

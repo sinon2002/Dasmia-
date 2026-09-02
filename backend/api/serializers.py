@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from core.models import LeadSubmission
-from cms.models import Direction, Service, News
+from cms.models import Direction, DirectionGalleryImage, Service, News, MediaAsset
 
 class BaseLeadSerializer(serializers.ModelSerializer):
     """
@@ -67,17 +67,48 @@ class FeedbackSerializer(BaseLeadSerializer):
 
 
 # Public CMS serializers
+class DirectionGalleryImageSerializer(serializers.ModelSerializer):
+    direction_slug = serializers.CharField(source='direction.slug', read_only=True)
+    direction_name = serializers.CharField(source='direction.name', read_only=True)
+    span_display = serializers.CharField(source='get_span_display', read_only=True)
+
+    class Meta:
+        model = DirectionGalleryImage
+        fields = '__all__'
+
+
 class DirectionSerializer(serializers.ModelSerializer):
+    gallery_images = serializers.SerializerMethodField()
+
     class Meta:
         model = Direction
         fields = '__all__'
+
+    def get_gallery_images(self, obj):
+        if hasattr(obj, '_prefetched_objects_cache') and 'gallery_images' in obj._prefetched_objects_cache:
+            images = [img for img in obj.gallery_images.all() if img.is_active]
+            images.sort(key=lambda x: (x.order, x.id))
+        else:
+            images = obj.gallery_images.filter(is_active=True).order_by('order', 'id')
+        return DirectionGalleryImageSerializer(images, many=True, context=self.context).data
+
+
+class MediaAssetSerializer(serializers.ModelSerializer):
+    category_display = serializers.CharField(source='get_category_display', read_only=True)
+
+    class Meta:
+        model = MediaAsset
+        fields = '__all__'
+
 
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = '__all__'
 
+
 class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = '__all__'
+

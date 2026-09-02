@@ -6,7 +6,7 @@ from rest_framework import status
 from unittest.mock import patch, MagicMock
 
 from core.models import LeadSubmission
-from cms.models import Direction, Service, News
+from cms.models import Direction, DirectionGalleryImage, MediaAsset, Service, News
 from core.bitrix_service import BitrixService
 
 
@@ -215,7 +215,46 @@ class CmsApiTests(TestCase):
             name_ru='Рестораны',
             name_ky='Ресторандар',
             name_en='Restaurants',
+            description_ru='Лучшие рестораны',
+            is_active=True,
+            order=1
+        )
+        self.inactive_direction = Direction.objects.create(
+            slug='inactive-dir',
+            name_ru='Неактивное направление',
+            is_active=False,
+            order=99
+        )
+        self.gallery_img1 = DirectionGalleryImage.objects.create(
+            direction=self.direction,
+            title_ru='Основной зал',
+            span='wide',
+            order=1,
             is_active=True
+        )
+        self.gallery_img2 = DirectionGalleryImage.objects.create(
+            direction=self.direction,
+            title_ru='VIP зал',
+            span='normal',
+            order=2,
+            is_active=True
+        )
+        self.gallery_img_inactive = DirectionGalleryImage.objects.create(
+            direction=self.direction,
+            title_ru='Скрытое фото',
+            span='normal',
+            order=3,
+            is_active=False
+        )
+        self.media_asset1 = MediaAsset.objects.create(
+            title_ru='Логотип DASMIA',
+            category='general',
+            description_ru='Фирменный логотип',
+        )
+        self.media_asset2 = MediaAsset.objects.create(
+            title_ru='Банкетный зал Хан-Тенир',
+            category='banquet',
+            description_ru='Зал на 1000 персон',
         )
         self.service = Service.objects.create(
             direction=self.direction,
@@ -230,12 +269,140 @@ class CmsApiTests(TestCase):
             is_active=True
         )
 
-    def test_get_directions(self):
+    # Direction Tests
+    def test_get_directions_list(self):
         url = reverse('direction-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertGreaterEqual(len(response.data), 1)
+        # Verify inactive direction is excluded
+        slugs = [d['slug'] for d in response.data]
+        self.assertIn('restaurants', slugs)
+        self.assertNotIn('inactive-dir', slugs)
+        # Verify nested gallery_images are present and only active ones are returned
+        rest_data = next(d for d in response.data if d['slug'] == 'restaurants')
+        self.assertIn('gallery_images', rest_data)
+        gallery_titles = [g['title_ru'] for g in rest_data['gallery_images']]
+        self.assertIn('Основной зал', gallery_titles)
+        self.assertNotIn('Скрытое фото', gallery_titles)
 
+    def test_get_direction_detail_by_id(self):
+        url = reverse('direction-detail-by-id', kwargs={'pk': self.direction.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['slug'], 'restaurants')
+        self.assertEqual(response.data['name_ru'], 'Рестораны')
+        self.assertEqual(len(response.data['gallery_images']), 2)
+
+    def test_get_direction_detail_by_slug(self):
+        url = reverse('direction-detail', kwargs={'slug': 'restaurants'})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['id'], self.direction.id)
+        self.assertEqual(response.data['name_ru'], 'Рестораны')
+
+    def test_get_direction_detail_not_found(self):
+        url = reverse('direction-detail-by-id', kwargs={'pk': 99999})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+        url_slug = reverse('direction-detail', kwargs={'slug': 'non-existent-slug'})
+        response_slug = self.client.get(url_slug)
+        self.assertEqual(response_slug.status_code, status.HTTP_404_NOT_FOUND)
+
+    # DirectionGalleryImage Tests
+    def test_get_direction_gallery_list(self):
+        url = reverse('direction-gallery-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertGreaterEqual(len(response.data), 2)
+        # Verify inactive images are excluded
+        titles = [img['title_ru'] for img in response.data]
+        self.assertIn('Основной зал', titles)
+        self.assertNotIn('Скрытое фото', titles)
+
+    def test_get_direction_gallery_alias_list(self):
+        url = reverse('gallery-image-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertGreaterEqual(len(response.data), 2)
+
+    def test_filter_direction_gallery_by_direction_id(self):
+        url = reverse('direction-gallery-list')
+        response = self.client.get(url, {'direction_id': self.direction.id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data[0]['direction_slug'], 'restaurants')
+
+    def test_filter_direction_gallery_by_direction_slug(self):
+        url = reverse('direction-gallery-list')
+        response = self.client.get(url, {'direction_slug': 'restaurants'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+    def test_filter_direction_gallery_by_span(self):
+        url = reverse('direction-gallery-list')
+        response = self.client.get(url, {'span': 'wide'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['title_ru'], 'Основной зал')
+
+    def test_get_direction_gallery_detail(self):
+        url = reverse('direction-gallery-detail', kwargs={'pk': self.gallery_img1.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title_ru'], 'Основной зал')
+        self.assertEqual(response.data['span'], 'wide')
+        self.assertEqual(response.data['direction_slug'], 'restaurants')
+
+    def test_get_direction_gallery_detail_not_found(self):
+        url = reverse('direction-gallery-detail', kwargs={'pk': 99999})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # MediaAsset Tests
+    def test_get_media_assets_list(self):
+        url = reverse('media-asset-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertGreaterEqual(len(response.data), 2)
+
+    def test_get_media_assets_alias_list(self):
+        url = reverse('media-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertGreaterEqual(len(response.data), 2)
+
+    def test_filter_media_assets_by_category(self):
+        url = reverse('media-asset-list')
+        response = self.client.get(url, {'category': 'banquet'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['title_ru'], 'Банкетный зал Хан-Тенир')
+        self.assertEqual(response.data[0]['category'], 'banquet')
+        self.assertIn('Банкеты', response.data[0]['category_display'])
+
+    def test_search_media_assets(self):
+        url = reverse('media-asset-list')
+        response = self.client.get(url, {'search': 'Логотип'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['title_ru'], 'Логотип DASMIA')
+
+    def test_get_media_asset_detail(self):
+        url = reverse('media-asset-detail', kwargs={'pk': self.media_asset1.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title_ru'], 'Логотип DASMIA')
+        self.assertEqual(response.data['category'], 'general')
+        self.assertEqual(response.data['category_display'], 'Общее')
+
+    def test_get_media_asset_detail_not_found(self):
+        url = reverse('media-asset-detail', kwargs={'pk': 99999})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # Service Tests
     def test_get_services(self):
         url = reverse('service-list')
         response = self.client.get(url, {'direction_id': self.direction.id})
@@ -249,11 +416,31 @@ class CmsApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertGreaterEqual(len(response.data), 1)
 
+    def test_get_service_detail(self):
+        url = reverse('service-detail', kwargs={'pk': self.service.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['name_ru'], 'Банкетный зал')
+
+    # News Tests
     def test_get_news(self):
         url = reverse('news-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertGreaterEqual(len(response.data), 1)
+
+    def test_get_news_detail_by_id(self):
+        url = reverse('news-detail-by-id', kwargs={'pk': self.news.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['slug'], 'grand-opening')
+
+    def test_get_news_detail_by_slug(self):
+        url = reverse('news-detail', kwargs={'slug': 'grand-opening'})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title_ru'], 'Открытие')
+
 
 
 class BitrixServiceTests(TestCase):
