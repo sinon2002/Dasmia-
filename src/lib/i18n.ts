@@ -191,7 +191,7 @@ const translations: Record<Language, Record<string, string>> = {
     "event_cta.title.em": "Наше пространство.",
     "event_cta.description":
       "Свадьбы, юбилеи, корпоративы, конференции — любое событие заслуживает идеального пространства и безупречного сервиса.",
-    "event_cta.book": "ЗАБРОНИРОВАТЬ",
+    "event_cta.book": "ОСТАВИТЬ ЗАЯВКУ",
     "event_cta.organize": "ОРГАНИЗОВАТЬ МЕРОПРИЯТИЕ",
 
     // Contact Form & Section
@@ -201,6 +201,7 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.address.label": "АДРЕС",
     "contactmap.title.l1": "Свяжитесь",
     "contactmap.title.l2": "с нами",
+    "contactmap.directions": "ПРОЛОЖИТЬ МАРШРУТ",
     "contact.address.value": "Бишкек, ул. Анкара 2Б, Кыргызстан",
     "contact.phone.label": "ТЕЛЕФОН",
     "contact.email.label": "EMAIL",
@@ -430,7 +431,7 @@ const translations: Record<Language, Record<string, string>> = {
     "event_cta.title.em": "Биздин мейкиндик.",
     "event_cta.description":
       "Үйлөнүү тойлдор, мааракелер, корпоративдер, конференциялар — ар кандай иш-чара идеалдуу мейкиндикке жана кемчиликсиз тейлөөгө татыктуу.",
-    "event_cta.book": "ЭЭЛӨӨ",
+    "event_cta.book": "АРЫЗ КАЛТЫРУУ",
     "event_cta.organize": "ИШ-ЧАРА УЮШТУРУУ",
 
     // Contact Form & Section
@@ -667,7 +668,7 @@ const translations: Record<Language, Record<string, string>> = {
     "event_cta.title.em": "Our venue.",
     "event_cta.description":
       "Weddings, anniversaries, corporate galas, conferences — every occasion deserves the ideal venue and flawless hospitality.",
-    "event_cta.book": "BOOK NOW",
+    "event_cta.book": "SUBMIT REQUEST",
     "event_cta.organize": "ORGANIZE AN EVENT",
 
     // Contact Form & Section
