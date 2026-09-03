@@ -309,14 +309,14 @@ export default function Header() {
             >
               <div
                 className="relative select-none transition-opacity duration-300 group-hover:opacity-80"
-                style={{ width: "180px", height: "45px" }}
+                style={{ width: "150px", height: "24px" }}
               >
                 <AppImage
-                  src="/assets/images/logos/dasmia-group.webp"
-                  alt="DASMIA Group of Companies"
+                  src="/assets/images/logos/dasmia-wordmark.webp"
+                  alt="DASMIA"
                   fill
                   className="object-contain object-left"
-                  sizes="180px"
+                  sizes="150px"
                 />
               </div>
             </Link>
