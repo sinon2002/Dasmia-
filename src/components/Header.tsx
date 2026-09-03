@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import AppImage from "@/components/ui/AppImage";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { SUPPORTED_LANGUAGES, LANGUAGE_LABELS, t, Language } from "@/lib/i18n";
+import { SUPPORTED_LANGUAGES, LANGUAGE_LABELS, LANGUAGE_FLAGS, t, Language } from "@/lib/i18n";
 
 /* ── DASMIA Wordmark — bold italic sans-serif, styled after the brand mark ── */
 function DasmiaLogo({ className = "" }: { className?: string }) {
@@ -427,31 +427,22 @@ export default function Header() {
             {/* Right Controls */}
             <div className="flex items-center gap-3">
               {/* Language Switcher — i18n with localStorage persistence */}
-              <div className="hidden md:flex items-center gap-1">
-                {SUPPORTED_LANGUAGES.map((lang, i) => (
-                  <React.Fragment key={lang}>
-                    <button
-                      onClick={() => setLanguage(lang)}
-                      className={`text-label transition-colors duration-200 px-1 py-0.5 ${
-                        language === lang
-                          ? "text-gold"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                      style={{ fontSize: "10px", letterSpacing: "0.14em" }}
-                      aria-label={`Language: ${LANGUAGE_LABELS[lang]}`}
-                      aria-pressed={language === lang}
-                    >
-                      {LANGUAGE_LABELS[lang]}
-                    </button>
-                    {i < SUPPORTED_LANGUAGES.length - 1 && (
-                      <span
-                        className="text-muted-foreground opacity-30"
-                        style={{ fontSize: "10px" }}
-                      >
-                        /
-                      </span>
-                    )}
-                  </React.Fragment>
+              <div className="hidden md:flex items-center gap-2.5">
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => setLanguage(lang)}
+                    className={`flex items-center justify-center rounded-full transition-all duration-200 ${
+                      language === lang
+                        ? "opacity-100 ring-1 ring-gold"
+                        : "opacity-50 hover:opacity-90"
+                    }`}
+                    style={{ fontSize: "16px", width: "26px", height: "26px" }}
+                    aria-label={`Language: ${LANGUAGE_LABELS[lang]}`}
+                    aria-pressed={language === lang}
+                  >
+                    {LANGUAGE_FLAGS[lang]}
+                  </button>
                 ))}
               </div>
 
@@ -708,22 +699,19 @@ export default function Header() {
                 />
               </svg>
             </a>
-            <div className="flex items-center gap-3">
-              {SUPPORTED_LANGUAGES.map((lang, i) => (
-                <React.Fragment key={lang}>
-                  <button
-                    onClick={() => setLanguage(lang)}
-                    className={`text-label transition-colors duration-200 ${language === lang ? "text-gold" : "text-muted-foreground"}`}
-                    style={{ fontSize: "11px", letterSpacing: "0.14em" }}
-                  >
-                    {LANGUAGE_LABELS[lang]}
-                  </button>
-                  {i < SUPPORTED_LANGUAGES.length - 1 && (
-                    <span className="text-muted-foreground opacity-30 text-xs">
-                      /
-                    </span>
-                  )}
-                </React.Fragment>
+            <div className="flex items-center gap-2.5">
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => setLanguage(lang)}
+                  className={`flex items-center justify-center rounded-full transition-all duration-200 ${
+                    language === lang ? "opacity-100 ring-1 ring-gold" : "opacity-50"
+                  }`}
+                  style={{ fontSize: "17px", width: "28px", height: "28px" }}
+                  aria-label={`Language: ${LANGUAGE_LABELS[lang]}`}
+                >
+                  {LANGUAGE_FLAGS[lang]}
+                </button>
               ))}
             </div>
           </div>
