@@ -11,13 +11,13 @@ import { submitLead } from "@/lib/api";
 /* ── DASMIA Wordmark (Footer) — actual logo file ── */
 function DasmiaLogo() {
   return (
-    <div className="relative select-none" style={{ width: "150px", height: "45px" }}>
+    <div className="relative select-none" style={{ width: "180px", height: "45px" }}>
       <AppImage
-        src="/assets/images/dasmia-logo-fitness.webp"
-        alt="DASMIA"
+        src="/assets/images/logos/dasmia-group.webp"
+        alt="DASMIA Group of Companies"
         fill
         className="object-contain object-left"
-        sizes="150px"
+        sizes="180px"
       />
     </div>
   );
