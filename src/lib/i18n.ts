@@ -8,6 +8,12 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   en: "EN",
 };
 
+export const LANGUAGE_FLAGS: Record<Language, string> = {
+  ru: "🇷🇺",
+  ky: "🇰🇬",
+  en: "🇬🇧",
+};
+
 export const DEFAULT_LANGUAGE: Language = "ru";
 
 export const LANGUAGE_STORAGE_KEY = "dasmia_lang";
