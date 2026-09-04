@@ -328,7 +328,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div
-          className="mt-6 pt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-t"
+          className="mt-6 pt-4 flex items-start md:items-center border-t"
           style={{ borderColor: "rgba(0,0,0,0.1)" }}
         >
           <a
@@ -338,9 +338,6 @@ export default function Footer() {
           >
             {t(language, "footer.privacy")}
           </a>
-          <p style={{ fontSize: "11px", letterSpacing: "0.06em", color: "#6b6b6b" }}>
-            {t(language, "footer.rights")}
-          </p>
         </div>
       </div>
     </footer>
