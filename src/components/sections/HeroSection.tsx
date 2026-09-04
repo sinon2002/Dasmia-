@@ -154,20 +154,32 @@ export default function HeroSection() {
         aria-hidden="true"
       />
 
-      {/* Centered wordmark — exactly like "LINE·GROUP" centered on line-group.kz */}
+      {/* Centered logo — replaces the plain "DASMIA" text wordmark */}
       <div className="relative z-20 flex-1 flex items-center justify-center px-6">
         <h1
-          className="text-foreground text-center"
+          className="text-center"
           style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 300,
-            fontSize: "clamp(40px, 9vw, 128px)",
-            letterSpacing: "0.28em",
-            lineHeight: 1,
             animation: "fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both",
           }}
         >
-          {t(language, "hero.title")}
+          <span className="sr-only">{t(language, "hero.title")}</span>
+          <span
+            aria-hidden="true"
+            className="relative block mx-auto"
+            style={{
+              width: "clamp(220px, 34vw, 560px)",
+              aspectRatio: "700 / 111",
+            }}
+          >
+            <AppImage
+              src="/assets/images/logos/dasmia-wordmark.webp"
+              alt=""
+              fill
+              priority
+              className="object-contain"
+              sizes="(max-width: 768px) 60vw, 560px"
+            />
+          </span>
         </h1>
       </div>
 
