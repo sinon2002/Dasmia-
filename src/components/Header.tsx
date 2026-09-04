@@ -4,9 +4,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import AppImage from "@/components/ui/AppImage";
+import LanguageFlag from "@/components/ui/LanguageFlags";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { SUPPORTED_LANGUAGES, LANGUAGE_LABELS, LANGUAGE_FLAGS, t, Language } from "@/lib/i18n";
+import { SUPPORTED_LANGUAGES, LANGUAGE_LABELS, t, Language } from "@/lib/i18n";
 
 /* ── DASMIA Wordmark — bold italic sans-serif, styled after the brand mark ── */
 function DasmiaLogo({ className = "" }: { className?: string }) {
@@ -203,6 +204,7 @@ export default function Header() {
   const isMainPage = pathname === "/";
 
   const getHref = (hash: string) => {
+    if (!hash.startsWith("#")) return hash;
     return isMainPage ? hash : `/${hash}`;
   };
 
@@ -218,7 +220,7 @@ export default function Header() {
   const navLinks = [
     { label: t(language, "nav.about"), href: "#about" },
     { label: t(language, "nav.directions"), href: "#directions", hasSubmenu: true },
-    { label: t(language, "nav.corporate"), href: "#corporate" },
+    { label: t(language, "nav.corporate"), href: "/corporate" },
     { label: t(language, "nav.history"), href: "#history" },
     { label: t(language, "nav.contact"), href: "#contact" },
   ];
@@ -432,16 +434,16 @@ export default function Header() {
                   <button
                     key={lang}
                     onClick={() => setLanguage(lang)}
-                    className={`flex items-center justify-center rounded-full transition-all duration-200 ${
+                    className={`flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 ${
                       language === lang
                         ? "opacity-100 ring-1 ring-gold"
                         : "opacity-50 hover:opacity-90"
                     }`}
-                    style={{ fontSize: "16px", width: "26px", height: "26px" }}
+                    style={{ width: "24px", height: "24px" }}
                     aria-label={`Language: ${LANGUAGE_LABELS[lang]}`}
                     aria-pressed={language === lang}
                   >
-                    {LANGUAGE_FLAGS[lang]}
+                    <LanguageFlag lang={lang} />
                   </button>
                 ))}
               </div>
@@ -704,13 +706,13 @@ export default function Header() {
                 <button
                   key={lang}
                   onClick={() => setLanguage(lang)}
-                  className={`flex items-center justify-center rounded-full transition-all duration-200 ${
+                  className={`flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 ${
                     language === lang ? "opacity-100 ring-1 ring-gold" : "opacity-50"
                   }`}
-                  style={{ fontSize: "17px", width: "28px", height: "28px" }}
+                  style={{ width: "28px", height: "28px" }}
                   aria-label={`Language: ${LANGUAGE_LABELS[lang]}`}
                 >
-                  {LANGUAGE_FLAGS[lang]}
+                  <LanguageFlag lang={lang} />
                 </button>
               ))}
             </div>
