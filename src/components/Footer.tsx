@@ -67,6 +67,7 @@ export default function Footer() {
   const navCategories = [
     { label: t(language, "nav.about"), href: "#about" },
     { label: t(language, "nav.directions"), href: "#directions" },
+    { label: t(language, "nav.corporate"), href: "/corporate" },
     { label: t(language, "nav.history"), href: "#history" },
     { label: t(language, "nav.contact"), href: "#contact" },
   ];
