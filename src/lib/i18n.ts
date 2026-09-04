@@ -190,6 +190,10 @@ const translations: Record<Language, Record<string, string>> = {
     "corporate.s5.desc": "Активности на базе комплекса, сценарии",
     "corporate.s6.label": "Гибридные мероприятия",
     "corporate.s6.desc": "Онлайн + офлайн формат, трансляции",
+    "corporate.form.heading": "Обсудим",
+    "corporate.form.heading.em": "формат сотрудничества",
+    "corporate.form.description":
+      "Оставьте заявку — наш менеджер свяжется с вами, чтобы уточнить детали и подготовить коммерческое предложение.",
 
     // Event CTA Section
     "event_cta.label": "МЕРОПРИЯТИЯ",
@@ -430,6 +434,10 @@ const translations: Record<Language, Record<string, string>> = {
     "corporate.s5.desc": "Комплекстин базасындагы иш-чаралар, сценарийлер",
     "corporate.s6.label": "Гибриддик иш-чаралар",
     "corporate.s6.desc": "Онлайн + офлайн формат, түз берүүлөр",
+    "corporate.form.heading": "Кызматташуунун",
+    "corporate.form.heading.em": "форматын талкуулайлы",
+    "corporate.form.description":
+      "Өтүнмө калтырыңыз — менеджерибиз сиз менен байланышып, майда-чүйдөсүнө чейин тактап, коммерциялык сунуш даярдайт.",
 
     // Event CTA Section
     "event_cta.label": "ИШ-ЧАРАЛАР",
@@ -667,6 +675,10 @@ const translations: Record<Language, Record<string, string>> = {
     "corporate.s5.desc": "On-site group activities and bespoke scenarios",
     "corporate.s6.label": "Hybrid Events",
     "corporate.s6.desc": "Simultaneous in-person and live streaming setups",
+    "corporate.form.heading": "Let's discuss",
+    "corporate.form.heading.em": "the partnership format",
+    "corporate.form.description":
+      "Leave a request — our manager will contact you to clarify the details and prepare a commercial proposal.",
 
     // Event CTA Section
     "event_cta.label": "EVENTS",
