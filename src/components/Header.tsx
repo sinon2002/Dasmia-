@@ -428,18 +428,20 @@ export default function Header() {
 
             {/* Right Controls */}
             <div className="flex items-center gap-3">
-              {/* Language Switcher — i18n with localStorage persistence */}
-              <div className="hidden md:flex items-center gap-2.5">
+              {/* Language Switcher — i18n with localStorage persistence.
+                  Visible on every breakpoint, including mobile, so the
+                  flags sit right next to the hamburger button instead of
+                  being hidden inside the mobile menu drawer. */}
+              <div className="flex items-center gap-2 md:gap-2.5">
                 {SUPPORTED_LANGUAGES.map((lang) => (
                   <button
                     key={lang}
                     onClick={() => setLanguage(lang)}
-                    className={`flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 ${
+                    className={`flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 w-[22px] h-[22px] md:w-6 md:h-6 ${
                       language === lang
                         ? "opacity-100 ring-1 ring-gold"
                         : "opacity-50 hover:opacity-90"
                     }`}
-                    style={{ width: "24px", height: "24px" }}
                     aria-label={`Language: ${LANGUAGE_LABELS[lang]}`}
                     aria-pressed={language === lang}
                   >
@@ -701,21 +703,6 @@ export default function Header() {
                 />
               </svg>
             </a>
-            <div className="flex items-center gap-2.5">
-              {SUPPORTED_LANGUAGES.map((lang) => (
-                <button
-                  key={lang}
-                  onClick={() => setLanguage(lang)}
-                  className={`flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 ${
-                    language === lang ? "opacity-100 ring-1 ring-gold" : "opacity-50"
-                  }`}
-                  style={{ width: "28px", height: "28px" }}
-                  aria-label={`Language: ${LANGUAGE_LABELS[lang]}`}
-                >
-                  <LanguageFlag lang={lang} />
-                </button>
-              ))}
-            </div>
           </div>
         </div>
       </div>
