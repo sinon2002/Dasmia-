@@ -58,6 +58,8 @@ export default function HistorySection() {
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [cursorY, setCursorY] = useState(0);
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
+  const rowRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -76,6 +78,30 @@ export default function HistorySection() {
       { threshold: 0.1 },
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Mobile: there's no cursor to follow, so instead the row nearest the
+  // vertical center of the screen becomes "active" while scrolling, and
+  // its photo expands open beneath it — a touch-friendly equivalent of
+  // the desktop cursor-following circle.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (!isMobile) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = rowRefs.current.findIndex((el) => el === entry.target);
+            if (idx !== -1) setActiveMobileIndex(idx);
+          }
+        });
+      },
+      { rootMargin: "-42% 0px -42% 0px", threshold: 0 },
+    );
+    rowRefs.current.forEach((el) => el && observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
@@ -133,9 +159,12 @@ export default function HistorySection() {
           {timelineConfigs.map((item, i) => (
             <button
               key={item.year}
+              ref={(el) => {
+                rowRefs.current[i] = el;
+              }}
               onMouseEnter={() => setHoveredIndex(i)}
               onFocus={() => setHoveredIndex(i)}
-              className="group relative z-10 flex items-center w-full text-left transition-colors duration-300"
+              className="group relative z-10 flex flex-col w-full text-left transition-colors duration-300"
               style={{
                 borderTop:
                   i === 0
@@ -151,45 +180,74 @@ export default function HistorySection() {
                     ? "rgba(185,150,90,0.05)"
                     : "transparent",
                 padding: "26px 12px",
-                gap: "24px",
               }}
             >
-              <span
-                style={{
-                  fontSize: "clamp(14px, 1.4vw, 16px)",
-                  color: "var(--muted-foreground)",
-                  minWidth: "70px",
-                }}
-              >
-                {item.year}
-              </span>
+              <div className="flex items-center w-full" style={{ gap: "24px" }}>
+                <span
+                  style={{
+                    fontSize: "clamp(14px, 1.4vw, 16px)",
+                    color: "var(--muted-foreground)",
+                    minWidth: "70px",
+                  }}
+                >
+                  {item.year}
+                </span>
 
-              <span
-                className="font-serif transition-colors duration-300"
-                style={{
-                  fontFamily: "var(--font-cormorant)",
-                  fontSize: "clamp(18px, 2vw, 24px)",
-                  fontWeight: 500,
-                  letterSpacing: "0.02em",
-                  color:
-                    hoveredIndex === i
-                      ? "var(--foreground)"
-                      : "var(--muted-foreground)",
-                  flex: 1,
-                }}
-              >
-                {t(language, item.titleKey)}
-              </span>
+                <span
+                  className="font-serif transition-colors duration-300"
+                  style={{
+                    fontFamily: "var(--font-cormorant)",
+                    fontSize: "clamp(18px, 2vw, 24px)",
+                    fontWeight: 500,
+                    letterSpacing: "0.02em",
+                    color:
+                      hoveredIndex === i
+                        ? "var(--foreground)"
+                        : "var(--muted-foreground)",
+                    flex: 1,
+                  }}
+                >
+                  {t(language, item.titleKey)}
+                </span>
 
-              <span
+                <span
+                  style={{
+                    fontSize: "13px",
+                    color: "rgba(255,255,255,0.25)",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+
+              {/* Mobile-only: photo expands open below the active row as you scroll */}
+              <div
+                className="md:hidden w-full overflow-hidden transition-all duration-500 ease-out"
                 style={{
-                  fontSize: "13px",
-                  color: "rgba(255,255,255,0.25)",
-                  fontVariantNumeric: "tabular-nums",
+                  maxHeight: activeMobileIndex === i ? "180px" : "0px",
+                  opacity: activeMobileIndex === i ? 1 : 0,
+                  marginTop: activeMobileIndex === i ? "18px" : "0px",
                 }}
               >
-                {String(i + 1).padStart(2, "0")}
-              </span>
+                <div
+                  className="relative mx-auto overflow-hidden"
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "50%",
+                    boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
+                  }}
+                >
+                  <AppImage
+                    src={item.image}
+                    alt={item.alt}
+                    fill
+                    className="object-cover"
+                    sizes="150px"
+                  />
+                </div>
+              </div>
             </button>
           ))}
 
