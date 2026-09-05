@@ -91,7 +91,7 @@ export default function DirectionCTA({
     <section
       id="contact-cta"
       ref={sectionRef}
-      className="relative border-b"
+      className="relative border-b theme-fixed-dark"
       style={{
         backgroundColor: "var(--charcoal)",
         borderColor: "rgba(255,255,255,0.06)",
