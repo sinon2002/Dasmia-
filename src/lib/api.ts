@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 
 export interface LeadPayload {
   form_type: string;
@@ -157,4 +160,46 @@ export function getApiGalleryImageTitle(
   if (language === "ky" && image.title_ky) return image.title_ky;
   if (language === "en" && image.title_en) return image.title_en;
   return image.title_ru || image.title || fallback;
+}
+
+export interface DirectionGalleryImage {
+  url: string;
+  alt: string;
+  span: "wide" | "normal" | string;
+}
+
+/**
+ * Shared hook for the direction pages: fetches the direction (with its
+ * CMS gallery) by slug, and exposes both the raw API payload and a
+ * ready-to-use, order-sorted, localized gallery array.
+ *
+ * `gallery` is null whenever the backend/admin isn't reachable or has no
+ * images yet for this direction — every page must fall back to its own
+ * static image arrays in that case, exactly like the /banquet pilot.
+ */
+export function useDirectionGallery(slug: string, language: string) {
+  const [apiDirection, setApiDirection] = useState<ApiDirection | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchDirection(slug).then((result) => {
+      if (!cancelled) setApiDirection(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  const gallery: DirectionGalleryImage[] | null =
+    apiDirection && apiDirection.gallery_images.length > 0
+      ? [...apiDirection.gallery_images]
+          .sort((a, b) => a.order - b.order)
+          .map((img) => ({
+            url: img.image,
+            alt: getApiGalleryImageTitle(img, language, apiDirection.name),
+            span: img.span,
+          }))
+      : null;
+
+  return { apiDirection, gallery };
 }
