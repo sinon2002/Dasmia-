@@ -93,7 +93,7 @@ export default function DirectionAtmosphereSection({
   return (
     <section
       ref={sectionRef}
-      className="relative border-t"
+      className="relative border-t theme-fixed-dark"
       style={{
         backgroundColor: "var(--charcoal)",
         borderColor: "rgba(255,255,255,0.06)",
