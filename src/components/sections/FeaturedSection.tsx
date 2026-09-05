@@ -284,7 +284,7 @@ function FeaturedBlock({
 export default function FeaturedSection() {
   return (
     <section
-      className="relative"
+      className="relative theme-fixed-dark"
       style={{ backgroundColor: "var(--charcoal)" }}
       data-content="featured"
     >
