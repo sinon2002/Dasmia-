@@ -113,15 +113,15 @@ export default function DirectionAtmosphereSection({
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start mb-16">
           {/* Preview arched photo trio — full-width row above the text */}
-          <div className="lg:col-span-12 flex gap-5 md:gap-8 reveal delay-100">
+          <div className="lg:col-span-12 flex gap-3 sm:gap-5 md:gap-8 reveal delay-100">
             {previewImages.map((img) => (
-              <div key={img.url} className="relative flex-1 flex flex-col items-center gap-4">
+              <div key={img.url} className="relative flex-1 min-w-0 flex flex-col items-center gap-3 md:gap-4">
                 <span
                   className="text-center text-foreground"
                   style={{
-                    fontSize: "11px",
-                    letterSpacing: "0.12em",
-                    whiteSpace: "nowrap",
+                    fontSize: "clamp(9px, 2.6vw, 11px)",
+                    letterSpacing: "0.08em",
+                    lineHeight: 1.3,
                   }}
                 >
                   {img.caption}
