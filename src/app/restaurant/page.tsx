@@ -8,6 +8,7 @@ import DirectionAtmosphereSection from "@/components/sections/DirectionAtmospher
 import DirectionScrapbookSection from "@/components/sections/DirectionTriFeatureSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
+import { useDirectionGallery } from "@/lib/api";
 
 const previewImages = [
   { url: "/assets/images/IMG_8995.webp", alt: "Авторское блюдо ресторана DASMIA", caption: "АВТОРСКОЕ МЕНЮ" },
@@ -34,6 +35,17 @@ export default function RestaurantPage() {
   const { language } = useLanguage();
   const data = directionsContent.restaurant[language] || directionsContent.restaurant.ru;
 
+  // CMS-backed images from the Django backend, when available. Falls back
+  // to the static arrays above when the backend/admin has no data yet.
+  const { gallery } = useDirectionGallery("restaurant", language);
+
+  const previewImagesResolved = previewImages.map((img, i) =>
+    gallery && gallery[i] ? { ...img, url: gallery[i].url } : img,
+  );
+  const stripImagesResolved = gallery && gallery.length > 0 ? gallery : stripImages;
+  const featureImagesResolved =
+    gallery && gallery.length > 0 ? gallery.slice(0, 3).map((img) => img.url) : featureImages;
+
   const detailsMap = Object.fromEntries(
     data.intro.details.map((d) => [d.label, d.value]),
   );
@@ -47,21 +59,21 @@ export default function RestaurantPage() {
       number: data.featuresSection.features[0].number,
       title: data.featuresSection.features[0].title,
       description: data.featuresSection.features[0].description,
-      image: featureImages[0],
+      image: featureImagesResolved[0],
       imageAlt: data.featuresSection.features[0].title,
     },
     {
       number: data.featuresSection.features[1].number,
       title: data.featuresSection.features[1].title,
       description: data.featuresSection.features[1].description,
-      image: featureImages[1],
+      image: featureImagesResolved[1],
       imageAlt: data.featuresSection.features[1].title,
     },
     {
       number: data.featuresSection.features[2].number,
       title: data.featuresSection.features[2].title,
       description: data.featuresSection.features[2].description,
-      image: featureImages[2],
+      image: featureImagesResolved[2],
       imageAlt: data.featuresSection.features[2].title,
     },
   ];
@@ -87,8 +99,8 @@ export default function RestaurantPage() {
         <DirectionAtmosphereSection
           label={data.featuresSection.label}
           bodyText={data.intro.body}
-          previewImages={previewImages}
-          stripImages={stripImages}
+          previewImages={previewImagesResolved}
+          stripImages={stripImagesResolved}
           tagline={`27 лет создаём атмосферу в том самом DASMIA`}
           dataDirection="restaurant"
         />
