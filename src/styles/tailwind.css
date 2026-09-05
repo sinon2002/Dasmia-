@@ -70,6 +70,20 @@
   --ring: #b9965a;
 }
 
+/*
+ * Some sections (charcoal photo/text blocks) are designed to always stay
+ * dark, regardless of the light/dark theme toggle. Their text, however,
+ * used the theme-following --foreground/--muted-foreground variables,
+ * which turn dark in the light theme — making the text invisible against
+ * the still-dark background. This class locks the two variables back to
+ * their dark-theme values for anything inside it, no matter which theme
+ * is active.
+ */
+.theme-fixed-dark {
+  --foreground: #ffffff;
+  --muted-foreground: #a6a6a6;
+}
+
 /* Light theme body overrides */
 .theme-light body,
 html.theme-light body {
