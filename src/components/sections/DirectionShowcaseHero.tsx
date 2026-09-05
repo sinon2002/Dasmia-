@@ -27,7 +27,7 @@ export default function DirectionShowcaseHero({
 }: DirectionShowcaseHeroProps) {
   return (
     <section
-      className="relative"
+      className="relative theme-fixed-dark"
       style={{ backgroundColor: "var(--charcoal)", paddingTop: "160px" }}
       aria-label={`${title} — DASMIA`}
       data-direction={dataDirection}
