@@ -39,8 +39,8 @@ export default function ContactMapSection() {
       style={{
         backgroundColor: "var(--background)",
         borderColor: "rgba(255,255,255,0.06)",
-        paddingTop: "90px",
-        paddingBottom: "90px",
+        paddingTop: "45px",
+        paddingBottom: "45px",
       }}
       data-content="contact-map"
     >
@@ -107,7 +107,7 @@ export default function ContactMapSection() {
               style={{
                 aspectRatio: "16 / 10",
                 borderRadius: "16px",
-                maxWidth: "310px",
+                maxWidth: "620px",
               }}
             >
               <iframe
@@ -128,3 +128,4 @@ export default function ContactMapSection() {
     </section>
   );
 }
+
