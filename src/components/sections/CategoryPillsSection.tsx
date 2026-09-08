@@ -101,13 +101,15 @@ export default function CategoryPillsSection() {
       }}
       data-content="category-pills"
     >
-      <div className="max-w-6xl mx-auto px-6 flex flex-col items-center text-center">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center">
         {/* Heading text — scroll-linked fill animation, line-group.kz style */}
         <ScrollFillText text={heading} />
 
-        {/* All 8 directions — same list as the header's "НАПРАВЛЕНИЯ" dropdown,
-            each card links straight to its own page */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 w-full">
+        {/* All 8 directions in a single row — flex-basis grows on hover,
+            pushing neighbors, exactly like line-group.kz. On narrow
+            screens the row scrolls horizontally instead of squeezing
+            every card down to nothing. */}
+        <div className="flex items-start gap-3 md:gap-5 w-full overflow-x-auto md:overflow-visible pb-2 -mx-6 px-6 md:mx-0 md:px-0">
           {PILLS.map((pill, i) => {
             const label =
               directionsContent[pill.slug]?.[language]?.hero.category ?? pill.slug;
@@ -115,26 +117,44 @@ export default function CategoryPillsSection() {
               <Link
                 key={pill.slug}
                 href={pill.href}
-                className="group relative overflow-hidden block"
+                className="group relative overflow-hidden shrink-0"
                 style={{
-                  height: "clamp(200px, 24vw, 300px)",
+                  flex: "1 1 0%",
+                  minWidth: "110px",
+                  height: "clamp(220px, 24vw, 320px)",
                   borderRadius: "999px",
-                  animation: `fadeInScale 0.8s ease-out ${0.1 + i * 0.06}s both`,
+                  animation: `fadeInScale 0.8s ease-out ${0.08 + i * 0.05}s both`,
+                  transition: "flex-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+                onMouseEnter={(e) => {
+                  const row = e.currentTarget.parentElement;
+                  if (!row) return;
+                  Array.from(row.children).forEach((child) => {
+                    (child as HTMLElement).style.flexGrow =
+                      child === e.currentTarget ? "1.8" : "0.85";
+                  });
+                }}
+                onMouseLeave={(e) => {
+                  const row = e.currentTarget.parentElement;
+                  if (!row) return;
+                  Array.from(row.children).forEach((child) => {
+                    (child as HTMLElement).style.flexGrow = "1";
+                  });
                 }}
               >
-                <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105">
+                <div className="absolute inset-0">
                   <AppImage
                     src={pill.image}
                     alt={pill.alt}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 640px) 45vw, (max-width: 1024px) 24vw, 220px"
+                    sizes="(max-width: 768px) 40vw, 220px"
                   />
                 </div>
 
                 {/* Dark overlay for label legibility */}
                 <div
-                  className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-80"
+                  className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-70"
                   style={{
                     background:
                       "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 45%, transparent 70%)",
@@ -144,7 +164,7 @@ export default function CategoryPillsSection() {
 
                 {/* Vertical rotated label — bottom, like line-group.kz */}
                 <span
-                  className="absolute bottom-6 left-1/2 text-label text-foreground text-center"
+                  className="absolute bottom-6 left-1/2 text-label text-foreground text-center whitespace-nowrap"
                   style={{
                     fontSize: "9px",
                     letterSpacing: "0.16em",
