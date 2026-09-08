@@ -112,7 +112,7 @@ export default function CategoryPillsSection() {
             section width, matching the rest of the site's containers. On
             narrow screens the row scrolls horizontally instead of
             squeezing every card down to nothing. */}
-        <div className="w-full max-w-8xl mx-auto px-6 lg:px-12 xl:px-16">
+        <div className="w-full px-4 md:px-6">
           <div className="flex items-start gap-3 md:gap-5 w-full overflow-x-auto md:overflow-visible pb-2">
           {PILLS.map((pill, i) => {
             const label =
