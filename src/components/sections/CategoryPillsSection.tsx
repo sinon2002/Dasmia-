@@ -5,26 +5,17 @@ import Link from "next/link";
 import AppImage from "@/components/ui/AppImage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n";
+import { directionsContent } from "@/lib/directionsContent";
 
 const PILLS = [
-  {
-    label: "РЕСТОРАН",
-    image: "/assets/images/IMG_8995.webp",
-    href: "/restaurant",
-    alt: "Ресторан DASMIA",
-  },
-  {
-    label: "WELLNESS",
-    image: "/assets/images/IMG_8911.webp",
-    href: "/pools",
-    alt: "Бассейны и SPA DASMIA",
-  },
-  {
-    label: "ЭТНО-СЕЛО",
-    image: "/assets/images/IMG_2160.webp",
-    href: "/ethno-village",
-    alt: "Этно-Село DASMIA",
-  },
+  { slug: "banquet", image: "/assets/images/IMG_9009.webp", href: "/banquet", alt: "Банкетные залы DASMIA" },
+  { slug: "restaurant", image: "/assets/images/IMG_8995.webp", href: "/restaurant", alt: "Ресторан DASMIA" },
+  { slug: "chaikhana", image: "/assets/images/IMG_9000.webp", href: "/chaikhana", alt: "Чайхана DASMIA" },
+  { slug: "fitness", image: "/assets/images/fitness-weights-room.webp", href: "/fitness", alt: "Фитнес-клуб DASMIA" },
+  { slug: "pools", image: "/assets/images/IMG_8911.webp", href: "/pools", alt: "Бассейны DASMIA" },
+  { slug: "spa", image: "/assets/images/spa-massage-room.webp", href: "/spa", alt: "SPA DASMIA" },
+  { slug: "ethno-village", image: "/assets/images/IMG_2160.webp", href: "/ethno-village", alt: "Этно-Село DASMIA" },
+  { slug: "events", image: "/assets/images/IMG_9002.webp", href: "/events", alt: "Мероприятия DASMIA" },
 ];
 
 /**
@@ -101,7 +92,8 @@ export default function CategoryPillsSection() {
 
   return (
     <section
-      className="relative"
+      id="directions"
+      className="relative scroll-mt-24"
       style={{
         backgroundColor: "var(--background)",
         paddingTop: "100px",
@@ -109,77 +101,62 @@ export default function CategoryPillsSection() {
       }}
       data-content="category-pills"
     >
-      <div className="max-w-4xl mx-auto px-6 flex flex-col items-center text-center">
+      <div className="max-w-6xl mx-auto px-6 flex flex-col items-center text-center">
         {/* Heading text — scroll-linked fill animation, line-group.kz style */}
         <ScrollFillText text={heading} />
 
-        {/* 3 pill photos — flex-basis grows on hover, pushing neighbors, like line-group.kz */}
-        <div className="flex items-start justify-center gap-4 md:gap-6 w-full max-w-5xl mx-auto">
-          {PILLS.map((pill, i) => (
-            <Link
-              key={pill.label}
-              href={pill.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative overflow-hidden"
-              style={{
-                flex: "1 1 0%",
-                minWidth: 0,
-                height: "clamp(320px, 46vw, 460px)",
-                borderRadius: "999px",
-                animation: `fadeInScale 0.8s ease-out ${0.15 + i * 0.1}s both`,
-                transition: "flex-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1)",
-              }}
-              onMouseEnter={(e) => {
-                const row = e.currentTarget.parentElement;
-                if (!row) return;
-                Array.from(row.children).forEach((child) => {
-                  (child as HTMLElement).style.flexGrow =
-                    child === e.currentTarget ? "1.6" : "0.75";
-                });
-              }}
-              onMouseLeave={(e) => {
-                const row = e.currentTarget.parentElement;
-                if (!row) return;
-                Array.from(row.children).forEach((child) => {
-                  (child as HTMLElement).style.flexGrow = "1";
-                });
-              }}
-            >
-              <div className="absolute inset-0">
-                <AppImage
-                  src={pill.image}
-                  alt={pill.alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 45vw, 320px"
-                />
-              </div>
-
-              {/* Dark overlay for label legibility */}
-              <div
-                className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-70"
+        {/* All 8 directions — same list as the header's "НАПРАВЛЕНИЯ" dropdown,
+            each card links straight to its own page */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 w-full">
+          {PILLS.map((pill, i) => {
+            const label =
+              directionsContent[pill.slug]?.[language]?.hero.category ?? pill.slug;
+            return (
+              <Link
+                key={pill.slug}
+                href={pill.href}
+                className="group relative overflow-hidden block"
                 style={{
-                  background:
-                    "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 45%, transparent 70%)",
-                }}
-                aria-hidden="true"
-              />
-
-              {/* Vertical rotated label — bottom, like line-group.kz */}
-              <span
-                className="absolute bottom-8 left-1/2 text-label text-foreground"
-                style={{
-                  fontSize: "10px",
-                  letterSpacing: "0.2em",
-                  writingMode: "vertical-rl",
-                  transform: "translateX(-50%) rotate(180deg)",
+                  height: "clamp(200px, 24vw, 300px)",
+                  borderRadius: "999px",
+                  animation: `fadeInScale 0.8s ease-out ${0.1 + i * 0.06}s both`,
                 }}
               >
-                {pill.label}
-              </span>
-            </Link>
-          ))}
+                <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105">
+                  <AppImage
+                    src={pill.image}
+                    alt={pill.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 45vw, (max-width: 1024px) 24vw, 220px"
+                  />
+                </div>
+
+                {/* Dark overlay for label legibility */}
+                <div
+                  className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-80"
+                  style={{
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 45%, transparent 70%)",
+                  }}
+                  aria-hidden="true"
+                />
+
+                {/* Vertical rotated label — bottom, like line-group.kz */}
+                <span
+                  className="absolute bottom-6 left-1/2 text-label text-foreground text-center"
+                  style={{
+                    fontSize: "9px",
+                    letterSpacing: "0.16em",
+                    writingMode: "vertical-rl",
+                    transform: "translateX(-50%) rotate(180deg)",
+                  }}
+                >
+                  {label}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
