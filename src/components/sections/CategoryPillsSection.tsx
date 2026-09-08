@@ -101,15 +101,19 @@ export default function CategoryPillsSection() {
       }}
       data-content="category-pills"
     >
-      <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center">
+      <div className="flex flex-col items-center text-center">
         {/* Heading text — scroll-linked fill animation, line-group.kz style */}
-        <ScrollFillText text={heading} />
+        <div className="max-w-4xl mx-auto px-6">
+          <ScrollFillText text={heading} />
+        </div>
 
         {/* All 8 directions in a single row — flex-basis grows on hover,
-            pushing neighbors, exactly like line-group.kz. On narrow
-            screens the row scrolls horizontally instead of squeezing
-            every card down to nothing. */}
-        <div className="flex items-start gap-3 md:gap-5 w-full overflow-x-auto md:overflow-visible pb-2 -mx-6 px-6 md:mx-0 md:px-0">
+            pushing neighbors, exactly like line-group.kz. Spans the full
+            section width, matching the rest of the site's containers. On
+            narrow screens the row scrolls horizontally instead of
+            squeezing every card down to nothing. */}
+        <div className="w-full max-w-8xl mx-auto px-6 lg:px-12 xl:px-16">
+          <div className="flex items-start gap-3 md:gap-5 w-full overflow-x-auto md:overflow-visible pb-2">
           {PILLS.map((pill, i) => {
             const label =
               directionsContent[pill.slug]?.[language]?.hero.category ?? pill.slug;
@@ -177,6 +181,7 @@ export default function CategoryPillsSection() {
               </Link>
             );
           })}
+          </div>
         </div>
       </div>
     </section>
