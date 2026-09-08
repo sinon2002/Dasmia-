@@ -302,23 +302,23 @@ export default function Header() {
         data-content="header"
       >
         <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center gap-8 h-20">
             {/* Logo — Refined SVG Wordmark */}
             <Link
               href="/"
-              className="flex items-center group"
+              className="flex items-center group shrink-0"
               aria-label="DASMIA — Главная"
             >
               <div
                 className="relative select-none transition-opacity duration-300 group-hover:opacity-80"
-                style={{ width: "150px", height: "24px" }}
+                style={{ width: "172px", height: "27px" }}
               >
                 <AppImage
                   src="/assets/images/logos/dasmia-wordmark.webp"
                   alt="DASMIA"
                   fill
                   className="object-contain object-left"
-                  sizes="150px"
+                  sizes="172px"
                 />
               </div>
             </Link>
