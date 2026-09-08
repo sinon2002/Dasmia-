@@ -176,7 +176,7 @@ export default function HistorySection() {
               }}
               onMouseEnter={() => setHoveredIndex(i)}
               onFocus={() => setHoveredIndex(i)}
-              className="group relative z-10 flex items-center w-full text-left transition-colors duration-300"
+              className="group relative z-10 flex flex-col w-full text-left transition-colors duration-300"
               style={{
                 borderTop:
                   i === 0
@@ -192,45 +192,71 @@ export default function HistorySection() {
                     ? "rgba(185,150,90,0.05)"
                     : "transparent",
                 padding: "26px 12px",
-                gap: "24px",
               }}
             >
-              <span
-                style={{
-                  fontSize: "clamp(14px, 1.4vw, 16px)",
-                  color: "var(--muted-foreground)",
-                  minWidth: "70px",
-                }}
-              >
-                {item.year}
-              </span>
+              <div className="flex items-center w-full" style={{ gap: "24px" }}>
+                <span
+                  style={{
+                    fontSize: "clamp(14px, 1.4vw, 16px)",
+                    color: "var(--muted-foreground)",
+                    minWidth: "70px",
+                  }}
+                >
+                  {item.year}
+                </span>
 
-              <span
-                className="font-serif transition-colors duration-300"
-                style={{
-                  fontFamily: "var(--font-cormorant)",
-                  fontSize: "clamp(18px, 2vw, 24px)",
-                  fontWeight: 500,
-                  letterSpacing: "0.02em",
-                  color:
-                    hoveredIndex === i
-                      ? "var(--foreground)"
-                      : "var(--muted-foreground)",
-                  flex: 1,
-                }}
-              >
-                {t(language, item.titleKey)}
-              </span>
+                <span
+                  className="font-serif transition-colors duration-300"
+                  style={{
+                    fontFamily: "var(--font-cormorant)",
+                    fontSize: "clamp(18px, 2vw, 24px)",
+                    fontWeight: 500,
+                    letterSpacing: "0.02em",
+                    color:
+                      hoveredIndex === i
+                        ? "var(--foreground)"
+                        : "var(--muted-foreground)",
+                    flex: 1,
+                  }}
+                >
+                  {t(language, item.titleKey)}
+                </span>
 
-              <span
+                <span
+                  style={{
+                    fontSize: "13px",
+                    color: "rgba(255,255,255,0.25)",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+
+              {/* Description — expands open below the row on hover.
+                  Text comes from i18n (history.tN.desc); to make it
+                  editable from the admin panel, this needs a backend
+                  field once Ibrahim adds a History/Timeline model. */}
+              <div
+                className="w-full overflow-hidden transition-all duration-500 ease-out"
                 style={{
-                  fontSize: "13px",
-                  color: "rgba(255,255,255,0.25)",
-                  fontVariantNumeric: "tabular-nums",
+                  maxHeight: hoveredIndex === i ? "120px" : "0px",
+                  opacity: hoveredIndex === i ? 1 : 0,
+                  marginTop: hoveredIndex === i ? "14px" : "0px",
                 }}
               >
-                {String(i + 1).padStart(2, "0")}
-              </span>
+                <p
+                  style={{
+                    fontSize: "clamp(13px, 1.1vw, 14px)",
+                    lineHeight: 1.7,
+                    color: "var(--muted-foreground)",
+                    maxWidth: "640px",
+                    paddingLeft: "94px",
+                  }}
+                >
+                  {t(language, item.descKey)}
+                </p>
+              </div>
             </button>
           ))}
 
