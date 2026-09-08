@@ -325,7 +325,7 @@ export default function Header() {
 
             {/* Desktop Nav */}
             <nav
-              className="hidden lg:flex items-center gap-8"
+              className="hidden lg:flex items-center gap-8 shrink-0"
               aria-label="Основная навигация"
             >
               {navLinks.map((link) =>
@@ -339,7 +339,7 @@ export default function Header() {
                     <a
                       href={getHref(link.href)}
                       onClick={(e) => handleAnchorClick(e, link.href)}
-                      className="nav-link flex items-center gap-1.5 text-label text-muted-foreground hover:text-foreground hover:border-gold/50 transition-colors duration-300 border rounded-sm"
+                      className="nav-link flex items-center gap-1.5 text-label text-muted-foreground hover:text-foreground hover:border-gold/50 transition-colors duration-300 border rounded-sm whitespace-nowrap shrink-0"
                       style={{
                         fontSize: "13px",
                         letterSpacing: "0.14em",
@@ -412,7 +412,7 @@ export default function Header() {
                     key={link.label}
                     href={getHref(link.href)}
                     onClick={(e) => handleAnchorClick(e, link.href)}
-                    className="nav-link text-label text-muted-foreground hover:text-foreground hover:border-gold/50 transition-colors duration-300 border rounded-sm"
+                    className="nav-link text-label text-muted-foreground hover:text-foreground hover:border-gold/50 transition-colors duration-300 border rounded-sm whitespace-nowrap shrink-0"
                     style={{
                       fontSize: "13px",
                       letterSpacing: "0.14em",
@@ -427,7 +427,7 @@ export default function Header() {
             </nav>
 
             {/* Right Controls */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 shrink-0">
               {/* Language Switcher — i18n with localStorage persistence.
                   Visible on every breakpoint, including mobile, so the
                   flags sit right next to the hamburger button instead of
