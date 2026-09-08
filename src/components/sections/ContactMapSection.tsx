@@ -107,7 +107,7 @@ export default function ContactMapSection() {
               style={{
                 aspectRatio: "16 / 10",
                 borderRadius: "16px",
-                maxWidth: "620px",
+                maxWidth: "310px",
               }}
             >
               <iframe
