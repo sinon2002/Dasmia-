@@ -1,9 +1,44 @@
 from django.contrib import admin
 from django.db import models
-from django.utils.html import mark_safe
+from django.utils.html import mark_safe, escape
 from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
 from .models import ContentBlock, Direction, Service, News, DirectionGalleryImage, MediaAsset
 from .widgets import AdminImageEditorWidget
+
+ADMIN_MEDIA_CSS = {
+    'all': (
+        'cms/css/cropper.min.css',
+        'cms/css/image_editor.css',
+        'core/css/admin_adaptive.css',
+    )
+}
+
+ADMIN_MEDIA_JS = (
+    'cms/js/cropper.min.js',
+    'cms/js/image_editor.js',
+    'core/js/admin_adaptive.js',
+)
+
+
+def get_admin_thumb_url(image_field, obj=None):
+    """Returns image URL with timestamp cache-buster query parameter to bypass browser caching."""
+    if not image_field or not getattr(image_field, 'name', None):
+        return ""
+    url = image_field.url
+    ts = None
+    if obj:
+        for attr in ('updated_at', 'published_date', 'created_at'):
+            val = getattr(obj, attr, None)
+            if val and hasattr(val, 'timestamp'):
+                ts = int(val.timestamp())
+                break
+    if not ts and hasattr(image_field, 'storage') and image_field.name:
+        try:
+            ts = int(image_field.storage.get_modified_time(image_field.name).timestamp())
+        except Exception:
+            pass
+    return f"{url}?v={ts}" if ts else url
+
 
 @admin.register(ContentBlock)
 class ContentBlockAdmin(TranslationAdmin):
@@ -14,20 +49,42 @@ class ContentBlockAdmin(TranslationAdmin):
         models.ImageField: {'widget': AdminImageEditorWidget},
     }
 
+    class Media:
+        css = ADMIN_MEDIA_CSS
+        js = ADMIN_MEDIA_JS
+
     def thumb_preview(self, obj):
         if obj.image:
-            return mark_safe(f'<img src="{obj.image.url}" class="dasmia-admin-list-thumb" alt="{obj.title or obj.key}" />')
-        return mark_safe('<span style="color:#666;font-size:11px;">Нет фото</span>')
+            thumb_url = get_admin_thumb_url(obj.image, obj)
+            return mark_safe(
+                f'<a href="{obj.image.url}" target="_blank" title="Открыть оригинал">'
+                f'<img src="{thumb_url}" class="dasmia-admin-list-thumb" '
+                f'style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid rgba(185,150,90,0.4);display:block;" '
+                f'alt="{escape(obj.title or obj.key)}" /></a>'
+            )
+        return mark_safe('<span style="color:#777;font-size:11px;">Нет фото</span>')
     thumb_preview.short_description = "Превью"
 
 
 class DirectionGalleryImageInline(TranslationTabularInline):
     model = DirectionGalleryImage
     extra = 1
-    fields = ('image', 'title', 'span', 'order', 'is_active')
+    fields = ('preview_thumb', 'image', 'title', 'span', 'order', 'is_active')
+    readonly_fields = ('preview_thumb',)
     formfield_overrides = {
         models.ImageField: {'widget': AdminImageEditorWidget},
     }
+
+    def preview_thumb(self, obj):
+        if obj.image:
+            thumb_url = get_admin_thumb_url(obj.image, obj)
+            return mark_safe(
+                f'<a href="{obj.image.url}" target="_blank">'
+                f'<img src="{thumb_url}" class="dasmia-admin-list-thumb" '
+                f'style="width:48px;height:48px;object-fit:cover;border-radius:4px;border:1px solid rgba(185,150,90,0.4);" /></a>'
+            )
+        return mark_safe('<span style="color:#777;font-size:11px;">—</span>')
+    preview_thumb.short_description = "Миниатюра"
 
 
 @admin.register(Direction)
@@ -42,10 +99,20 @@ class DirectionAdmin(TranslationAdmin):
         models.ImageField: {'widget': AdminImageEditorWidget},
     }
 
+    class Media:
+        css = ADMIN_MEDIA_CSS
+        js = ADMIN_MEDIA_JS
+
     def cover_thumb(self, obj):
         if obj.cover_image:
-            return mark_safe(f'<img src="{obj.cover_image.url}" class="dasmia-admin-list-thumb" alt="{obj.name}" />')
-        return mark_safe('<span style="color:#666;font-size:11px;">Нет фото</span>')
+            thumb_url = get_admin_thumb_url(obj.cover_image, obj)
+            return mark_safe(
+                f'<a href="{obj.cover_image.url}" target="_blank" title="Открыть оригинал">'
+                f'<img src="{thumb_url}" class="dasmia-admin-list-thumb" '
+                f'style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid rgba(185,150,90,0.4);display:block;" '
+                f'alt="{escape(obj.name)}" /></a>'
+            )
+        return mark_safe('<span style="color:#777;font-size:11px;">Нет фото</span>')
     cover_thumb.short_description = "Обложка"
 
     def gallery_count(self, obj):
@@ -65,10 +132,20 @@ class DirectionGalleryImageAdmin(TranslationAdmin):
         models.ImageField: {'widget': AdminImageEditorWidget},
     }
 
+    class Media:
+        css = ADMIN_MEDIA_CSS
+        js = ADMIN_MEDIA_JS
+
     def image_thumb(self, obj):
         if obj.image:
-            return mark_safe(f'<img src="{obj.image.url}" class="dasmia-admin-list-thumb" alt="{obj.title or ""}" />')
-        return mark_safe('<span style="color:#666;font-size:11px;">Нет фото</span>')
+            thumb_url = get_admin_thumb_url(obj.image, obj)
+            return mark_safe(
+                f'<a href="{obj.image.url}" target="_blank" title="Открыть оригинал">'
+                f'<img src="{thumb_url}" class="dasmia-admin-list-thumb" '
+                f'style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid rgba(185,150,90,0.4);display:block;" '
+                f'alt="{escape(obj.title or "")}" /></a>'
+            )
+        return mark_safe('<span style="color:#777;font-size:11px;">Нет фото</span>')
     image_thumb.short_description = "Превью"
 
 
@@ -91,25 +168,59 @@ class NewsAdmin(TranslationAdmin):
         models.ImageField: {'widget': AdminImageEditorWidget},
     }
 
+    class Media:
+        css = ADMIN_MEDIA_CSS
+        js = ADMIN_MEDIA_JS
+
     def cover_thumb(self, obj):
         if obj.cover_image:
-            return mark_safe(f'<img src="{obj.cover_image.url}" class="dasmia-admin-list-thumb" alt="{obj.title}" />')
-        return mark_safe('<span style="color:#666;font-size:11px;">Нет фото</span>')
+            thumb_url = get_admin_thumb_url(obj.cover_image, obj)
+            return mark_safe(
+                f'<a href="{obj.cover_image.url}" target="_blank" title="Открыть оригинал">'
+                f'<img src="{thumb_url}" class="dasmia-admin-list-thumb" '
+                f'style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid rgba(185,150,90,0.4);display:block;" '
+                f'alt="{escape(obj.title)}" /></a>'
+            )
+        return mark_safe('<span style="color:#777;font-size:11px;">Нет фото</span>')
     cover_thumb.short_description = "Обложка"
 
 
 @admin.register(MediaAsset)
 class MediaAssetAdmin(TranslationAdmin):
-    list_display = ('thumb_preview', 'title', 'category', 'created_at')
+    list_display = ('thumb_preview', 'title', 'category_badge', 'file_name_display', 'created_at')
     list_display_links = ('thumb_preview', 'title')
     list_filter = ('category', 'created_at')
-    search_fields = ('title', 'description')
+    search_fields = ('title', 'description', 'image')
+    list_per_page = 50
     formfield_overrides = {
         models.ImageField: {'widget': AdminImageEditorWidget},
     }
 
+    class Media:
+        css = ADMIN_MEDIA_CSS
+        js = ADMIN_MEDIA_JS
+
     def thumb_preview(self, obj):
         if obj.image:
-            return mark_safe(f'<img src="{obj.image.url}" class="dasmia-admin-list-thumb" alt="{obj.title}" />')
-        return mark_safe('<span style="color:#666;font-size:11px;">Нет фото</span>')
-    thumb_preview.short_description = "Изображение"
+            thumb_url = get_admin_thumb_url(obj.image, obj)
+            return mark_safe(
+                f'<a href="{obj.image.url}" target="_blank" title="Открыть в полном размере">'
+                f'<img src="{thumb_url}" class="dasmia-admin-list-thumb" '
+                f'style="width:52px;height:52px;object-fit:cover;border-radius:6px;border:1px solid rgba(185,150,90,0.4);display:block;" '
+                f'alt="{escape(obj.title)}" /></a>'
+            )
+        return mark_safe('<span style="color:#777;font-size:11px;">Нет фото</span>')
+    thumb_preview.short_description = "Фото"
+
+    def category_badge(self, obj):
+        cat_class = f"dasmia-cat-{obj.category}"
+        cat_name = obj.get_category_display()
+        return mark_safe(f'<span class="dasmia-cat-badge {cat_class}">{escape(cat_name)}</span>')
+    category_badge.short_description = "Категория"
+
+    def file_name_display(self, obj):
+        if obj.image:
+            name = obj.image.name.split('/')[-1]
+            return mark_safe(f'<code style="font-size:11px;color:#bbb;background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:3px;">{escape(name)}</code>')
+        return "—"
+    file_name_display.short_description = "Имя файла"

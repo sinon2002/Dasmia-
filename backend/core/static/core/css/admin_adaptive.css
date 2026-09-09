@@ -46,3 +46,48 @@
         gap: 8px !important;
     }
 }
+
+/* 3. Global CMS Admin Thumbnail & Media Previews */
+.dasmia-admin-list-thumb {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    max-width: 52px !important;
+    max-height: 52px !important;
+    object-fit: cover !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(185, 150, 90, 0.4) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+    vertical-align: middle !important;
+    display: inline-block !important;
+    background: #111 !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.dasmia-admin-list-thumb:hover {
+    transform: scale(2.0) !important;
+    z-index: 9999 !important;
+    position: relative !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6) !important;
+}
+
+.dasmia-cat-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.dasmia-cat-banquet { background: rgba(185, 150, 90, 0.2); color: #e6c88b; border: 1px solid rgba(185, 150, 90, 0.4); }
+.dasmia-cat-restaurant { background: rgba(220, 53, 69, 0.2); color: #ff8591; border: 1px solid rgba(220, 53, 69, 0.4); }
+.dasmia-cat-chaikhana { background: rgba(255, 193, 7, 0.2); color: #ffd866; border: 1px solid rgba(255, 193, 7, 0.4); }
+.dasmia-cat-ethno { background: rgba(40, 167, 69, 0.2); color: #75d98e; border: 1px solid rgba(40, 167, 69, 0.4); }
+.dasmia-cat-pools { background: rgba(23, 162, 184, 0.2); color: #6ee2f5; border: 1px solid rgba(23, 162, 184, 0.4); }
+.dasmia-cat-spa { background: rgba(111, 66, 193, 0.2); color: #c49eff; border: 1px solid rgba(111, 66, 193, 0.4); }
+.dasmia-cat-fitness { background: rgba(253, 126, 20, 0.2); color: #ffab66; border: 1px solid rgba(253, 126, 20, 0.4); }
+.dasmia-cat-general { background: rgba(108, 117, 125, 0.2); color: #ced4da; border: 1px solid rgba(108, 117, 125, 0.4); }
+

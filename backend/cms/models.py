@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from .utils import process_and_optimize_image
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+from .utils import process_and_optimize_image, hashed_upload_to
 
 class ContentBlock(models.Model):
     key = models.CharField(max_length=100, unique=True, help_text="Unique identifier for the block (e.g., 'home_intro_title')")
@@ -30,6 +32,8 @@ class Direction(models.Model):
     cover_image = models.ImageField(upload_to='cms/directions/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['order']
@@ -55,6 +59,8 @@ class DirectionGalleryImage(models.Model):
     span = models.CharField(max_length=20, choices=SPAN_CHOICES, default='normal')
     order = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['direction', 'order']
@@ -91,6 +97,8 @@ class News(models.Model):
     cover_image = models.ImageField(upload_to='cms/news/', blank=True, null=True)
     published_date = models.DateTimeField()
     is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-published_date']
@@ -121,6 +129,7 @@ class MediaAsset(models.Model):
     image = models.ImageField(upload_to='cms/media_library/')
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']
@@ -134,3 +143,22 @@ class MediaAsset(models.Model):
 
     def __str__(self):
         return f"{self.title} [{self.get_category_display()}]"
+
+
+@receiver(post_delete, sender=ContentBlock)
+@receiver(post_delete, sender=Direction)
+@receiver(post_delete, sender=DirectionGalleryImage)
+@receiver(post_delete, sender=News)
+@receiver(post_delete, sender=MediaAsset)
+def cleanup_media_on_delete(sender, instance, **kwargs):
+    """Automatically cleans up physical media files from storage when an instance is deleted."""
+    for field in instance._meta.fields:
+        if isinstance(field, models.ImageField):
+            field_val = getattr(instance, field.name, None)
+            if field_val and field_val.name:
+                try:
+                    if field_val.storage.exists(field_val.name):
+                        field_val.storage.delete(field_val.name)
+                except Exception as e:
+                    print(f"⚠️ Could not delete media file on model deletion: {e}")
+

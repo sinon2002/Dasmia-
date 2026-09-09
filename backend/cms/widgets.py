@@ -29,8 +29,25 @@ class AdminImageEditorWidget(forms.ClearableFileInput):
         # Base file input from Django
         real_input_html = super().render(name, value, attrs=attrs, renderer=renderer)
         
-        has_file = bool(value and hasattr(value, 'url'))
-        image_url = escape(value.url) if has_file else ''
+        has_file = bool(value and hasattr(value, 'url') and getattr(value, 'name', None))
+        if has_file:
+            ts = ''
+            inst = getattr(value, 'instance', None)
+            if inst:
+                for attr in ('updated_at', 'published_date', 'created_at'):
+                    val = getattr(inst, attr, None)
+                    if val and hasattr(val, 'timestamp'):
+                        ts = f"?v={int(val.timestamp())}"
+                        break
+            if not ts and hasattr(value, 'storage') and value.name:
+                try:
+                    mtime = int(value.storage.get_modified_time(value.name).timestamp())
+                    ts = f"?v={mtime}"
+                except Exception:
+                    pass
+            image_url = f"{escape(value.url)}{ts}"
+        else:
+            image_url = ''
         file_name = escape(str(value).split('/')[-1]) if has_file else 'Нет файла'
         
         thumb_style = '' if has_file else 'display:none;'
@@ -63,7 +80,7 @@ class AdminImageEditorWidget(forms.ClearableFileInput):
                 </button>''' if has_file else ''}
             </div>
             
-            <div style="display:none;">
+            <div style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">
                 {real_input_html}
             </div>
         </div>

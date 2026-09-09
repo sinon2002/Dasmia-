@@ -14,6 +14,33 @@ export interface LeadResponse {
   message?: string;
 }
 
+export interface ApiGalleryImage {
+  id: number;
+  image: string;
+  title: string;
+  span: string;
+  order: number;
+}
+
+export interface ApiDirection {
+  id: number;
+  slug: string;
+  name: string;
+  description: string;
+  cover_image: string;
+  order: number;
+  gallery_images: ApiGalleryImage[];
+}
+
+export interface ApiMediaAsset {
+  id: number;
+  title: string;
+  category: string;
+  image: string;
+  description: string;
+  created_at: string;
+}
+
 export async function submitLead(data: LeadPayload): Promise<LeadResponse> {
   try {
     const response = await fetch(`${API_URL}/api/v1/leads/`, {
@@ -57,5 +84,28 @@ export async function submitLead(data: LeadPayload): Promise<LeadResponse> {
       success: false,
       message: "Не удалось связаться с сервером. Убедитесь, что бэкенд запущен.",
     };
+  }
+}
+
+export async function fetchDirection(slug: string): Promise<ApiDirection | null> {
+  try {
+    const response = await fetch(`${API_URL}/api/v1/directions/${slug}/`);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function fetchMediaAssets(category?: string): Promise<ApiMediaAsset[]> {
+  try {
+    const url = category
+      ? `${API_URL}/api/v1/media-assets/?category=${encodeURIComponent(category)}`
+      : `${API_URL}/api/v1/media-assets/`;
+    const response = await fetch(url);
+    if (!response.ok) return [];
+    return await response.json();
+  } catch (err) {
+    return [];
   }
 }

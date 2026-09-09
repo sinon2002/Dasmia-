@@ -15,7 +15,7 @@ from cms.models import (
 )
 
 class Command(BaseCommand):
-    help = 'Populates the CMS Media Library, Directions, Galleries, and Content Blocks with DASMIA photos.'
+    help = 'Populates the CMS Media Library, Directions, Galleries, and Content Blocks with all DASMIA photos.'
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.NOTICE("🚀 Starting DASMIA Media Library Seeding..."))
@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 return File(open(path, "rb"), name=filename)
             return None
 
-        # 1. Seed Media Assets Library
+        # 1. Full Comprehensive Media Assets Library
         media_items = [
             # Banquet
             {"title": "Банкетный зал Хан-Тенир — Главный вид", "cat": "banquet", "file": "IMG_8902.webp", "desc": "Величественный зал для торжеств до 1000 гостей"},
@@ -56,14 +56,30 @@ class Command(BaseCommand):
             # Ethno
             {"title": "Этно-село — Юрточный городок", "cat": "ethno", "file": "IMG_9018.webp", "desc": "Аутентичный кыргызский аил в сердце Бишкека"},
             {"title": "Интерьер ханской юрты", "cat": "ethno", "file": "IMG_9027.webp", "desc": "Традиционные шырдаки и туш-кийизы ручной работы"},
+            {"title": "Этно-орнамент (синий)", "cat": "ethno", "file": "ornament-ethno-blue.webp", "desc": "Традиционный кочевой орнамент в синих тонах"},
+            {"title": "Этно-орнамент (золотой)", "cat": "ethno", "file": "ornament-ethno-gold.webp", "desc": "Традиционный кочевой орнамент в золотых тонах"},
+            {"title": "Этно-орнамент (красный)", "cat": "ethno", "file": "ornament-ethno-red.webp", "desc": "Традиционный кочевой орнамент в бордовых тонах"},
+            {"title": "Архитектурный элемент юрты (Түндүк)", "cat": "ethno", "file": "ornament-yurt.png", "desc": "Символ семейного очага и единства"},
 
-            # Pools
+            # Pools & Aqua
             {"title": "Аквазона — Главный бассейн 25м", "cat": "pools", "file": "IMG_9031.webp", "desc": "Кристально чистая вода с современной системой фильтрации"},
             {"title": "Зона шезлонгов и релаксации", "cat": "pools", "file": "IMG_9049.webp", "desc": "Комфортный отдых у воды круглый год"},
+            {"title": "Аквазона — Панорамный вид", "cat": "pools", "file": "pools-hero-wide.webp", "desc": "Общий вид на водный комплекс DASMIA"},
+            {"title": "Аквазона — Детский бассейн", "cat": "pools", "file": "pools-kids-group.webp", "desc": "Безопасная детская аквазона с анимацией"},
+            {"title": "Аквазона — Премиум шезлонги", "cat": "pools", "file": "pools-lounge-empty.webp", "desc": "Пространство индивидуального отдыха"},
+            {"title": "Аквазона — Спортивное плавание", "cat": "pools", "file": "pools-swimmer-goggles.webp", "desc": "Тренировочные дорожки и уроки плавания"},
 
-            # SPA
+            # SPA & Wellness
             {"title": "SPA комплекс — Турецкий хаммам", "cat": "spa", "file": "IMG_2160.webp", "desc": "Мраморные лежаки и парная для восстановления сил"},
             {"title": "Массажные кабинеты и зона отдыха", "cat": "spa", "file": "IMG_2161.webp", "desc": "Профессиональные программы релаксации и ухода"},
+            {"title": "SPA — Ароматерапия и масла", "cat": "spa", "file": "spa-candles-oils.webp", "desc": "Натуральные эфирные масла и расслабляющие свечи"},
+            {"title": "SPA — Массажный кабинет", "cat": "spa", "file": "spa-massage-bed-candles.webp", "desc": "Приватный массажный кабинет высшей категории"},
+            {"title": "SPA — Процедурный кабинет", "cat": "spa", "file": "spa-massage-room.webp", "desc": "Индивидуальные программы омоложения и ухода"},
+            {"title": "SPA — Сауна и купель", "cat": "spa", "file": "spa-sauna-pool.webp", "desc": "Финская сауна и контрастная купель"},
+            {"title": "SPA — Звукотерапия чашами", "cat": "spa", "file": "spa-singing-bowls.webp", "desc": "Медитативные практики с тибетскими чашами"},
+            {"title": "SPA орнамент (золотой)", "cat": "spa", "file": "ornament-spa-gold.webp", "desc": "Узор гармонии и спокойствия в золотых тонах"},
+            {"title": "SPA орнамент (тёмно-синий)", "cat": "spa", "file": "ornament-spa-navy.webp", "desc": "Узор гармонии и спокойствия в тёмных тонах"},
+            {"title": "SPA орнамент (красный)", "cat": "spa", "file": "ornament-spa-red_1.webp", "desc": "Узор гармонии и спокойствия в рубиновых тонах"},
 
             # Fitness
             {"title": "Фитнес-клуб — Кардио и сайклинг", "cat": "fitness", "file": "fitness-hero-spin.webp", "desc": "Высокоинтенсивные тренировки в сайкл-студии"},
@@ -72,34 +88,87 @@ class Command(BaseCommand):
             {"title": "Сайкл студия для групповых тренировок", "cat": "fitness", "file": "fitness-spin-couple.webp", "desc": "Энергичные тренировки под ритмичную музыку"},
             {"title": "Зона функционального тренинга", "cat": "fitness", "file": "fitness-woman-dumbbells.webp", "desc": "Индивидуальные программы под любые цели"},
 
-            # General
+            # General & Branding
             {"title": "Фирменный логотип комплекса DASMIA", "cat": "general", "file": "dasmia-logo.png", "desc": "Официальный логотип холдинга DASMIA"},
             {"title": "Кыргызский национальный орнамент (синий)", "cat": "general", "file": "ornament-kyrgyz-blue.webp", "desc": "Традиционный декоративный элемент"},
             {"title": "Кыргызский национальный орнамент (красный)", "cat": "general", "file": "ornament-kyrgyz-red.webp", "desc": "Традиционный декоративный элемент"},
+            {"title": "Кыргызский национальный орнамент (золотой)", "cat": "general", "file": "ornament-kyrgyz-gold.webp", "desc": "Традиционный декоративный элемент"},
+            {"title": "Кыргызский национальный орнамент (тёмно-синий)", "cat": "general", "file": "ornament-kyrgyz-navy.webp", "desc": "Традиционный декоративный элемент"},
+            {"title": "Декоративный элемент #1", "cat": "general", "file": "ornament-1.png", "desc": "Национальный орнаментальный мотив"},
+            {"title": "Декоративный элемент #2", "cat": "general", "file": "ornament-2.png", "desc": "Национальный орнаментальный мотив"},
+            {"title": "Символ солнца", "cat": "general", "file": "ornament-sun.png", "desc": "Традиционный знак процветания"},
+            {"title": "Орнаментальная плитка", "cat": "general", "file": "ornament-tile.png", "desc": "Восточный геометрический узор"},
+            {"title": "Базовый плейсхолдер", "cat": "general", "file": "no_image.png", "desc": "Изображение по умолчанию"},
         ]
 
-        # Clear existing media assets to avoid duplicates or add if missing
-        created_assets = 0
+        seeded_files = set()
+        count = 0
+
         for item in media_items:
             f = get_file(item["file"])
             if not f:
                 continue
-            asset, created = MediaAsset.objects.get_or_select = MediaAsset.objects.get_or_create(
-                title=item["title"],
-                defaults={
-                    "category": item["cat"],
-                    "description": item["desc"],
-                    "image": f,
-                }
-            )
-            if created:
-                created_assets += 1
-            else:
-                if not asset.image:
-                    asset.image = f
-                    asset.save()
+            seeded_files.add(item["file"])
 
-        self.stdout.write(self.style.SUCCESS(f"✅ Created/Verified {len(media_items)} MediaAsset items in Media Library!"))
+            asset = MediaAsset.objects.filter(title=item["title"]).first()
+            if not asset:
+                # Also check by existing file base name
+                for a in MediaAsset.objects.all():
+                    if a.image and item["file"].split('.')[0] in a.image.name:
+                        asset = a
+                        break
+
+            if not asset:
+                asset = MediaAsset.objects.create(
+                    title=item["title"],
+                    category=item["cat"],
+                    description=item["desc"],
+                    image=f,
+                )
+                count += 1
+            else:
+                asset.title = item["title"]
+                asset.category = item["cat"]
+                asset.description = item["desc"]
+                if not asset.image or not os.path.exists(asset.image.path):
+                    asset.image = f
+                asset.save()
+                count += 1
+
+        # Auto-discover any remaining images in public/assets/images
+        for p in images_dir.glob("*"):
+            if p.is_file() and p.name not in seeded_files and p.suffix.lower() in [".webp", ".png", ".jpg", ".jpeg", ".svg"]:
+                # Determine category by filename keyword
+                name_lower = p.name.lower()
+                cat = "general"
+                if "banquet" in name_lower or "8902" in name_lower or "8911" in name_lower or "8920" in name_lower or "8929" in name_lower or "8936" in name_lower:
+                    cat = "banquet"
+                elif "rest" in name_lower or "8995" in name_lower or "8997" in name_lower or "9000" in name_lower or "9002" in name_lower:
+                    cat = "restaurant"
+                elif "chai" in name_lower or "9005" in name_lower or "9007" in name_lower or "9009" in name_lower:
+                    cat = "chaikhana"
+                elif "ethno" in name_lower or "9018" in name_lower or "9027" in name_lower:
+                    cat = "ethno"
+                elif "pool" in name_lower or "9031" in name_lower or "9049" in name_lower or "aqua" in name_lower:
+                    cat = "pools"
+                elif "spa" in name_lower or "2160" in name_lower or "2161" in name_lower:
+                    cat = "spa"
+                elif "fit" in name_lower or "spin" in name_lower or "weight" in name_lower or "train" in name_lower:
+                    cat = "fitness"
+
+                clean_title = p.stem.replace("-", " ").replace("_", " ").title()
+                f = File(open(p, "rb"), name=p.name)
+
+                if not MediaAsset.objects.filter(title=clean_title).exists():
+                    MediaAsset.objects.create(
+                        title=f"{clean_title} ({p.name})",
+                        category=cat,
+                        description=f"Файл из медиатеки: {p.name}",
+                        image=f,
+                    )
+                    count += 1
+
+        self.stdout.write(self.style.SUCCESS(f"✅ Total {MediaAsset.objects.count()} MediaAsset items registered in CMS Media Library!"))
 
         # 2. Seed Directions and Bento Grid Galleries
         directions_data = [
@@ -155,6 +224,7 @@ class Command(BaseCommand):
                 "order": 4,
                 "gallery": [
                     {"file": "IMG_9027.webp", "title": "Убранство юрты", "span": "wide", "order": 1},
+                    {"file": "ornament-ethno-gold.webp", "title": "Золотой этно-орнамент", "span": "normal", "order": 2},
                 ]
             },
             {
@@ -166,7 +236,10 @@ class Command(BaseCommand):
                 "cover": "IMG_9031.webp",
                 "order": 5,
                 "gallery": [
-                    {"file": "IMG_9049.webp", "title": "Зона шезлонгов", "span": "wide", "order": 1},
+                    {"file": "pools-hero-wide.webp", "title": "Панорама бассейна", "span": "wide", "order": 1},
+                    {"file": "pools-swimmer-goggles.webp", "title": "Спортивное плавание", "span": "normal", "order": 2},
+                    {"file": "pools-kids-group.webp", "title": "Детская аквазона", "span": "normal", "order": 3},
+                    {"file": "pools-lounge-empty.webp", "title": "Зона шезлонгов", "span": "wide", "order": 4},
                 ]
             },
             {
@@ -178,7 +251,11 @@ class Command(BaseCommand):
                 "cover": "IMG_2160.webp",
                 "order": 6,
                 "gallery": [
-                    {"file": "IMG_2161.webp", "title": "Зона хаммама и массажа", "span": "wide", "order": 1},
+                    {"file": "spa-massage-room.webp", "title": "Процедурный кабинет", "span": "wide", "order": 1},
+                    {"file": "spa-massage-bed-candles.webp", "title": "Аромамассаж", "span": "normal", "order": 2},
+                    {"file": "spa-singing-bowls.webp", "title": "Звукотерапия чашами", "span": "tall", "order": 3},
+                    {"file": "spa-sauna-pool.webp", "title": "Сауна и купель", "span": "normal", "order": 4},
+                    {"file": "spa-candles-oils.webp", "title": "Косметический уход", "span": "normal", "order": 5},
                 ]
             },
             {
@@ -193,6 +270,7 @@ class Command(BaseCommand):
                     {"file": "fitness-weights-room.webp", "title": "Силовая зона", "span": "wide", "order": 1},
                     {"file": "fitness-trainers-team.webp", "title": "Команда тренеров", "span": "normal", "order": 2},
                     {"file": "fitness-woman-dumbbells.webp", "title": "Функциональный тренинг", "span": "normal", "order": 3},
+                    {"file": "fitness-spin-couple.webp", "title": "Сайкл студия", "span": "wide", "order": 4},
                 ]
             },
         ]
@@ -210,7 +288,7 @@ class Command(BaseCommand):
                     "is_active": True,
                 }
             )
-            if cov and not direction.cover_image:
+            if cov and (not direction.cover_image or not os.path.exists(direction.cover_image.path)):
                 direction.cover_image = cov
                 direction.save()
 
@@ -218,16 +296,25 @@ class Command(BaseCommand):
             for g_item in d_info.get("gallery", []):
                 g_file = get_file(g_item["file"])
                 if g_file:
-                    DirectionGalleryImage.objects.get_or_create(
+                    g_obj = DirectionGalleryImage.objects.filter(
                         direction=direction,
-                        title=g_item["title"],
-                        defaults={
-                            "image": g_file,
-                            "span": g_item["span"],
-                            "order": g_item["order"],
-                            "is_active": True,
-                        }
-                    )
+                        title=g_item["title"]
+                    ).first()
+                    if not g_obj:
+                        DirectionGalleryImage.objects.create(
+                            direction=direction,
+                            title=g_item["title"],
+                            image=g_file,
+                            span=g_item["span"],
+                            order=g_item["order"],
+                            is_active=True,
+                        )
+                    else:
+                        g_obj.span = g_item["span"]
+                        g_obj.order = g_item["order"]
+                        if not g_obj.image or not os.path.exists(g_obj.image.path):
+                            g_obj.image = g_file
+                        g_obj.save()
 
         self.stdout.write(self.style.SUCCESS(f"✅ Created/Verified {len(directions_data)} Directions with Bento Galleries!"))
 
@@ -253,7 +340,7 @@ class Command(BaseCommand):
 
         for b in content_blocks:
             bf = get_file(b["file"])
-            ContentBlock.objects.get_or_create(
+            cb, _ = ContentBlock.objects.get_or_create(
                 key=b["key"],
                 defaults={
                     "title_ru": b["title_ru"],
@@ -263,6 +350,9 @@ class Command(BaseCommand):
                     "image": bf,
                 }
             )
+            if bf and (not cb.image or not os.path.exists(cb.image.path)):
+                cb.image = bf
+                cb.save()
 
         # 4. Seed News with images
         news_items = [
@@ -288,7 +378,7 @@ class Command(BaseCommand):
 
         for n in news_items:
             nf = get_file(n["file"])
-            News.objects.get_or_create(
+            nw, _ = News.objects.get_or_create(
                 slug=n["slug"],
                 defaults={
                     "title_ru": n["title_ru"],
@@ -301,5 +391,8 @@ class Command(BaseCommand):
                     "is_active": True,
                 }
             )
+            if nf and (not nw.cover_image or not os.path.exists(nw.cover_image.path)):
+                nw.cover_image = nf
+                nw.save()
 
-        self.stdout.write(self.style.SUCCESS("🎉 Seeding completed successfully! All images and CMS data are ready."))
+        self.stdout.write(self.style.SUCCESS("🎉 Seeding completed successfully! All pictures and CMS media are active."))
