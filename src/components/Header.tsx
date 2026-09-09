@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import AppImage from "@/components/ui/AppImage";
+import LanguageFlag from "@/components/ui/LanguageFlags";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SUPPORTED_LANGUAGES, LANGUAGE_LABELS, t, Language } from "@/lib/i18n";
@@ -202,6 +204,7 @@ export default function Header() {
   const isMainPage = pathname === "/";
 
   const getHref = (hash: string) => {
+    if (!hash.startsWith("#")) return hash;
     return isMainPage ? hash : `/${hash}`;
   };
 
@@ -217,7 +220,7 @@ export default function Header() {
   const navLinks = [
     { label: t(language, "nav.about"), href: "#about" },
     { label: t(language, "nav.directions"), href: "#directions", hasSubmenu: true },
-    { label: t(language, "nav.corporate"), href: "#corporate" },
+    { label: t(language, "nav.corporate"), href: "/corporate" },
     { label: t(language, "nav.history"), href: "#history" },
     { label: t(language, "nav.contact"), href: "#contact" },
   ];
@@ -299,19 +302,30 @@ export default function Header() {
         data-content="header"
       >
         <div className="max-w-8xl mx-auto px-6 lg:px-12 xl:px-16">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center gap-8 h-20">
             {/* Logo — Refined SVG Wordmark */}
             <Link
               href="/"
-              className="flex items-center group"
+              className="flex items-center group shrink-0"
               aria-label="DASMIA — Главная"
             >
-              <DasmiaLogo className="transition-opacity duration-300 group-hover:opacity-80" />
+              <div
+                className="relative select-none transition-opacity duration-300 group-hover:opacity-80"
+                style={{ width: "172px", height: "27px" }}
+              >
+                <AppImage
+                  src="/assets/images/logos/dasmia-wordmark.webp"
+                  alt="DASMIA"
+                  fill
+                  className="object-contain object-left"
+                  sizes="172px"
+                />
+              </div>
             </Link>
 
             {/* Desktop Nav */}
             <nav
-              className="hidden lg:flex items-center gap-8"
+              className="hidden lg:flex items-center gap-8 shrink-0"
               aria-label="Основная навигация"
             >
               {navLinks.map((link) =>
@@ -325,8 +339,13 @@ export default function Header() {
                     <a
                       href={getHref(link.href)}
                       onClick={(e) => handleAnchorClick(e, link.href)}
-                      className="nav-link flex items-center gap-1.5 text-label text-muted-foreground hover:text-foreground transition-colors duration-300"
-                      style={{ fontSize: "10px", letterSpacing: "0.18em" }}
+                      className="nav-link flex items-center gap-1.5 text-label text-muted-foreground hover:text-foreground hover:border-gold/50 transition-colors duration-300 border rounded-sm whitespace-nowrap shrink-0"
+                      style={{
+                        fontSize: "13px",
+                        letterSpacing: "0.14em",
+                        padding: "8px 14px",
+                        borderColor: "rgba(185,150,90,0.25)",
+                      }}
                       aria-haspopup="true"
                       aria-expanded={directionsOpen}
                     >
@@ -393,8 +412,13 @@ export default function Header() {
                     key={link.label}
                     href={getHref(link.href)}
                     onClick={(e) => handleAnchorClick(e, link.href)}
-                    className="nav-link text-label text-muted-foreground hover:text-foreground transition-colors duration-300"
-                    style={{ fontSize: "10px", letterSpacing: "0.18em" }}
+                    className="nav-link text-label text-muted-foreground hover:text-foreground hover:border-gold/50 transition-colors duration-300 border rounded-sm whitespace-nowrap shrink-0"
+                    style={{
+                      fontSize: "13px",
+                      letterSpacing: "0.14em",
+                      padding: "8px 14px",
+                      borderColor: "rgba(185,150,90,0.25)",
+                    }}
                   >
                     {link.label}
                   </a>
@@ -403,33 +427,26 @@ export default function Header() {
             </nav>
 
             {/* Right Controls */}
-            <div className="flex items-center gap-3">
-              {/* Language Switcher — i18n with localStorage persistence */}
-              <div className="hidden md:flex items-center gap-1">
-                {SUPPORTED_LANGUAGES.map((lang, i) => (
-                  <React.Fragment key={lang}>
-                    <button
-                      onClick={() => setLanguage(lang)}
-                      className={`text-label transition-colors duration-200 px-1 py-0.5 ${
-                        language === lang
-                          ? "text-gold"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                      style={{ fontSize: "10px", letterSpacing: "0.14em" }}
-                      aria-label={`Language: ${LANGUAGE_LABELS[lang]}`}
-                      aria-pressed={language === lang}
-                    >
-                      {LANGUAGE_LABELS[lang]}
-                    </button>
-                    {i < SUPPORTED_LANGUAGES.length - 1 && (
-                      <span
-                        className="text-muted-foreground opacity-30"
-                        style={{ fontSize: "10px" }}
-                      >
-                        /
-                      </span>
-                    )}
-                  </React.Fragment>
+            <div className="flex items-center gap-3 shrink-0">
+              {/* Language Switcher — i18n with localStorage persistence.
+                  Visible on every breakpoint, including mobile, so the
+                  flags sit right next to the hamburger button instead of
+                  being hidden inside the mobile menu drawer. */}
+              <div className="flex items-center gap-2 md:gap-2.5">
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => setLanguage(lang)}
+                    className={`flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 w-[22px] h-[22px] md:w-6 md:h-6 ${
+                      language === lang
+                        ? "opacity-100 ring-1 ring-gold"
+                        : "opacity-50 hover:opacity-90"
+                    }`}
+                    aria-label={`Language: ${LANGUAGE_LABELS[lang]}`}
+                    aria-pressed={language === lang}
+                  >
+                    <LanguageFlag lang={lang} />
+                  </button>
                 ))}
               </div>
 
@@ -686,24 +703,6 @@ export default function Header() {
                 />
               </svg>
             </a>
-            <div className="flex items-center gap-3">
-              {SUPPORTED_LANGUAGES.map((lang, i) => (
-                <React.Fragment key={lang}>
-                  <button
-                    onClick={() => setLanguage(lang)}
-                    className={`text-label transition-colors duration-200 ${language === lang ? "text-gold" : "text-muted-foreground"}`}
-                    style={{ fontSize: "11px", letterSpacing: "0.14em" }}
-                  >
-                    {LANGUAGE_LABELS[lang]}
-                  </button>
-                  {i < SUPPORTED_LANGUAGES.length - 1 && (
-                    <span className="text-muted-foreground opacity-30 text-xs">
-                      /
-                    </span>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
           </div>
         </div>
       </div>

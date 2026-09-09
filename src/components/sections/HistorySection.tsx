@@ -58,6 +58,9 @@ export default function HistorySection() {
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [cursorY, setCursorY] = useState(0);
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
+  const [mobilePhotoTop, setMobilePhotoTop] = useState(0);
+  const rowRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -76,6 +79,41 @@ export default function HistorySection() {
       { threshold: 0.1 },
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Mobile: there's no cursor to follow, so instead the row nearest the
+  // vertical center of the screen becomes "active" while scrolling, and a
+  // small circular photo floats over the list at that row's height — the
+  // same floating-photo idea as desktop, just driven by scroll position
+  // instead of the mouse, and without pushing the rows apart.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (!isMobile) return;
+
+    const updateActive = (idx: number) => {
+      setActiveMobileIndex(idx);
+      const el = rowRefs.current[idx];
+      if (el) setMobilePhotoTop(el.offsetTop + el.offsetHeight / 2);
+    };
+
+    // Set an initial position immediately so the photo is visible before
+    // any scrolling happens.
+    updateActive(0);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = rowRefs.current.findIndex((el) => el === entry.target);
+            if (idx !== -1) updateActive(idx);
+          }
+        });
+      },
+      { rootMargin: "-42% 0px -42% 0px", threshold: 0 },
+    );
+    rowRefs.current.forEach((el) => el && observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
@@ -133,9 +171,12 @@ export default function HistorySection() {
           {timelineConfigs.map((item, i) => (
             <button
               key={item.year}
+              ref={(el) => {
+                rowRefs.current[i] = el;
+              }}
               onMouseEnter={() => setHoveredIndex(i)}
               onFocus={() => setHoveredIndex(i)}
-              className="group relative z-10 flex items-center w-full text-left transition-colors duration-300"
+              className="group relative z-10 flex flex-col w-full text-left transition-colors duration-300"
               style={{
                 borderTop:
                   i === 0
@@ -151,49 +192,75 @@ export default function HistorySection() {
                     ? "rgba(185,150,90,0.05)"
                     : "transparent",
                 padding: "26px 12px",
-                gap: "24px",
               }}
             >
-              <span
-                style={{
-                  fontSize: "clamp(14px, 1.4vw, 16px)",
-                  color: "var(--muted-foreground)",
-                  minWidth: "70px",
-                }}
-              >
-                {item.year}
-              </span>
+              <div className="flex items-center w-full" style={{ gap: "24px" }}>
+                <span
+                  style={{
+                    fontSize: "clamp(14px, 1.4vw, 16px)",
+                    color: "var(--muted-foreground)",
+                    minWidth: "70px",
+                  }}
+                >
+                  {item.year}
+                </span>
 
-              <span
-                className="font-serif transition-colors duration-300"
-                style={{
-                  fontFamily: "var(--font-cormorant)",
-                  fontSize: "clamp(18px, 2vw, 24px)",
-                  fontWeight: 500,
-                  letterSpacing: "0.02em",
-                  color:
-                    hoveredIndex === i
-                      ? "var(--foreground)"
-                      : "var(--muted-foreground)",
-                  flex: 1,
-                }}
-              >
-                {t(language, item.titleKey)}
-              </span>
+                <span
+                  className="font-serif transition-colors duration-300"
+                  style={{
+                    fontFamily: "var(--font-cormorant)",
+                    fontSize: "clamp(18px, 2vw, 24px)",
+                    fontWeight: 500,
+                    letterSpacing: "0.02em",
+                    color:
+                      hoveredIndex === i
+                        ? "var(--foreground)"
+                        : "var(--muted-foreground)",
+                    flex: 1,
+                  }}
+                >
+                  {t(language, item.titleKey)}
+                </span>
 
-              <span
+                <span
+                  style={{
+                    fontSize: "13px",
+                    color: "rgba(255,255,255,0.25)",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+
+              {/* Description — expands open below the row on hover.
+                  Text comes from i18n (history.tN.desc); to make it
+                  editable from the admin panel, this needs a backend
+                  field once Ibrahim adds a History/Timeline model. */}
+              <div
+                className="w-full overflow-hidden transition-all duration-500 ease-out"
                 style={{
-                  fontSize: "13px",
-                  color: "rgba(255,255,255,0.25)",
-                  fontVariantNumeric: "tabular-nums",
+                  maxHeight: hoveredIndex === i ? "120px" : "0px",
+                  opacity: hoveredIndex === i ? 1 : 0,
+                  marginTop: hoveredIndex === i ? "14px" : "0px",
                 }}
               >
-                {String(i + 1).padStart(2, "0")}
-              </span>
+                <p
+                  style={{
+                    fontSize: "clamp(13px, 1.1vw, 14px)",
+                    lineHeight: 1.7,
+                    color: "var(--muted-foreground)",
+                    maxWidth: "640px",
+                    paddingLeft: "94px",
+                  }}
+                >
+                  {t(language, item.descKey)}
+                </p>
+              </div>
             </button>
           ))}
 
-          {/* Floating circular photo — follows cursor vertically, fades in/out */}
+          {/* Floating circular photo — desktop: follows the mouse cursor */}
           <div
             className="hidden md:block absolute pointer-events-none"
             style={{
@@ -221,6 +288,32 @@ export default function HistorySection() {
                 sizes="260px"
               />
             )}
+          </div>
+
+          {/* Floating circular photo — mobile: follows scroll position instead of the cursor, same look as desktop, smaller */}
+          <div
+            className="md:hidden absolute pointer-events-none"
+            style={{
+              top: mobilePhotoTop,
+              right: "6%",
+              width: "108px",
+              height: "108px",
+              borderRadius: "50%",
+              overflow: "hidden",
+              transform: "translate(0, -50%)",
+              transition: "top 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+              zIndex: 5,
+              boxShadow: "0 12px 36px rgba(0,0,0,0.5)",
+            }}
+          >
+            <AppImage
+              key={timelineConfigs[activeMobileIndex].image}
+              src={timelineConfigs[activeMobileIndex].image}
+              alt={timelineConfigs[activeMobileIndex].alt}
+              fill
+              className="object-cover"
+              sizes="108px"
+            />
           </div>
         </div>
       </div>

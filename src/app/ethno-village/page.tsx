@@ -10,6 +10,7 @@ import DirectionStaticGallery from "@/components/sections/DirectionStaticGallery
 import ContactMapSection from "@/components/sections/ContactMapSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
+import { useDirectionGallery } from "@/lib/api";
 
 const previewImages = [
   { url: "/assets/images/IMG_2160.webp", alt: "Традиционная юрта этно-села DASMIA", caption: "АУТЕНТИЧНЫЕ ЮРТЫ" },
@@ -41,6 +42,15 @@ export default function EthnoVillagePage() {
     directionsContent["ethno-village"][language] ||
     directionsContent["ethno-village"].ru;
 
+  // CMS-backed images from the Django backend, when available. Falls back
+  // to the static arrays above when the backend/admin has no data yet.
+  const { gallery } = useDirectionGallery("ethno-village", language);
+
+  const previewImagesResolved = previewImages.map((img, i) =>
+    gallery && gallery[i] ? { ...img, url: gallery[i].url } : img,
+  );
+  const galleryImagesResolved = gallery && gallery.length > 0 ? gallery : galleryImages;
+
   const detailsMap = Object.fromEntries(
     data.intro.details.map((d) => [d.label, d.value]),
   );
@@ -54,21 +64,21 @@ export default function EthnoVillagePage() {
       number: data.featuresSection.features[0].number,
       title: data.featuresSection.features[0].title,
       description: data.featuresSection.features[0].description,
-      image: "/assets/images/IMG_2160.webp",
+      image: gallery && gallery[0] ? gallery[0].url : "/assets/images/IMG_2160.webp",
       imageAlt: data.featuresSection.features[0].title,
     },
     {
       number: data.featuresSection.features[1].number,
       title: data.featuresSection.features[1].title,
       description: data.featuresSection.features[1].description,
-      image: "/assets/images/IMG_9005.webp",
+      image: gallery && gallery[1] ? gallery[1].url : "/assets/images/IMG_9005.webp",
       imageAlt: data.featuresSection.features[1].title,
     },
     {
       number: data.featuresSection.features[2].number,
       title: data.featuresSection.features[2].title,
       description: data.featuresSection.features[2].description,
-      image: "/assets/images/IMG_9018.webp",
+      image: gallery && gallery[2] ? gallery[2].url : "/assets/images/IMG_9018.webp",
       imageAlt: data.featuresSection.features[2].title,
     },
   ];
@@ -98,7 +108,7 @@ export default function EthnoVillagePage() {
         <DirectionAtmosphereSection
           label={data.featuresSection.label}
           bodyText={data.intro.body}
-          previewImages={previewImages}
+          previewImages={previewImagesResolved}
           dataDirection="ethno-village"
         />
 
@@ -112,7 +122,7 @@ export default function EthnoVillagePage() {
 
         <DirectionStaticGallery
           tagline="Пространство, где кочевая культура оживает"
-          images={galleryImages}
+          images={galleryImagesResolved}
           ornaments={galleryOrnaments}
           dataDirection="ethno-village"
         />

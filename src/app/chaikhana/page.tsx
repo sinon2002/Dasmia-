@@ -9,6 +9,7 @@ import DirectionScrapbookSection from "@/components/sections/DirectionScrapbookS
 import ContactMapSection from "@/components/sections/ContactMapSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
+import { useDirectionGallery } from "@/lib/api";
 
 const previewImages = [
   { url: "/assets/images/IMG_9000.webp", alt: "Интерьер чайханы DASMIA", caption: "ЧАЙНАЯ ЦЕРЕМОНИЯ" },
@@ -29,11 +30,27 @@ export default function ChaikhanaPage() {
   const { language } = useLanguage();
   const data = directionsContent.chaikhana[language] || directionsContent.chaikhana.ru;
 
+  // CMS-backed images from the Django backend, when available. Falls back
+  // to the static arrays above when the backend/admin has no data yet.
+  const { gallery } = useDirectionGallery("chaikhana", language);
+
+  const previewImagesResolved = previewImages.map((img, i) =>
+    gallery && gallery[i] ? { ...img, url: gallery[i].url } : img,
+  );
+  const stripImagesResolved = gallery && gallery.length > 0 ? gallery : stripImages;
+
   const detailsMap = Object.fromEntries(
     data.intro.details.map((d) => [d.label, d.value]),
   );
 
   const f = data.featuresSection.features;
+
+  const scrapbookPhotos = {
+    topLeft: gallery && gallery[3] ? gallery[3].url : "/assets/images/IMG_9018.webp",
+    topRight: gallery && gallery[2] ? gallery[2].url : "/assets/images/IMG_9007.webp",
+    bottomLeft: gallery && gallery[4] ? gallery[4].url : "/assets/images/IMG_8902.webp",
+    bottomRight: gallery && gallery[5] ? gallery[5].url : "/assets/images/IMG_9049.webp",
+  };
 
   return (
     <>
@@ -56,8 +73,8 @@ export default function ChaikhanaPage() {
         <DirectionAtmosphereSection
           label={data.intro.label}
           bodyText={data.intro.body}
-          previewImages={previewImages}
-          stripImages={stripImages}
+          previewImages={previewImagesResolved}
+          stripImages={stripImagesResolved}
           tagline={`${data.intro.heading} ${data.intro.headingItalic}`}
           dataDirection="chaikhana"
         />
@@ -66,10 +83,10 @@ export default function ChaikhanaPage() {
           bigText={data.cta.description}
           smallText1={f[0].description}
           smallText2={f[2].description}
-          photoTopLeft={{ image: "/assets/images/IMG_9018.webp", imageAlt: f[0].title }}
-          photoTopRight={{ image: "/assets/images/IMG_9007.webp", imageAlt: f[1].title }}
-          photoBottomLeft={{ image: "/assets/images/IMG_8902.webp", imageAlt: "Дастархан чайханы DASMIA" }}
-          photoBottomRight={{ image: "/assets/images/IMG_9049.webp", imageAlt: f[2].title }}
+          photoTopLeft={{ image: scrapbookPhotos.topLeft, imageAlt: f[0].title }}
+          photoTopRight={{ image: scrapbookPhotos.topRight, imageAlt: f[1].title }}
+          photoBottomLeft={{ image: scrapbookPhotos.bottomLeft, imageAlt: "Дастархан чайханы DASMIA" }}
+          photoBottomRight={{ image: scrapbookPhotos.bottomRight, imageAlt: f[2].title }}
           dataDirection="chaikhana"
         />
 

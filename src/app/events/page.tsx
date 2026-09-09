@@ -13,39 +13,30 @@ import { directionsContent } from "@/lib/directionsContent";
 import { useDirectionGallery } from "@/lib/api";
 
 const previewImages = [
-  { url: "/assets/images/fitness-weights-room.webp", alt: "Тренажёрный зал фитнес-клуба DASMIA", caption: "ТРЕНАЖЁРНЫЙ ЗАЛ" },
-  { url: "/assets/images/fitness-spin-couple.webp", alt: "Групповое сайкл-занятие в фитнес-клубе DASMIA", caption: "ГРУППОВЫЕ ЗАНЯТИЯ" },
-  { url: "/assets/images/fitness-trainers-team.webp", alt: "Команда тренеров фитнес-клуба DASMIA", caption: "ПЕРСОНАЛЬНЫЙ ТРЕНИНГ" },
+  { url: "/assets/images/IMG_9031.webp", alt: "Зал для конференций и форумов DASMIA", caption: "КОНФЕРЕНЦИИ И ФОРУМЫ" },
+  { url: "/assets/images/IMG_9009.webp", alt: "Зал для тренингов и семинаров DASMIA", caption: "ТРЕНИНГИ И СЕМИНАРЫ" },
+  { url: "/assets/images/IMG_9007.webp", alt: "Техническое оснащение зала DASMIA — свет, звук, экраны", caption: "ТЕХНИЧЕСКОЕ ОСНАЩЕНИЕ" },
 ];
 
 const galleryImages = [
-  { url: "/assets/images/fitness-hero-spin.webp", alt: "Сайкл-тренировка в фитнес-клубе DASMIA" },
-  { url: "/assets/images/fitness-weights-room.webp", alt: "Тренажёрный зал фитнес-клуба DASMIA" },
-  { url: "/assets/images/fitness-trainers-team.webp", alt: "Команда тренеров фитнес-клуба DASMIA" },
-  { url: "/assets/images/fitness-spin-couple.webp", alt: "Групповое сайкл-занятие в фитнес-клубе DASMIA" },
-  { url: "/assets/images/fitness-woman-dumbbells.webp", alt: "Силовая тренировка с гантелями" },
+  { url: "/assets/images/IMG_9002.webp", alt: "Панорама зала для мероприятий DASMIA" },
+  { url: "/assets/images/IMG_9031.webp", alt: "Зал для конференций и форумов DASMIA" },
+  { url: "/assets/images/IMG_9009.webp", alt: "Зал для тренингов и семинаров DASMIA" },
+  { url: "/assets/images/IMG_9007.webp", alt: "Техническое оснащение зала DASMIA" },
 ];
 
-const featureImages = [
-  "/assets/images/fitness-weights-room.webp",
-  "/assets/images/fitness-spin-couple.webp",
-  "/assets/images/fitness-trainers-team.webp",
-];
-
-export default function FitnessPage() {
+export default function EventsPage() {
   const { language } = useLanguage();
-  const data = directionsContent.fitness[language] || directionsContent.fitness.ru;
+  const data = directionsContent.events[language] || directionsContent.events.ru;
 
   // CMS-backed images from the Django backend, when available. Falls back
   // to the static arrays above when the backend/admin has no data yet.
-  const { gallery } = useDirectionGallery("fitness", language);
+  const { gallery } = useDirectionGallery("events", language);
 
   const previewImagesResolved = previewImages.map((img, i) =>
     gallery && gallery[i] ? { ...img, url: gallery[i].url } : img,
   );
   const galleryImagesResolved = gallery && gallery.length > 0 ? gallery : galleryImages;
-  const featureImagesResolved =
-    gallery && gallery.length > 0 ? gallery.slice(0, 3).map((img) => img.url) : featureImages;
 
   const detailsMap = Object.fromEntries(
     data.intro.details.map((d) => [d.label, d.value]),
@@ -60,21 +51,21 @@ export default function FitnessPage() {
       number: data.featuresSection.features[0].number,
       title: data.featuresSection.features[0].title,
       description: data.featuresSection.features[0].description,
-      image: featureImagesResolved[0],
+      image: gallery && gallery[0] ? gallery[0].url : "/assets/images/IMG_9031.webp",
       imageAlt: data.featuresSection.features[0].title,
     },
     {
       number: data.featuresSection.features[1].number,
       title: data.featuresSection.features[1].title,
       description: data.featuresSection.features[1].description,
-      image: featureImagesResolved[1],
+      image: gallery && gallery[1] ? gallery[1].url : "/assets/images/IMG_9009.webp",
       imageAlt: data.featuresSection.features[1].title,
     },
     {
       number: data.featuresSection.features[2].number,
       title: data.featuresSection.features[2].title,
       description: data.featuresSection.features[2].description,
-      image: featureImagesResolved[2],
+      image: gallery && gallery[2] ? gallery[2].url : "/assets/images/IMG_9007.webp",
       imageAlt: data.featuresSection.features[2].title,
     },
   ];
@@ -88,35 +79,36 @@ export default function FitnessPage() {
           category={data.hero.category}
           title={data.hero.title}
           description={data.hero.description}
-          backgroundImage="/assets/images/fitness-hero-spin.webp"
+          backgroundImage="/assets/images/IMG_9002.webp"
           backgroundAlt={data.hero.imageAlt}
           ctaLabel={data.cta.primaryLabel}
-          hours={detailsMap["ЧАСЫ РАБОТЫ"] || "07:00 – 23:00"}
-          seats={detailsMap["ПЛОЩАДЬ"] || "1200+ м²"}
-          seatsLabel="ПЛОЩАДЬ"
-          phone={detailsMap["ТРЕНАЖЁРОВ"] || "80+ единиц"}
-          phoneLabel="ОБОРУДОВАНИЕ"
+          hours={detailsMap["ФОРМАТ"] || "Конференции и тренинги"}
+          hoursLabel="ФОРМАТ"
+          seatsLabel="ВМЕСТИМОСТЬ"
+          seats={detailsMap["ВМЕСТИМОСТЬ"] || "до 500 участников"}
+          phoneLabel="ОСНАЩЕНИЕ"
+          phone={detailsMap["ОСНАЩЕНИЕ"] || "Свет, звук, экраны"}
           phoneIsLink={false}
-          dataDirection="fitness"
+          dataDirection="events"
         />
 
         <DirectionAtmosphereSection
           label={data.featuresSection.label}
           bodyText={data.intro.body}
           previewImages={previewImagesResolved}
-          dataDirection="fitness"
+          dataDirection="events"
         />
 
         <DirectionScrapbookSection
           heading={data.featuresSection.heading}
           features={scrapbookFeatures}
-          dataDirection="fitness"
+          dataDirection="events"
         />
 
         <DirectionStaticGallery
-          tagline="Пространство, где дисциплина превращается в результат"
+          tagline="Пространство, где идеи становятся событиями"
           images={galleryImagesResolved}
-          dataDirection="fitness"
+          dataDirection="events"
         />
 
         <ContactMapSection />

@@ -8,6 +8,12 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   en: "EN",
 };
 
+export const LANGUAGE_FLAGS: Record<Language, string> = {
+  ru: "🇷🇺",
+  ky: "🇰🇬",
+  en: "🇬🇧",
+};
+
 export const DEFAULT_LANGUAGE: Language = "ru";
 
 export const LANGUAGE_STORAGE_KEY = "dasmia_lang";
@@ -184,6 +190,10 @@ const translations: Record<Language, Record<string, string>> = {
     "corporate.s5.desc": "Активности на базе комплекса, сценарии",
     "corporate.s6.label": "Гибридные мероприятия",
     "corporate.s6.desc": "Онлайн + офлайн формат, трансляции",
+    "corporate.form.heading": "Обсудим",
+    "corporate.form.heading.em": "формат сотрудничества",
+    "corporate.form.description":
+      "Оставьте заявку — наш менеджер свяжется с вами, чтобы уточнить детали и подготовить коммерческое предложение.",
 
     // Event CTA Section
     "event_cta.label": "МЕРОПРИЯТИЯ",
@@ -191,7 +201,7 @@ const translations: Record<Language, Record<string, string>> = {
     "event_cta.title.em": "Наше пространство.",
     "event_cta.description":
       "Свадьбы, юбилеи, корпоративы, конференции — любое событие заслуживает идеального пространства и безупречного сервиса.",
-    "event_cta.book": "ЗАБРОНИРОВАТЬ",
+    "event_cta.book": "ОСТАВИТЬ ЗАЯВКУ",
     "event_cta.organize": "ОРГАНИЗОВАТЬ МЕРОПРИЯТИЕ",
 
     // Contact Form & Section
@@ -201,6 +211,7 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.address.label": "АДРЕС",
     "contactmap.title.l1": "Свяжитесь",
     "contactmap.title.l2": "с нами",
+    "contactmap.directions": "ПРОЛОЖИТЬ МАРШРУТ",
     "contact.address.value": "Бишкек, ул. Анкара 2Б, Кыргызстан",
     "contact.phone.label": "ТЕЛЕФОН",
     "contact.email.label": "EMAIL",
@@ -423,6 +434,10 @@ const translations: Record<Language, Record<string, string>> = {
     "corporate.s5.desc": "Комплекстин базасындагы иш-чаралар, сценарийлер",
     "corporate.s6.label": "Гибриддик иш-чаралар",
     "corporate.s6.desc": "Онлайн + офлайн формат, түз берүүлөр",
+    "corporate.form.heading": "Кызматташуунун",
+    "corporate.form.heading.em": "форматын талкуулайлы",
+    "corporate.form.description":
+      "Өтүнмө калтырыңыз — менеджерибиз сиз менен байланышып, майда-чүйдөсүнө чейин тактап, коммерциялык сунуш даярдайт.",
 
     // Event CTA Section
     "event_cta.label": "ИШ-ЧАРАЛАР",
@@ -430,7 +445,7 @@ const translations: Record<Language, Record<string, string>> = {
     "event_cta.title.em": "Биздин мейкиндик.",
     "event_cta.description":
       "Үйлөнүү тойлдор, мааракелер, корпоративдер, конференциялар — ар кандай иш-чара идеалдуу мейкиндикке жана кемчиликсиз тейлөөгө татыктуу.",
-    "event_cta.book": "ЭЭЛӨӨ",
+    "event_cta.book": "АРЫЗ КАЛТЫРУУ",
     "event_cta.organize": "ИШ-ЧАРА УЮШТУРУУ",
 
     // Contact Form & Section
@@ -660,6 +675,10 @@ const translations: Record<Language, Record<string, string>> = {
     "corporate.s5.desc": "On-site group activities and bespoke scenarios",
     "corporate.s6.label": "Hybrid Events",
     "corporate.s6.desc": "Simultaneous in-person and live streaming setups",
+    "corporate.form.heading": "Let's discuss",
+    "corporate.form.heading.em": "the partnership format",
+    "corporate.form.description":
+      "Leave a request — our manager will contact you to clarify the details and prepare a commercial proposal.",
 
     // Event CTA Section
     "event_cta.label": "EVENTS",
@@ -667,7 +686,7 @@ const translations: Record<Language, Record<string, string>> = {
     "event_cta.title.em": "Our venue.",
     "event_cta.description":
       "Weddings, anniversaries, corporate galas, conferences — every occasion deserves the ideal venue and flawless hospitality.",
-    "event_cta.book": "BOOK NOW",
+    "event_cta.book": "SUBMIT REQUEST",
     "event_cta.organize": "ORGANIZE AN EVENT",
 
     // Contact Form & Section

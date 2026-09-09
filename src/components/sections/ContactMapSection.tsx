@@ -39,8 +39,8 @@ export default function ContactMapSection() {
       style={{
         backgroundColor: "var(--background)",
         borderColor: "rgba(255,255,255,0.06)",
-        paddingTop: "90px",
-        paddingBottom: "90px",
+        paddingTop: "45px",
+        paddingBottom: "45px",
       }}
       data-content="contact-map"
     >
@@ -87,17 +87,27 @@ export default function ContactMapSection() {
               >
                 [CLIENT EMAIL]
               </a>
+
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=Бишкек,+ул.+Анкара+2Б"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-label text-gold hover:opacity-70 transition-opacity duration-300 border-b pb-1 self-start"
+                style={{ fontSize: "11px", letterSpacing: "0.16em", borderColor: "rgba(212,175,55,0.4)" }}
+              >
+                {t(language, "contactmap.directions")}
+              </a>
             </div>
           </div>
 
-          {/* Right — map inside an elliptical mask, line-group.kz style */}
+          {/* Right — map inside a rounded-square frame, compact size */}
           <div className="lg:col-span-8 reveal-right delay-150">
             <div
               className="relative w-full overflow-hidden mx-auto"
               style={{
                 aspectRatio: "16 / 10",
-                borderRadius: "50%",
-                maxWidth: "980px",
+                borderRadius: "16px",
+                maxWidth: "620px",
               }}
             >
               <iframe
@@ -105,14 +115,10 @@ export default function ContactMapSection() {
                 title="DASMIA на карте"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="absolute border-0"
+                className="absolute inset-0 border-0"
                 style={{
-                  // Oversize the iframe so its corners are cropped by the
-                  // elliptical mask instead of leaving empty corners.
-                  top: "-15%",
-                  left: "-15%",
-                  width: "130%",
-                  height: "130%",
+                  width: "100%",
+                  height: "100%",
                 }}
               />
             </div>
@@ -122,3 +128,4 @@ export default function ContactMapSection() {
     </section>
   );
 }
+

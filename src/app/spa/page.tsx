@@ -10,6 +10,7 @@ import DirectionStaticGallery from "@/components/sections/DirectionStaticGallery
 import ContactMapSection from "@/components/sections/ContactMapSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { directionsContent } from "@/lib/directionsContent";
+import { useDirectionGallery } from "@/lib/api";
 
 const previewImages = [
   { url: "/assets/images/spa-massage-room.webp", alt: "Массажный кабинет SPA DASMIA", caption: "МАССАЖ" },
@@ -35,6 +36,15 @@ export default function SpaPage() {
   const { language } = useLanguage();
   const data = directionsContent.spa[language] || directionsContent.spa.ru;
 
+  // CMS-backed images from the Django backend, when available. Falls back
+  // to the static arrays above when the backend/admin has no data yet.
+  const { gallery } = useDirectionGallery("spa", language);
+
+  const previewImagesResolved = previewImages.map((img, i) =>
+    gallery && gallery[i] ? { ...img, url: gallery[i].url } : img,
+  );
+  const galleryImagesResolved = gallery && gallery.length > 0 ? gallery : galleryImages;
+
   const detailsMap = Object.fromEntries(
     data.intro.details.map((d) => [d.label, d.value]),
   );
@@ -48,21 +58,21 @@ export default function SpaPage() {
       number: data.featuresSection.features[0].number,
       title: data.featuresSection.features[0].title,
       description: data.featuresSection.features[0].description,
-      image: "/assets/images/spa-massage-room.webp",
+      image: gallery && gallery[0] ? gallery[0].url : "/assets/images/spa-massage-room.webp",
       imageAlt: data.featuresSection.features[0].title,
     },
     {
       number: data.featuresSection.features[1].number,
       title: data.featuresSection.features[1].title,
       description: data.featuresSection.features[1].description,
-      image: "/assets/images/spa-sauna-pool.webp",
+      image: gallery && gallery[1] ? gallery[1].url : "/assets/images/spa-sauna-pool.webp",
       imageAlt: data.featuresSection.features[1].title,
     },
     {
       number: data.featuresSection.features[2].number,
       title: data.featuresSection.features[2].title,
       description: data.featuresSection.features[2].description,
-      image: "/assets/images/spa-candles-oils.webp",
+      image: gallery && gallery[2] ? gallery[2].url : "/assets/images/spa-candles-oils.webp",
       imageAlt: data.featuresSection.features[2].title,
     },
   ];
@@ -91,7 +101,7 @@ export default function SpaPage() {
         <DirectionAtmosphereSection
           label={data.featuresSection.label}
           bodyText={data.intro.body}
-          previewImages={previewImages}
+          previewImages={previewImagesResolved}
           dataDirection="spa"
         />
 
@@ -105,7 +115,7 @@ export default function SpaPage() {
 
         <DirectionStaticGallery
           tagline="Пространство, где время замедляется ради вас"
-          images={galleryImages}
+          images={galleryImagesResolved}
           dataDirection="spa"
         />
 
