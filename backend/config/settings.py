@@ -106,7 +106,7 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     # Using 'darkly' gives it a premium dark-mode look, 
     # but you can change this to 'litera' or 'flatly' for a clean, light, spacious theme!
-    "theme": "darkly", 
+    "theme": "litera", 
     "default_theme_mode": "dark",
 }
 
@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = get_db_config(BASE_DIR)
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'ky'
 LANGUAGES = (
     ('ru', 'Russian'),
     ('ky', 'Kyrgyz'),
@@ -127,14 +127,16 @@ MODELTRANSLATION_FALLBACK_LANGUAGES = ('ru', 'en')
 TIME_ZONE = 'Asia/Bishkek'
 USE_I18N = True
 USE_TZ = True
-
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://localhost:4028',
+    'http://127.0.0.1:4028',
+]
+
 
 # Celery Configuration
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')

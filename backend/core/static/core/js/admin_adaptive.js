@@ -2,8 +2,10 @@
  * Minimal JavaScript for Permission Option Tooltips in Django Admin
  */
 
-(function($) {
+(function() {
     'use strict';
+    var $ = window.jQuery || (window.django && window.django.jQuery);
+    if (!$) return;
 
     function addOptionTooltips() {
         $('.selector select option').each(function() {
@@ -30,4 +32,5 @@
         });
     });
 
-})(jQuery);
+})();
+

@@ -403,11 +403,24 @@
     }
   });
 
+  function startObserver() {
+    if (document.body) {
+      const observer = new MutationObserver(function () {
+        initImageWidgets();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
   // Init on DOM ready and dynamic changes (e.g. Django inlines add row)
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initImageWidgets);
+    document.addEventListener('DOMContentLoaded', function () {
+      initImageWidgets();
+      startObserver();
+    });
   } else {
     initImageWidgets();
+    startObserver();
   }
 
   // Support for dynamic inlines in Django admin
@@ -416,11 +429,5 @@
       setTimeout(initImageWidgets, 100);
     });
   }
-
-  // MutationObserver fallback for inlines
-  const observer = new MutationObserver(function () {
-    initImageWidgets();
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
 
 })();

@@ -29,38 +29,56 @@ class AdminImageEditorWidget(forms.ClearableFileInput):
         # Base file input from Django
         real_input_html = super().render(name, value, attrs=attrs, renderer=renderer)
         
-        has_file = bool(value and hasattr(value, 'url') and getattr(value, 'name', None))
-        if has_file:
-            ts = ''
-            inst = getattr(value, 'instance', None)
-            if inst:
-                for attr in ('updated_at', 'published_date', 'created_at'):
-                    val = getattr(inst, attr, None)
-                    if val and hasattr(val, 'timestamp'):
-                        ts = f"?v={int(val.timestamp())}"
-                        break
-            if not ts and hasattr(value, 'storage') and value.name:
+        has_file = False
+        raw_url = ''
+        file_name = 'Нет файла'
+        ts = ''
+
+        if value:
+            if hasattr(value, 'url'):
                 try:
-                    mtime = int(value.storage.get_modified_time(value.name).timestamp())
-                    ts = f"?v={mtime}"
+                    raw_url = value.url
+                    has_file = bool(getattr(value, 'name', None))
+                    file_name = escape(str(value.name).split('/')[-1])
+                    inst = getattr(value, 'instance', None)
+                    if inst:
+                        for attr in ('updated_at', 'published_date', 'created_at'):
+                            val = getattr(inst, attr, None)
+                            if val and hasattr(val, 'timestamp'):
+                                ts = f"?v={int(val.timestamp())}"
+                                break
+                    if not ts and hasattr(value, 'storage') and value.name:
+                        try:
+                            mtime = int(value.storage.get_modified_time(value.name).timestamp())
+                            ts = f"?v={mtime}"
+                        except Exception:
+                            pass
                 except Exception:
-                    pass
-            image_url = f"{escape(value.url)}{ts}"
-        else:
-            image_url = ''
-        file_name = escape(str(value).split('/')[-1]) if has_file else 'Нет файла'
-        
+                    has_file = False
+            elif isinstance(value, str) and value.strip():
+                val_str = value.strip()
+                has_file = True
+                file_name = escape(val_str.split('/')[-1])
+                from django.conf import settings
+                media_url = getattr(settings, 'MEDIA_URL', '/media/').rstrip('/')
+                if val_str.startswith(('http://', 'https://', '/')):
+                    raw_url = val_str
+                else:
+                    raw_url = f"{media_url}/{val_str.lstrip('/')}"
+
+        image_url = f"{escape(raw_url)}{ts}" if raw_url else ''
+
         thumb_style = '' if has_file else 'display:none;'
         badge_style = '' if has_file else 'display:none;'
         edit_btn_style = '' if has_file else 'display:none;'
-        
+
         widget_id = attrs.get('id', f'id_{name}')
-        
+
         html = f"""
         <div class="dasmia-image-widget" id="widget_{widget_id}">
             <div class="dasmia-image-preview-box">
                 <div class="dasmia-image-thumb-wrap">
-                    <img class="dasmia-image-thumb" src="{image_url}" alt="Preview" style="{thumb_style}" />
+                    <img class="dasmia-image-thumb" src="{image_url}" alt="Preview" style="{thumb_style}" onerror="this.onerror=null;this.src='/media/no_image.png';" />
                 </div>
                 <div class="dasmia-image-meta">
                     <div class="dasmia-filename">{file_name}</div>

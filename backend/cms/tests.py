@@ -360,3 +360,93 @@ class AdminImageEditorWidgetTests(TestCase):
         self.assertIn("Удалить", rendered_html)
         self.assertIn("Загружено", rendered_html)
 
+    def test_widget_render_with_string_path(self):
+        """Verifies that AdminImageEditorWidget works when value is a string path, not hiding the preview."""
+        from cms.widgets import AdminImageEditorWidget
+        widget = AdminImageEditorWidget()
+        rendered_html = widget.render(name="image", value="cms/directions/IMG_8902.webp")
+
+        self.assertIn("dasmia-image-widget", rendered_html)
+        self.assertIn("/media/cms/directions/IMG_8902.webp", rendered_html)
+        self.assertIn("IMG_8902.webp", rendered_html)
+        self.assertIn("Заменить", rendered_html)
+        self.assertNotIn("display:none;\" />", rendered_html)
+
+    def test_widget_render_with_full_url(self):
+        """Verifies that AdminImageEditorWidget works when value is an absolute URL."""
+        from cms.widgets import AdminImageEditorWidget
+        widget = AdminImageEditorWidget()
+        rendered_html = widget.render(name="image", value="/media/cms/news/photo.webp")
+
+        self.assertIn("/media/cms/news/photo.webp", rendered_html)
+        self.assertIn("photo.webp", rendered_html)
+
+
+class MediaFallbackServingTests(TestCase):
+    def setUp(self):
+        from django.test import Client
+        self.client = Client()
+
+    def test_serve_existing_media(self):
+        """Requests to existing media files should return 200."""
+        # Create a test media file in MEDIA_ROOT
+        from django.conf import settings
+        from pathlib import Path
+        test_dir = Path(settings.MEDIA_ROOT) / "cms" / "test_serve"
+        test_dir.mkdir(parents=True, exist_ok=True)
+        test_file = test_dir / "sample_img.webp"
+        test_file.write_bytes(b"dummy image content")
+
+        try:
+            response = self.client.get("/media/cms/test_serve/sample_img.webp")
+            self.assertEqual(response.status_code, 200)
+        finally:
+            if test_file.exists():
+                test_file.unlink()
+
+    def test_serve_fallback_restores_from_public_assets(self):
+        """When a media file is missing from MEDIA_ROOT, it should resolve from public/assets/images and restore it."""
+        from django.conf import settings
+        from pathlib import Path
+
+        # We request a hashed name corresponding to IMG_8902.webp which exists in public/assets/images
+        target_subpath = "cms/test_auto_restore/IMG_8902_dummyhash999.webp"
+        target_file = Path(settings.MEDIA_ROOT) / target_subpath
+        if target_file.exists():
+            target_file.unlink()
+
+        try:
+            response = self.client.get(f"/media/{target_subpath}")
+            self.assertEqual(response.status_code, 200)
+            # Verify the file was restored to MEDIA_ROOT
+            self.assertTrue(target_file.exists())
+        finally:
+            if target_file.exists():
+                target_file.unlink()
+
+    def test_serve_missing_file_falls_back_to_placeholder(self):
+        """When an unknown image is requested, it gracefully falls back to no_image.png."""
+        response = self.client.get("/media/completely_unknown_file_xyz_123.webp")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers.get("Content-Type"), "image/png")
+
+
+class SeedMediaCommandTests(TestCase):
+    def test_seed_media_command_runs_successfully(self):
+        from django.core.management import call_command
+        import io
+        from cms.models import MediaAsset, Direction, News, ContentBlock
+
+        out = io.StringIO()
+        call_command("seed_media", stdout=out)
+        output = out.getvalue()
+
+        self.assertIn("Starting DASMIA Media Library Seeding", output)
+        self.assertIn("MediaAsset items registered", output)
+        self.assertIn("Directions with Bento Galleries", output)
+        self.assertTrue(MediaAsset.objects.count() > 0)
+        self.assertTrue(Direction.objects.count() >= 7)
+        self.assertTrue(ContentBlock.objects.filter(key="home_hero_banner").exists())
+        self.assertTrue(News.objects.count() > 0)
+
+

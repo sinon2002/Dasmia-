@@ -47,7 +47,7 @@ class Direction(models.Model):
         return self.name
 
 class DirectionGalleryImage(models.Model):
-    """Gallery images for each business direction bento grid"""
+    """Admin panel - Gallery images for each business direction bento grid"""
     SPAN_CHOICES = (
         ('normal', 'Обычный (1x1)'),
         ('wide', 'Широкий (2 колонки)'),
@@ -64,8 +64,8 @@ class DirectionGalleryImage(models.Model):
 
     class Meta:
         ordering = ['direction', 'order']
-        verbose_name = 'Изображение галереи'
-        verbose_name_plural = 'Галерея направления'
+        verbose_name = 'Gallerey image'
+        verbose_name_plural = 'Direction gallerey'
 
     def save(self, *args, **kwargs):
         if self.image:
@@ -143,7 +143,13 @@ class MediaAsset(models.Model):
 
     def __str__(self):
         return f"{self.title} [{self.get_category_display()}]"
+        
+class SiteTranslation(models.Model):
+    key = models.CharField(max_length = 255, unique=True)
+    text = models.TextField()
 
+    def __str__(self):
+        return self.key
 
 @receiver(post_delete, sender=ContentBlock)
 @receiver(post_delete, sender=Direction)
