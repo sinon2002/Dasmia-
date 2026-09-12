@@ -6,8 +6,8 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
 describe("HeroSection component", () => {
-  it("renders brand headline and direction actions", () => {
-    render(
+  it("renders hero banner section and cinematic video element", () => {
+    const { container } = render(
       <ThemeProvider>
         <LanguageProvider>
           <HeroSection />
@@ -15,7 +15,13 @@ describe("HeroSection component", () => {
       </ThemeProvider>
     );
 
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("DASMIA");
-    expect(screen.getByText("СМОТРЕТЬ ВСЕ")).toBeInTheDocument();
+    const section = screen.getByLabelText("Главный баннер DASMIA");
+    expect(section).toBeInTheDocument();
+    expect(section).toHaveAttribute("data-animation", "hero");
+
+    const video = container.querySelector("video");
+    expect(video).toBeInTheDocument();
+    expect(video).toHaveAttribute("poster", "/assets/images/IMG_2161.webp");
   });
 });
+

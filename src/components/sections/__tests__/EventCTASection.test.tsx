@@ -17,6 +17,7 @@ describe("EventCTASection component", () => {
 
     expect(screen.getByText("МЕРОПРИЯТИЯ")).toBeInTheDocument();
     expect(screen.getByText("Ваше событие.")).toBeInTheDocument();
-    expect(screen.getByText("ЗАБРОНИРОВАТЬ")).toBeInTheDocument();
+    expect(screen.getByText("ОСТАВИТЬ ЗАЯВКУ")).toBeInTheDocument();
   });
 });
+

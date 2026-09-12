@@ -16,7 +16,8 @@ describe("CategoryPillsSection component", () => {
     );
 
     expect(screen.getByText("РЕСТОРАН")).toBeInTheDocument();
-    expect(screen.getByText("WELLNESS")).toBeInTheDocument();
+    expect(screen.getByText("SPA")).toBeInTheDocument();
     expect(screen.getByText("ЭТНО-СЕЛО")).toBeInTheDocument();
   });
 });
+

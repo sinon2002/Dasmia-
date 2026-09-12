@@ -27,49 +27,27 @@ describe("Footer component", () => {
     expect(screen.getByAltText("DASMIA")).toBeInTheDocument();
     expect(screen.getByText("О КОМПЛЕКСЕ")).toBeInTheDocument();
     expect(screen.getByText("НАПРАВЛЕНИЯ")).toBeInTheDocument();
+    expect(screen.getByText("КОРПОРАТИВНЫМ")).toBeInTheDocument();
     expect(screen.getByText("ИСТОРИЯ")).toBeInTheDocument();
     expect(screen.getByText("КОНТАКТЫ")).toBeInTheDocument();
   });
 
-  it("submits footer contact form successfully", async () => {
-    globalThis.fetch = vi.fn().mockResolvedValue({
-      status: 201,
-      ok: true,
-      json: async () => ({ success: true }),
-    });
+  it("renders direction category links in footer", () => {
+    renderFooter();
 
-    const { container } = renderFooter();
-
-    const nameInput = screen.getByPlaceholderText("Ваше имя");
-    const phoneInput = screen.getByPlaceholderText("+996 (000) 000-000");
-    const select = container.querySelector("select")!;
-    const checkbox = container.querySelector('input[type="checkbox"]')!;
-    const submitBtn = screen.getByRole("button", { name: "Оставить заявку" });
-
-    fireEvent.change(nameInput, { target: { value: "Тестовый Пользователь" } });
-    fireEvent.change(phoneInput, { target: { value: "+996555123456" } });
-    fireEvent.change(select, { target: { value: "WhatsApp" } });
-    fireEvent.click(checkbox);
-
-    await act(async () => {
-      fireEvent.click(submitBtn);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText(/Заявка отправлена/i)).toBeInTheDocument();
-    });
+    expect(screen.getByText("Банкетные залы")).toBeInTheDocument();
+    expect(screen.getByText("Ресторан")).toBeInTheDocument();
+    expect(screen.getByText("Чайхана")).toBeInTheDocument();
+    expect(screen.getByText("Фитнес-клуб")).toBeInTheDocument();
+    expect(screen.getByText("Бассейны")).toBeInTheDocument();
+    expect(screen.getByText("SPA")).toBeInTheDocument();
+    expect(screen.getByText("Этно-Село")).toBeInTheDocument();
   });
 
-  it("shows error message if form submitted without required fields", async () => {
-    const { container } = renderFooter();
+  it("renders privacy policy link", () => {
+    renderFooter();
 
-    const submitBtn = screen.getByRole("button", { name: "Оставить заявку" });
-    await act(async () => {
-      fireEvent.click(submitBtn);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText(/Заполните все поля/i)).toBeInTheDocument();
-    });
+    expect(screen.getByText("Политика конфиденциальности")).toBeInTheDocument();
   });
 });
+

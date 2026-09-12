@@ -23,8 +23,8 @@ describe("Header component", () => {
   it("renders brand logo and main navigation links", () => {
     renderHeader();
 
-    expect(screen.getByText("D'asmia")).toBeInTheDocument();
-    expect(screen.getByText("PREMIUM COMPLEX")).toBeInTheDocument();
+    expect(screen.getByLabelText("DASMIA — Главная")).toBeInTheDocument();
+    expect(screen.getByAltText("DASMIA")).toBeInTheDocument();
     expect(screen.getAllByText("О КОМПЛЕКСЕ").length).toBeGreaterThan(0);
     expect(screen.getAllByText("НАПРАВЛЕНИЯ").length).toBeGreaterThan(0);
     expect(screen.getAllByText("КОРПОРАТИВНЫМ").length).toBeGreaterThan(0);
@@ -35,12 +35,15 @@ describe("Header component", () => {
   it("renders language switcher and allows switching language", () => {
     renderHeader();
 
-    const enButton = screen.getAllByText("EN")[0];
+    const enButton = screen.getByRole("button", { name: "Language: EN" });
     fireEvent.click(enButton);
 
     expect(screen.getAllByText(/ABOUT/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/CONTACT/i).length).toBeGreaterThan(0);
   });
+
+
+
 
   it("toggles mobile menu drawer on hamburger button click", () => {
     renderHeader();
