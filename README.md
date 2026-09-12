@@ -1,91 +1,112 @@
-# Next.js
+# DASMIA Holding — Web Platform
 
-A modern Next.js 15 application built with TypeScript and Tailwind CSS.
+Modern web platform for **DASMIA Holding**, combining a **Next.js 15 (React 19)** frontend with a **Python/Django 6** backend (multilingual CMS, Media Library, and Bitrix24 CRM integration).
 
-## 🚀 Features
+---
 
-- **Next.js 15** - Latest version with improved performance and features
-- **React 19** - Latest React version with enhanced capabilities
-- **Tailwind CSS** - Utility-first CSS framework for rapid UI development
-
-## 🛠️ Installation
-
-1. Install dependencies:
-  ```bash
-  npm install
-  # or
-  yarn install
-  ```
-
-2. Start the development server:
-  ```bash
-  npm run dev
-  # or
-  yarn dev
-  ```
-3. Open [http://localhost:4028](http://localhost:4028) with your browser to see the result.
-
-## 📁 Project Structure
+## 🏗️ Architecture Overview
 
 ```
-nextjs/
-├── public/             # Static assets
-├── src/
-│   ├── app/            # App router components
-│   │   ├── layout.tsx  # Root layout component
-│   │   └── page.tsx    # Main page component
-│   ├── components/     # Reusable UI components
-│   ├── styles/         # Global styles and Tailwind configuration
-├── next.config.mjs     # Next.js configuration
-├── package.json        # Project dependencies and scripts
-├── postcss.config.js   # PostCSS configuration
-└── tailwind.config.js  # Tailwind CSS configuration
-
+Dasmia-/
+├── src/                  # Next.js 15 App Router Frontend (Port 4028)
+│   ├── app/              # Routes, metadata & layouts
+│   ├── components/       # UI sections, lightboxes, widgets
+│   ├── contexts/         # Language (RU, KY, EN) & Theme
+│   └── lib/              # API clients, i18n & static fallbacks
+├── public/               # Static assets & repository master images
+│   └── assets/images/    # Master photos (Banquets, SPA, Pools, etc.)
+└── backend/              # Django 6 CMS & CRM Backend (Port 8000)
+    ├── api/              # REST API v1 endpoints
+    ├── cms/              # Directions, Galleries, News, Media Library
+    ├── config/           # Django settings, URLs & fallback media view
+    ├── core/             # Lead submissions & Bitrix24 synchronization
+    └── media/            # Uploaded & optimized WebP assets (gitignored)
 ```
 
-## 🧩 Page Editing
+---
 
-You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Quick Start Guide
 
-## 🎨 Styling
+### 1. Configure Environment
 
-This project uses Tailwind CSS for styling with the following features:
-- Utility-first approach for rapid development
-- Custom theme configuration
-- Responsive design utilities
-- PostCSS and Autoprefixer integration
+Copy `.env.example` in root and in `backend/`:
+
+```bash
+cp .env.example .env
+cp backend/.env.example backend/.env
+```
+
+### 2. Setup & Start Backend (Django)
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate       # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+# Apply migrations
+python manage.py migrate
+
+# CRITICAL: Seed CMS Media Library and Directions from repository images
+python manage.py seed_media
+
+# Collect static files for Jazzmin admin UI
+python manage.py collectstatic --noinput
+
+# Create your admin user
+python manage.py createsuperuser
+
+# Start Django server (port 8000)
+python manage.py runserver
+```
+
+- **Admin Panel**: [http://localhost:8000/admin/](http://localhost:8000/admin/)
+- **API Base**: [http://localhost:8000/api/v1/](http://localhost:8000/api/v1/)
+- **Health Check**: [http://localhost:8000/healthz](http://localhost:8000/healthz)
+
+> [!IMPORTANT]
+> **Media in Admin Panel**:
+> `backend/media/` is excluded from git to avoid committing binary uploads.
+> Running `python manage.py seed_media` registers all photos from `public/assets/images/` into the CMS database and generates optimized WebP files.
+> The backend also includes automated fallback serving (`serve_media_with_fallback`) in `config/urls.py` which dynamically serves and restores missing media on-the-fly.
+
+### 3. Setup & Start Frontend (Next.js)
+
+In a separate terminal, from the project root:
+
+```bash
+npm install
+npm run dev
+```
+
+- **Frontend Website**: [http://localhost:4028](http://localhost:4028)
+
+---
+
+## 🧪 Testing
+
+### Backend Tests (Django)
+```bash
+cd backend
+python manage.py test
+```
+
+### Frontend Tests (Vitest)
+```bash
+npm run test
+```
+
+---
 
 ## 📦 Available Scripts
 
-- `npm run dev` - Start development server on port 4028
-- `npm run build` - Build the application for production
-- `npm run start` - Start the development server
-- `npm run serve` - Start the production server
-- `npm run lint` - Run ESLint to check code quality
-- `npm run lint:fix` - Fix ESLint issues automatically
-- `npm run format` - Format code with Prettier
-
-## 📱 Deployment
-
-Build the application for production:
-
-  ```bash
-  npm run build
-  ```
-
-## 📚 Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial
-
-You can check out the [Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## 🙏 Acknowledgments
-
-- Built with [Rocket.new](https://rocket.new)
-- Powered by Next.js and React
-- Styled with Tailwind CSS
-
-Built with ❤️ on Rocket.new
+| Command | Directory | Description |
+| :--- | :--- | :--- |
+| `npm run dev` | Root | Starts Next.js dev server on `http://localhost:4028` |
+| `npm run build` | Root | Builds Next.js for production |
+| `npm run test` | Root | Runs Vitest frontend test suite |
+| `npm run lint` | Root | Runs ESLint check |
+| `python manage.py runserver` | `backend/` | Starts Django API & Admin on `http://localhost:8000` |
+| `python manage.py seed_media` | `backend/` | Seeds CMS media library & directions from master images |
+| `python manage.py test` | `backend/` | Runs Django unit & integration test suite |
+| `python manage.py collectstatic` | `backend/` | Collects admin static assets |

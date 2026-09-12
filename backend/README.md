@@ -114,24 +114,43 @@ pip install -r requirements.txt
 
 ---
 
-### 4. Database Migrations & Superuser Creation
+### 4. Database Migrations, Media Seeding & Superuser Creation
 
 With your virtual environment active:
 
 ```bash
-# Apply database migrations
+# 1. Apply database migrations
 python manage.py migrate
 
-# Collect static assets for admin UI
+# 2. Seed CMS media library & directions (CRITICAL: Populates photos into admin panel)
+python manage.py seed_media
+
+# 3. Collect static assets for admin UI
 python manage.py collectstatic --noinput
 
-# Create your admin superuser
+# 4. Create your admin superuser
 python manage.py createsuperuser
+```
+
+> [!IMPORTANT]
+> **Why `seed_media` is necessary**:
+> The `backend/media/` directory is gitignored to avoid checking large user uploads into the repository.
+> Running `python manage.py seed_media` copies and optimizes the project's photos from `public/assets/images/` into `backend/media/` and creates all Directions, Bento Galleries, News, and Media Assets in the database.
+> The backend also includes automated fallback serving in `backend/config/urls.py` which auto-restores missing photos from `public/assets/images/` on-the-fly.
+
+---
+
+### 5. Running Tests
+
+Run all unit and integration tests across CMS, API, and Lead Submissions:
+
+```bash
+python manage.py test
 ```
 
 ---
 
-### 5. Running the Application
+### 6. Running the Application
 
 #### A. Django Development Server
 ```bash
@@ -140,6 +159,7 @@ python manage.py runserver
 - API Base: `http://localhost:8000/api/v1/`
 - Admin Panel: `http://localhost:8000/admin/`
 - Health Check: `http://localhost:8000/healthz`
+
 
 #### B. Celery Background Worker (Optional)
 > [!NOTE]
