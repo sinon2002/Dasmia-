@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db import models
 from django.utils.html import mark_safe, escape
 from modeltranslation.admin import TranslationAdmin, TranslationTabularInline
-# from modeltranslation.translator import register, TranslationOptions
+from modeltranslation.translator import register, TranslationOptions
 from .models import ContentBlock, Direction, Service, News, DirectionGalleryImage, MediaAsset, SiteTranslation
 from .widgets import AdminImageEditorWidget
 
@@ -45,7 +45,7 @@ def get_admin_thumb_url(image_field, obj=None):
 
 
 @admin.register(ContentBlock)
-class ContentBlockAdmin(admin.ModelAdmin):
+class ContentBlockAdmin(TranslationAdmin):
     list_display = ('thumb_preview', 'key', 'title', 'updated_at')
     list_display_links = ('thumb_preview', 'key', 'title')
     search_fields = ('key', 'title', 'content')
@@ -76,7 +76,7 @@ class SiteTranslationOptions(TranslationAdmin):
     list_display = ('key', 'text')
     search_fields = ('key',)
 
-class DirectionGalleryImageInline(admin.TabularInline):
+class DirectionGalleryImageInline(TranslationTabularInline):
     model = DirectionGalleryImage
     extra = 1
     fields = ('preview_thumb', 'image', 'title', 'span', 'order', 'is_active')
@@ -100,7 +100,7 @@ class DirectionGalleryImageInline(admin.TabularInline):
 
 
 @admin.register(Direction)
-class DirectionAdmin(admin.ModelAdmin):
+class DirectionAdmin(TranslationAdmin):
     list_display = ('cover_thumb', 'name', 'slug', 'is_active', 'order', 'gallery_count')
     list_display_links = ('cover_thumb', 'name')
     list_editable = ('is_active', 'order')
@@ -136,7 +136,7 @@ class DirectionAdmin(admin.ModelAdmin):
 
 
 @admin.register(DirectionGalleryImage)
-class DirectionGalleryImageAdmin(admin.ModelAdmin):
+class DirectionGalleryImageAdmin(TranslationAdmin):
     list_display = ('image_thumb', 'direction', 'title', 'span', 'order', 'is_active')
     list_display_links = ('image_thumb', 'direction')
     list_filter = ('direction', 'span', 'is_active')
@@ -166,14 +166,14 @@ class DirectionGalleryImageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Service)
-class ServiceAdmin(admin.ModelAdmin):
+class ServiceAdmin(TranslationAdmin):
     list_display = ('name', 'direction', 'price', 'price_currency')
     list_filter = ('direction',)
     search_fields = ('name', 'description')
 
 
 @admin.register(News)
-class NewsAdmin(admin.ModelAdmin):
+class NewsAdmin(TranslationAdmin):
     list_display = ('cover_thumb', 'title', 'published_date', 'is_active')
     list_display_links = ('cover_thumb', 'title')
     list_editable = ('is_active',)
@@ -204,7 +204,7 @@ class NewsAdmin(admin.ModelAdmin):
 
 
 @admin.register(MediaAsset)
-class MediaAssetAdmin(admin.ModelAdmin):
+class MediaAssetAdmin(TranslationAdmin):
     list_display = ('thumb_preview', 'title', 'category_badge', 'file_name_display', 'created_at')
     list_display_links = ('thumb_preview', 'title')
     list_filter = ('category', 'created_at')
